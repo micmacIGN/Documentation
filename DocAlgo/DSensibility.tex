@@ -236,7 +236,7 @@ We split $R^2$  in $R^2_y(Y)$ and $r_Y(X)$, where  $R^2_y$ is the part that do n
 
 \begin{equation}
        \Lambda = \sum\limits_{m=1}^M  \KmtKm                       \;\;\;  ; \;
-       \Gamma(Y)  = \sum\limits_{m=1}^M  (\transLm Y - o_m  ) K  
+       \Gamma(Y)  = \sum\limits_{m=1}^M  (\transLm Y - o_m  ) K^m 
 \end{equation}
 \begin{equation}
        r_Y (X) =  ^tX  \Lambda  X    + 2   ^t \Gamma(Y)  X   \;\;\;  ; \;
@@ -351,12 +351,13 @@ We have :
 
 \begin{equation}
      Var(\tilde{y}_i) =  \sum\limits_{m=1}^M  Var(\epsilon _m)  (\sum\limits_{j=1}^N {\breve {a}'}{_i^j}  {\breve l}{^m_j})^2 
+\label{Final:Var}
 \end{equation}
 
 \subsection{Practicle aspects on unknown elimination in MicMac}
 
 Practically, in MicMac, the unkwon elimination is essentially used  to eliminate, for each tie points, 
-the $3$d point that project on each image. This is done "à la volée" (on the flight ?) with
+the $3$d point that project on each image. This is done "\`a la vol\'ee" (on the flight ?) with
 the following procedure, for each tie point :
 
 \begin{itemize}
@@ -439,22 +440,116 @@ on  $F$ :
 \end{itemize}
 
 So know, if we explain the empirical least square error $R$, by
-a bad estimation on $y$, we have two estimation of the sensibility/accuracy of $y$ :
+a bad estimation on $y$, we have two estimation of the sensibility/accuracy of $y$ ,
+optimisitic in \ref{Sens:Optim} and pessimistic in \ref{Pess}:
+
+\begin{equation}
+  \sqrt{\frac{a}{R}}
+  \label{Sens:Optim}
+\end{equation}
+
+
+\begin{equation}
+  \sqrt{a'R}
+  \label{Sens:Pess}
+\end{equation}
+
+
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\section{Use in MicMac}
+
+The computation of these different value can be done in {\tt Martini} command,
+by setting to true the optional parameter {\tt ExportSensib}. Different
+value are exported at the end of computation; all the file are located
+in the same folder containing the orientation generated and they  have name
+begining  {\tt Sensib}.
+
+
+There is four matrix file, exported as images in float format. This files
+are : 
+
+\begin{itemize}
+     \item {\tt Sensib-MatriceCov.tif}  contain the covariance matrix,
+           this is the matrix resulting from unknown elimination (this of \ref{FinalBreveA});
+
+     \item {\tt Sensib-MatriceCorrelDir.tif}  contain the correlation extracted from
+           direct covariance matrice i.e.  $ \frac{a^i_j}{\sqrt{a^i_i * a^j_j}}$;
+
+     \item {\tt Sensib-MatriceCorrelInv.tif}  contain the correlation extracted from
+           invert covariance matrice $\breve{A} {^{-1}}$  ;
+\end{itemize}
+
+Probably the {\tt Sensib-MatriceCorrelDir.tif} is what  is most currently used
+and known as correlation matrices. When exploring the images with the {\tt Vino}
+tool, the value are printed using short names, for example when grabing the 
+window, one can get the following messages :
 
 
 \begin{itemize}
-   \item a "optimistic"   $\sqrt{\frac{a}{R}}$;
-   \item a "pessimistic"  $\sqrt{a'R}$.
+     \item {\tt V=0.452} and {\tt [Ima4:cZ] [Ima3:T12] (P=41,32)}
+     \item this mean than the correlation is $0.452$ between $Z$ coordinate of center
+           image $4$  and $\theta_{12}$ of image $3$;
+      \item as short name are used for variables in {\tt Vino} , a file containing conversion
+            between short and long name is generated.
 \end{itemize}
 
 
+An example of conversion file :
 
+\begin{verbatim}
+##############  Intrinseque Calibration Correspondance ##############
+ Cal0 => ./Ori-AllRel/AutoCal_Foc-24000_Cam-PENTAX_K5.xml
+##############  Extrinseque Calibration Correspondance ##############
+ Ima0 => IMGP7029.JPG
+ Ima1 => IMGP7030.JPG
+...
+\end{verbatim}
 
+The file {\tt Sensib-Data.xml} contains information on  variance, uncertainty  ...
+regarding individual variable . Three value are given, corresponding
+to different formula  :
 
+\begin{itemize}
+    \item formula \ref{Sens:Optim}  correspond to {\tt <SensibParamDir>};
+    \item formula \ref{Sens:Pess}   correspond to {\tt <SensibParamInv>};
+    \item formula \ref{Final:Var}   correspond to {\tt <SensibParamVar>}.
+\end{itemize}
 
+Here is an example with an acquisition mixing GPS and photogrammetry. Probably the
+ {\tt <SensibParamVar>} is the more realistic evaluation of uncertainty.
 
-
-
+\begin{verbatim}
+     <SensibDateOneInc>
+          <NameBloc>cBaseGPS</NameBloc>
+          <NameInc>x</NameInc>
+          <SensibParamDir>0.0985765205323673732</SensibParamDir>
+          <SensibParamInv>0.577266441576786526</SensibParamInv>
+          <SensibParamVar>0.00228406097850316443</SensibParamVar>
+     </SensibDateOneInc>
+...
+     <SensibDateOneInc>
+          <NameBloc>Cal0</NameBloc>
+          <NameInc>F</NameInc>
+...       <SensibParamVar>15.0011827674349423</SensibParamVar>
+     </SensibDateOneInc>
+     <SensibDateOneInc>
+          <NameBloc>Cal0</NameBloc>
+          <NameInc>PPx</NameInc>
+...       <SensibParamVar>1.68730018610615495</SensibParamVar>
+     </SensibDateOneInc>
+...
+     <SensibDateOneInc>
+          <NameBloc>Ima0</NameBloc>
+          <NameInc>Cx</NameInc>
+          <SensibParamDir>0.10381674122562666</SensibParamDir>
+          <SensibParamInv>1.08339374408743527</SensibParamInv>
+          <SensibParamVar>0.00384393697511320725</SensibParamVar>
+     </SensibDateOneInc>
+...
+\end{verbatim}
 
 
 
