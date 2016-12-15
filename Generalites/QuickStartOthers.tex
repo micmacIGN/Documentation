@@ -553,10 +553,9 @@ With {\tt ReprojImg}, you can project an image into the orientation of an other.
 
 Inputs:
 \begin{itemize}
-\item Ori of all images
-\item correlation directory with reference image DEM
-\item reference image name
-\item name of image to reproject
+\item Two images (reference and projected image)
+\item Ori of the two images
+\item DEM of refenence image
 \end{itemize}
 
 The output is the image reprojected into reference orientation.
@@ -567,13 +566,18 @@ mm3d ReprojImg -help
 *  Help for Elise Arg main  *
 *****************************
 Mandatory unnamed args : 
-  * string :: {Directory of input orientation}
-  * string :: {Reference DEM filename}
+  * string :: {Orientation of reference image (xml)}
+  * string :: {Reference DEM filename (xml)}
   * string :: {Reference image name}
+  * string :: {Orientation of image to reproject (xml)}
   * string :: {Name of image to reproject}
 Named args : 
   * [Name=AutoMask] string :: {AutoMask filename}
+  * [Name=DepthRepImage] string :: {Image to reproject DEM file (xml), def=not used}
+  * [Name=KeepLum] bool :: {Keep original picture luminosity (only for colorization), def=false}
 \end{verbatim}
+
+The {\tt KeepLum} argument is used to coloize reference picture, assuming that is green channel only.
 
 As an example, when we have many pictures of first epoch (epoque1.*), we create a DEM,
 then we can compute the orientation of an image of an other epoch (epoque2\_a.JPG) in the same reference,
@@ -581,13 +585,13 @@ and finally we reproject it in the (epoque1\_f.JPG) geometry :
 \begin{verbatim}
 mm3d Tapioca All "epoque1_..JPG" -1
 mm3d Tapas RadialBasic "epoque1_..JPG"
-mm3d Malt GeomImage "epoque1_..JPG" RadialBasic Master="epoque1_f.JPG" EZA=1
+mm3d Malt GeomImage "epoque1_..JPG" RadialBasic Master="epoque1_f.JPG"
 
 mm3d Tapioca All "epoque._..JPG" -1
 mm3d Tapas RadialBasic "epoque._..JPG" InOri=RadialBasic  Out=Tout
 
-mm3d ReprojImg Ori-Tout/ MM-Malt-Img-epoque1_f/Z_Num8_DeZoom1_STD-MALT.tif \
-               epoque1_f.JPG epoque2_a.JPG
+mm3d ReprojImg Ori-Tout/Orientation-epoque1_f.JPG.xml MM-Malt-Img-epoque1_f/Z_Num8_DeZoom1_STD-MALT.tif \
+               epoque1_f.JPG Ori-Tout/Orientation-epoque2_a.JPG.xml epoque2_a.JPG
 \end{verbatim}
 
 %--------------------------%
