@@ -1226,10 +1226,10 @@ The file {\tt Viabon/Pipeline-Viabon.txt} contains all command lines related to 
 \item {\tt CpleImgs.xml} images couples for tie points computation
 \item {\tt Pts\_GeoC.txt} ground points coordinates
 \item {\tt MesImages.xml} image measurements of ground points
-\item {\tt GCP\_LA\_Calib-RTL.xml} 1 ground control point for lever-arm calibration 
-\item {\tt CPs\_LA\_Calib-RTL.xml} check points to estimate lever-arm calibration accuracy
-\item {\tt Reduced\_GCPs-RTL.xml} reduced number of ground control points for classical georeferencing
-\item {\tt Reduced\_CPs-RTL.xml} reduced check points to estimate GCPs based georeferencing accuracy
+%\item {\tt GCP\_LA\_Calib-RTL.xml} 1 ground control point for lever-arm calibration 
+%\item {\tt CPs\_LA\_Calib-RTL.xml} check points to estimate lever-arm calibration accuracy
+%\item {\tt Reduced\_GCPs-RTL.xml} reduced number of ground control points for classical georeferencing
+%\item {\tt Reduced\_CPs-RTL.xml} reduced check points to estimate GCPs based georeferencing accuracy
 \item {\tt SysCoRTL.xml} file for system coordinates transformation 
 \end{itemize}
 
@@ -1402,7 +1402,6 @@ mm3d GCPCtrl "image_002_00*.*tif" Ori-Bascule-RS-DCode/ AllPts-RTL.xml MesImages
 ======================================================================
 === GCP STAT ===  Dist,  Moy=0.640848 Max=0.844784
 \end{verbatim}
-
 % XYZ , MoyAbs=[0.144261,0.576277,0.1939] 
 %       Max=[0.271985,0.819833,0.332405] 
 %       Bias=[-0.0568969,-0.576277,0.1939]
@@ -1424,7 +1423,8 @@ mm3d GCPCtrl "image_002_00*.*tif" Ori-Bascule-RS-DPhase/ AllPts-RTL.xml MesImage
 %       Bias=[0.0423598,0.107904,0.244281]
 
 
-We notice after the three georeferencing computations that the reprojection error is improved by a factor of $\sim$ $2.5$ (for this dataset) when code measurements are used in differential mode ({\tt dgps}. The best georeferencing results are obtained using the calculated trajectory based on differential carrier-phase measurements ({\tt MoyErr $\sim$ 21 px}).
+We notice after the three georeferencing computations that the reprojection error is improved by a factor of $\sim$ $2.5$ (for this dataset) when code measurements are used in differential mode ({\tt dgps}).
+The best georeferencing results are obtained using the calculated trajectory based on differential carrier-phase measurements ({\tt MoyErr $\sim$ 21 px}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Bundle Bloc Adjustment with GPS observations and lever-arm offset}
@@ -1459,7 +1459,6 @@ mm3d Campari "image_002_00*.*tif" Ori-Bascule-RS-DCode/ Compense-RS-DCode-La
 mm3d GCPCtrl "image_002_00*.*tif" Ori-Compense-RS-DCode-La/ AllPts-RTL.xml MesImages.xml
 
 LA: [0.254068,0.106455,-2.40184]
-
 
 ============================= ERRROR MAX PTS FL ======================
    ||    Value=82.723 for Cam=image_002_00093.tif and Pt=9 ; MoyErr=72.9078
@@ -1622,7 +1621,15 @@ LA: [0.0931686,-0.0576498,-0.148083]
 
 \subsubsection{Integrated Sensor Orientation using embedded GPS and 1 GCP}
 
-We perform the same processing by releasing the same internal parameters as above and introducing a constraint using 1 GCP using the optional argument {\tt GCP}. The value $0.1$ is a multiplicative factor of the uncertainty field already given in the file {\tt GCP\_LA\_Calib-RTL.xml} and whose value is fixed at $1\ cm$ for planimetric components and $2\ cm$ for vertical component. On the hand, as the number of tie points is more important in the compensation, one should sometimes try to give more weight to external measurement, special when its number is very low, as here, we have only one GCP measurements. That is why the value $0.1$ means that weight of this measurement is more important ($10$ times) in order to constraint the parameters estimation during the compensation. We can verify with a value of $1$ instead of $0.1$ that the accuracy on check points is two times worse.
+We perform the same processing by releasing the same internal parameters as above and introducing a constraint using 1 GCP using the optional argument {\tt GCP}. 
+We start by spliting the file containing all ground points ({\tt AllPts-RTL.xml}) into 2 files, one containing only 1 point to be used in the bundle block adjustement and the remaining points will be used as check points.
+
+\begin{verbatim}
+mm3d TestLib SplitPts ./ AllPts-RTL.xml GCPs=[10] OutGCPs=GCP_LA_Calib-RTL.xml 
+     OutCPs=CPs_LA_Calib-RTL.xml
+\end{verbatim}
+
+Then we perfom the bundle block adjustement:
 
 \begin{verbatim}
 mm3d Campari "image_002_00*.*tif" Ori-Bascule-AF15P7-DPhase/ Compense-AF15P7-DPhase-La 
@@ -1641,11 +1648,22 @@ LA: [0.0943014,-0.0574927,-0.146457]
 \end{verbatim}
 
 
-
-We show that with no prior calibration and with a cheap GPS receiver, it is possible to achieve with only one single ground control point an absolute georeferencing of camera poses with an accuracy of $\sim\ 1\ px$.
+The value $0.1$ is a multiplicative factor of the uncertainty field already given in the file {\tt GCP\_LA\_Calib-RTL.xml} and whose value is fixed to $1\ cm$ for planimetric components and $2\ cm$ for vertical component. 
+As the number of tie points is more important in the compensation, one should sometimes try to give more weight to external measurement, specially when its number is very low, as here, we have only one GCP measurement. 
+The value of $0.1$ means that weight of this measurement is $10$ times more important in order to constraint the parameters estimation during the compensation. 
+(One can check that with a value of $1$ instead of $0.1$ the accuracy on check points is two times worse).
+We show here that with no prior calibration and with a cheap GPS receiver, it is possible to achieve with only one single ground control point an absolute georeferencing of camera poses with an accuracy of $\sim\ 1\ px$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Classical GCPs indirect georeferencing}
-We perform here a classical conversion of relative camera poses into absolute ones using (a reduced number) ground control points with the {\tt mm3d GCPBascule} command:
+We perform here a classical conversion of relative camera poses into absolute ones using (a reduced number) ground control points. 
+We start by spliting gound points into ground control points and check points. (We need at least 3 ground control points).
+
+\begin{verbatim}
+mm3d TestLib SplitPts ./ AllPts-RTL.xml GCPs=[1,4,10,15,17] OutGCPs=Reduced_GCPs-RTL.xml 
+     OutCPs=Reduced_CPs-RTL.xml
+\end{verbatim}
+
+Here we perfom the similarity transformation using the {\tt mm3d GCPBascule} command:
 
 \begin{verbatim}
 mm3d GCPBascule "image_002_00*.*tif" Ori-All-F15-AddP7/ Basc-GCPs-F15-AddP7 
