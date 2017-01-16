@@ -11,7 +11,7 @@ The following chapter overviews the processing of satellite images data using \t
 %
 \section{With approximate sensor orientation -- RPC bundle adjustment (recommended)}\label{sec:rpcBundle}
 %{\tt MicMac}
-This section presents the processing chain on pushbroom sensor images when input orientation is provided in form of the RPCs. Figure~\ref{FIG:sat:func} depicts the DSM generation processing workflow. The input format of the RPCs should comply with the following: Dimap v2 (tested), DigitalGlobe (tested), IKONOS/ASCII (not fully tested). In case of IKONOS/ASCII input, the metadata -- file containing informtion about the sensor size and validity zones -- must be named \textit{Metadata.txt}. Bundle adjustment observations must include tie points and optionally may include GCP data.\par  
+This section presents the processing chain on pushbroom sensor images when input orientation is provided in form of the RPCs. Figure~\ref{FIG:sat:func} depicts the DSM generation processing workflow. The input format of the RPCs should comply with the following: Dimap v2 (tested), DigitalGlobe (tested), IKONOS/ASCII (not fully tested). Bundle adjustment observations must include tie points and optionally may include GCP data.\par  
 %
 Having converted the RPC files to the {\tt MicMac}-format files (see Subsection~\ref{subsec:rpcConv}), the refinement of the orientation parameters is done within the {\tt Campari} tool (2a in Figure~\ref{FIG:sat:func}; see also Subsection~\ref{subsub:rpcCampari}). In order to validate the internal accuracy of the retrieved new orientation parameters, the user can conduct matching in the direction perpendicular to the epipolar curve with {\tt MMTestOrient}.\par 
 %
