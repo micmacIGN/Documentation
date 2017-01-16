@@ -84,6 +84,30 @@
 
 
 
+    <KeyedNamesAssociations>
+            <Calcs>
+                 <Arrite>  1 1 </Arrite>
+                 <Direct>
+                       <PatternTransform> .* </PatternTransform>
+                       <CalcName> ONE </CalcName>
+                       <Filter>
+                             <Min> DSCF2774_L.jpg </Min>
+                             <Max> DSCF2775_R.jpg </Max>
+                       </Filter>
+                 </Direct>
+             </Calcs>
+            <Calcs>
+                 <Arrite>  1 1 </Arrite>
+                 <Direct>
+                       <PatternTransform> .* </PatternTransform>
+                       <CalcName> TWO </CalcName>
+                 </Direct>
+             </Calcs>
+
+             <Key>   TEST-Filter  </Key>
+    </KeyedNamesAssociations>
+
+
 
 
 

@@ -208,6 +208,33 @@ mm3d TestNameCalib _MG_0082.CR2
 
 \label{Ref:Key:Map}
 
+
+\subsection{Advanced association}
+
+Sometime it may be difficult to describe a given set with patterns. The {\tt Filter}
+option allow to desribe more advanced feature. It can contain optionnaly :
+
+\begin{itemize}
+    \item a Min and Max value;
+    \item \dots
+\end{itemize}
+
+In the folder {\tt Data/Arbre}, the key {\tt TEST-Filter} of file {\tt MicMac-LocalChantierDescripteur.xml}
+give an example use. We can test :
+
+\begin{verbatim}
+m3d TestKey DSC.*jpg KeyAssoc=TEST-Filter Nb=100 
+Num=  0  Name=DSCF2774_L.jpg Key=ONE
+Num=  1  Name=DSCF2774_R.jpg Key=ONE
+Num=  2  Name=DSCF2775_L.jpg Key=ONE
+Num=  3  Name=DSCF2775_R.jpg Key=ONE
+Num=  4  Name=DSCF2776_L.jpg Key=TWO
+Num=  5  Name=DSCF2776_R.jpg Key=TWO
+Num=  6  Name=DSCF2777_L.jpg Key=TWO
+Num=  7  Name=DSCF2777_R.jpg Key=TWO
+NB  BY RFLM 8
+\end{verbatim}
+
 %=============================================================
 %=============================================================
 %=============================================================
