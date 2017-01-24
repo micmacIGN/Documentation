@@ -54,19 +54,29 @@ Dans MicMac il y a quatre fonctions qui gèrent toutes les transformation de la 
 \item la fonction affine (2 termes liberé si DegGen=\{1,2\}, dans DocMicMac Eq. A.10)
 \end{itemize}
 %
-\paragraph{Pre-calibration et calibration étendu}
+\subsection{Pre-calibration et calibration étendu}
 %
 Le modèle utilisé dans les deux premiers étapes est du type {\tt <ModUnif>}\footnote{voir le tag {\tt <CalibDistortion>} dans {\tt ParamChantierPhotogram.xml} pour apprendre d'autres types}, appelé depuis la ligne de commande par {\tt mm3d Tapas} avec un de modèels suivantes: {\tt Four7x2, Four15x2, Four19x2}. Le tableau~\ref{tab:fourXX} contient une récapitulatif sur les differentes modèles et leur paramètres. Vous voyez que en jouant avec les arguments {\tt DegRadMax} et {\tt DegGen} on arrive aux modèles classiques comme {\tt FraserBasic}, {\tt RadialBasic} ou {\tt  RadialExtended}. Pre-calibration et calibration étendu modélise les erreurs d'un capteur avec les polynômes radiaux, decentriques, et la fonction affine.
 %
-\paragraph{Calibration finale très fine}
+\paragraph{Paramétrage dans les fichiers xml}
 %
-Dans l'étape dernier on utilise le modèle {\tt AddPolyX} qui est du type {\tt <ModUnif>}. En le faisant, MicMac garde le paramètres internes d'entre (calculé dans le pas précédent) figées, et ajoute une transformation en plus. Ainsi, toutes le pixels dans l'image subi un double décalage. La deuxième transformation est un polynôme générique et ses paramètres sont inconnu ainsi ils sont élu en cours de traitement.
+Le fichier xml qui garde les paramètres de la calibration est décrypté de manière suivante:\\
 \\
-\\
-La nomenclature dans MicMac e.g. {\tt mm3d Tapas ...}\\
-{\tt AddPolyDeg2 (=AddPolyDeg2 DegGen=2)} – polynôme générique de degré 2\\ 
-{\tt AddPolyDeg3 (=AddPolyDeg2 DegGen=3)} – polynôme générique de degré 3 
+%
+\begin{tabular} { | c | c | }  
+ \hline \hline
+{\tt Params[0]} &   Terme affine \\ \hline
+{\tt Params[1]} & Terme affine \\ \hline
+{\tt Params[2]} &  Polynôme decentrique terme quadratique (DegGen=2) \\ \hline
+{\tt Params[3]} &  Polynôme decentrique terme quadratique (DegGen=2) \\ \hline
+{\tt Params[4]} &   polynôme decentrique terme quadratique (DegGen=2) \\ \hline
+{\tt Params[5]} &  Polynôme decentrique terme quadratique (DegGen=2) \\ \hline
+{\tt Params[6]} &  Centre de distortion en x \\ \hline
+{\tt Params[7]} &   Centre de distortion en y \\ \hline
+{\tt Params[8+]} &   Polynômes radiaux ($R^3, R^5, R^7,$ … ) \\ \hline \hline
+  
 
+\end{tabular}\captionof{table}{Paramétrage du fichier xml d'une modèle de la calibration {\tt FourXXx2}.}\label{tab:XML_fourXX}
 %
 \begin{landscape}
 \begin{tabular} { | c | c | c | c| c| c |}  
@@ -112,8 +122,18 @@ DegGen=0 & & & & & \\ \hline \hline
 \end{tabular}\captionof{table}{Une liste (pas exhaustif) de modèles étendu de camera et leur parameters.}\label{tab:fourXX}
 \end{landscape}
 %
+\subsection{Calibration finale très fine}
+%
+Dans l'étape dernier on utilise le modèle {\tt AddPolyX} qui est du type {\tt <ModUnif>}. En le faisant, MicMac garde le paramètres internes d'entre (calculé dans le pas précédent) figées, et ajoute une transformation en plus. Ainsi, toutes le pixels dans l'image subi un double décalage. La deuxième transformation est un polynôme générique et ses paramètres sont inconnu ainsi ils sont élu en cours de traitement.
+\\
+\\
+La nomenclature dans MicMac e.g. {\tt mm3d Tapas ...}\\
+{\tt AddPolyDeg2 (=AddPolyDeg2 DegGen=2)} – polynôme générique de degré 2\\ 
+{\tt AddPolyDeg3 (=AddPolyDeg2 DegGen=3)} – polynôme générique de degré 3 
+%
 \paragraph{Paramétrage dans les fichiers xml}
-moze jednak zrob subsekcje dla pre-calibr etc i wlacz parametry xml tam
+%
+sss
 %
 \section{Orientation absolut -- geo-référencement}
 %\subsection{Orientation relatif}
