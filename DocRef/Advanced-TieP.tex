@@ -62,6 +62,7 @@ Named args :
   * [Name=OriMasq3D] string :: {Orientation for Masq 3D}
   * [Name=Masq3D] string :: {File of Masq3D, Def=AperiCloud_${OriMasq3D}.ply}
   * [Name=SelecTer] Pt2dr :: {[Per,Prop] Period of tiling on ground selection, Prop=proporion of selected}
+  * [Name=DistId] REAL :: {Supress pair such that d(P1,P2) < DistId, def unused}
 \end{verbatim}
 
 The main option are :
@@ -85,6 +86,9 @@ The main option are :
           \footnote{$Resol$ being the average ground resolution} the point are selected in the subtile of 
           size $S * \sqrt{Prop}$
     
+    \item {\tt DistId} supress the pair of point $P_1,P_2$ such that $d(P_1,P_2)<DistId$, for example,
+          this can be usefull when the acquistion was made using a turn table to automatically supress the
+          point on the background;
     
 \end{enumerate}
 
