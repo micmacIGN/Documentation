@@ -148,7 +148,7 @@ This is possible with option {\tt  ContrCalCamCons} of {\tt Campari}, for now
 the calibration must be of type {\tt ModelePolyDeg0} or {\tt ModelePolyDeg1}
 \footnote{This can be easily generalized, but not sure it is usefull}.
 
-The file {\tt Cmd2.txt} contains an example. The two last command are  :
+The file {\tt Cmd2.txt} in {\tt Documentation/NEW-DATA/Rigid-Block} contains an example. The two last command are  :
 
 \begin{verbatim}
 
@@ -164,7 +164,7 @@ Some comments :
    \item   in {\tt Campari} we use the {\tt CPI1=true} to  make one calibration per image (else is would be useless);
    \item    we use also {\tt FocFree=1 PPFree=1} to free focal and principal point (else again the option would be useless)
    \item     the option {\tt ContrCalCamCons} contains two value, first is a key (here {\tt Loc-Assoc-Im2Block})
-             , second is sigma (here $\sigma=2$);
+             , second is sigma (here $\sigma=2$ meaning we expect the focal to evolve $\pm$ 2pix from calibration to calibration);
 \end{itemize}
 
 The meaning of {\tt Loc-Assoc-Im2Block} is :
@@ -175,7 +175,7 @@ The meaning of {\tt Loc-Assoc-Im2Block} is :
           image of the same {\tt Grp};
     \item the value {\tt Time} indicate an order, the constraint will be applied between pair of
           consecutive camera regarding this order;
-    \item   here the key that describe the rigid block work perfectly for what we want to do.
+    \item  here the key that describe the rigid block works perfectly for what we want to do.
 \end{itemize}
 
 The meaning of $\sigma$ is :
@@ -183,7 +183,7 @@ The meaning of $\sigma$ is :
 \begin{itemize}
    \item let $C_1$ and $C_2$ be  two succesive calibration
    \item for a pixel $P$ let $N_k(P)$ be the direction of emerging ray for camera $C_k$
-   \item we had to the minimisation function of the bundle the regularisation term $R{1,2} $ of formula  \ref{Eq:Cons:Cam}
+   \item we add to the bundle adjustment minimisation function a regularisation equation $R{1,2} $ as writes  \ref{Eq:Cons:Cam}
    \item  $\iint \limits_{C}$ mean integral on the whole sensor;
    \item  $ \sigma$ is expressed in pixel.
 \end{itemize}
