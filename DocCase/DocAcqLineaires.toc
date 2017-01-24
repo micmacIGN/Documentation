@@ -1,0 +1,15 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Desciption of the dataset}{2}
+\contentsline {chapter}{\numberline {2}Estimation des poses}{3}
+\contentsline {section}{\numberline {2.1}Orientation interne et relatif -- auto-calibration}{3}
+\contentsline {section}{\numberline {2.2}Param\IeC {\'e}trage dans MicMac}{4}
+\contentsline {paragraph}{Pre-calibration et calibration \IeC {\'e}tendu}{4}
+\contentsline {paragraph}{Calibration finale tr\IeC {\`e}s fine}{4}
+\contentsline {paragraph}{Param\IeC {\'e}trage dans les fichiers xml}{6}
+\contentsline {section}{\numberline {2.3}Orientation absolut -- geo-r\IeC {\'e}f\IeC {\'e}rencement}{6}
+\contentsline {section}{\numberline {2.4}Traitement dans MicMac}{6}
+\contentsline {subsubsection}{Les commandes}{6}
+\contentsline {chapter}{\numberline {3}Mise en correspondance et production d'une orthomosaic}{7}
+\contentsline {section}{\numberline {3.1}Les g\IeC {\'e}om\IeC {\'e}tries du traitement}{7}
+\contentsline {section}{\numberline {3.2}L\IeC {\textquoteright }algorithme d'appariement dense et ses param\IeC {\`e}tres}{7}
+\contentsline {section}{\numberline {3.3}Traitement dans MicMac}{7}
