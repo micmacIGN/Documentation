@@ -110,6 +110,8 @@ the initial value is to be read; this key is specified in the optional
 {\tt <KeyInitFromPose>}; see example in {\tt  applis/XML-Pattron/Oiseau-Margot/New-Apero3.xml}.
 
 
+  % - - - - - - - - - - - - - - - - - - - - -
+
 \subsection{Examples with group of poses}
 
 Sometimes we do not want to create a calibration for each image,
@@ -131,6 +133,92 @@ The files {\tt Apero-ExCalibPerIm-1.xml} and {\tt Apero-ExCalibPerIm-2.xml}
 on  {\tt MurSaintMartin} have been added and contain also
 examples for calibration per images which are probably easier to understand
 than {\tt  applis/XML-Pattron/Oiseau-Margot/}.
+
+
+  % - - - - - - - - - - - - - - - - - - - - -
+
+
+\subsection{Enforcing a smooth evolution}
+
+Someting, it may be usefull to have a calibration per image but to also
+enforce that this calibration evolve slowly. This may be the case,
+for example, if the  variation of focal lenght is due to thermal evolution.
+
+This is possible with option {\tt  ContrCalCamCons} of {\tt Campari}, for now
+the calibration must be of type {\tt ModelePolyDeg0} or {\tt ModelePolyDeg1}
+\footnote{This can be easily generalized, but not sure it is usefull}.
+
+The file {\tt Cmd2.txt} contains an example. The two last command are  :
+
+\begin{verbatim}
+
+Tapas  AddPolyDeg1 DSCF.*jpg InOri=Ori-AllRel/
+
+Campari DSCF.*jpg Ori-AddPolyDeg1/ TestSmoothEvolv CPI1=true ContrCalCamCons=[Loc-Assoc-Im2Block,2] FocFree=1 PPFree=1  NbIterEnd=8
+\end{verbatim}
+
+Some comments :
+
+\begin{itemize}
+   \item   we first use {\tt Tapas AddPolyDeg1} to make a $1$  degree polynomial model;
+   \item   in {\tt Campari} we use the {\tt CPI1=true} to  make one calibration per image (else is would be useless);
+   \item    we use also {\tt FocFree=1 PPFree=1} to free focal and principal point (else again the option would be useless)
+   \item     the option {\tt ContrCalCamCons} contains two value, first is a key (here {\tt Loc-Assoc-Im2Block})
+             , second is sigma (here $\sigma=2$);
+\end{itemize}
+
+The meaning of {\tt Loc-Assoc-Im2Block} is :
+
+\begin{itemize}
+    \item it must return for each name of image, two value {\tt Time} and {\tt Grp};
+    \item the value {\tt Grp} indicate the group of image, the constraint will be applied inside
+          image of the same {\tt Grp};
+    \item the value {\tt Time} indicate an order, the constraint will be applied between pair of
+          consecutive camera regarding this order;
+    \item   here the key that describe the rigid block work perfectly for what we want to do.
+\end{itemize}
+
+The meaning of $\sigma$ is :
+
+\begin{itemize}
+   \item let $C_1$ and $C_2$ be  two succesive calibration
+   \item for a pixel $P$ let $N_k(P)$ be the direction of emerging ray for camera $C_k$
+   \item we had to the minimisation function of the bundle the regularisation term $R{1,2} $ of formula  \ref{Eq:Cons:Cam}
+   \item  $\iint \limits_{C}$ mean integral on the whole sensor;
+   \item  $ \sigma$ is expressed in pixel.
+\end{itemize}
+
+\begin{equation}
+   R_{1,2} = \frac{\iint \limits_{C} |N_1(P)-N_2(P)|^2} {\iint  \limits_{C} \sigma ^2} 
+  \label{Eq:Cons:Cam}
+\end{equation}
+
+{\tt Campari} has printed an additionnal message :
+
+
+\begin{verbatim}
+ContCamConseq= 9.69226e-06 for DSCF3297_L.jpg
+ContCamConseq= 2.19443e-05 for DSCF3297_R.jpg
+ContCamConseq= 2.0443e-05 for DSCF3298_L.jpg
+ContCamConseq= 2.14662e-05 for DSCF3298_R.jpg
+\end{verbatim}
+
+These value are the residual of formula $ R_{1,2}$. Here they are very low,
+in fact we can check the computed value give almoste the same focals :
+
+\begin{verbatim}
+grep "<F>"  Ori-TestSmoothEvolv/Orientation-DSCF329*
+Ori-TestSmoothEvolv/Orientation-DSCF3297_L.jpg.xml:               <F>4332.52026468588519</F>
+Ori-TestSmoothEvolv/Orientation-DSCF3297_R.jpg.xml:               <F>4374.50135394254175</F>
+Ori-TestSmoothEvolv/Orientation-DSCF3298_L.jpg.xml:               <F>4332.52029293327632</F>
+Ori-TestSmoothEvolv/Orientation-DSCF3298_R.jpg.xml:               <F>4374.50128551130183</F>
+Ori-TestSmoothEvolv/Orientation-DSCF3299_L.jpg.xml:               <F>4332.52035901077033</F>
+Ori-TestSmoothEvolv/Orientation-DSCF3299_R.jpg.xml:               <F>4374.50121606732682</F>
+\end{verbatim}
+
+
+
+
 
 %=======================================================================================================
 
@@ -738,7 +826,7 @@ preferable to estimate first a model with physical meaning and few parameters, a
 
 \begin{itemize}
     \item  {\tt AddFour7x2,  \dots AddFour15x2} for high degree radial models;
-    \item  {\tt AddPolyDeg2, \dots AddPolyDeg7} for high degree general models;
+    \item  {\tt AddPolyDeg0, \dots AddPolyDeg7} for high degree general models;
 \end{itemize}
 
 A possible example of use :

@@ -1,0 +1,13 @@
+mm3d SplitMPO DSCF329.*MPO
+
+Tapioca All D.*jpg 1500
+
+Tapas Figee D.*jpg InCal=Calib Out=AllRel
+
+
+Tapas  AddPolyDeg1 DSCF.*jpg InOri=Ori-AllRel/
+
+Campari DSCF.*jpg Ori-AddPolyDeg1/ TestSmoothEvolv CPI1=true ContrCalCamCons=[Loc-Assoc-Im2Block,2] FocFree=1 PPFree=1  NbIterEnd=8
+
+
+
