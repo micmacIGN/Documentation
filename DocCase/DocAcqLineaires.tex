@@ -165,22 +165,47 @@ DegGen=0 & & & & & \\ \hline \hline
 %
 At this point, the camera calibration is known, and so is the relative orientation of a set of images. There exist two ways to transform the results from a relative coordinate system to an absolute/reference coordinate system:
 \begin{itemize}
-\item via a spatial similarity transformation with {\tt GCPBascule}\footnote{It is supposed that there is not on-board GNSS/IMU data available} (with 7 or more parameters if non-linear effects are to be compensated for);
-\item via a bundle adjustement with {\tt Campari} (the number of parameters is proportional to the number of cameras as by default for each camera both its pose and interior parameters are re-stimated); {\tt Campari} is a least squares refinement step requiring initial value for all its unknowns thus it is always followed by {\tt GCPBascule} (or other {\tt Bascule}-like tool) .
+\item via a spatial similarity transformation with {\tt GCPBascule}\footnote{It is supposed that there is no on-board GNSS/IMU data available} (with 7 or more parameters if non-linear effects are to be compensated for);
+\item via a bundle adjustement with {\tt Campari} (the number of parameters is proportional to the number of cameras as by default for each camera both its pose and interior parameters are re-stimated); {\tt Campari} is a least squares refinement step requiring initial value for all its unknowns thus it is always preceded by {\tt GCPBascule} (or other {\tt Bascule}-like tool) .
 \end{itemize}
 %
-\subsection{La transformation de similitude (Bascule)}
-%
-Given at least 3 control points the {\tt GCPBascule} tool by default performs a 7-parameter spatial similarity transformation. In long and linear acquisitions from a nadiral point of view, the reconstructed camera poses are prone to be biased. The bias manifests in camera poses following a bent trajectory. This effect is due to the imaging configuration that is suboptimal for camera self-calibration (in french auto-calibration). To overcome this effect, {\tt MicMac} proposes two strategies:
+\subsection{The bending effect}
+In long and linear acquisitions from a nadiral point of view, the reconstructed camera poses are prone to be biased. The bias manifests in camera poses following a bent trajectory. This effect is due to the imaging configuration that is suboptimal for camera self-calibration (in french auto-calibration). To overcome this effect, {\tt MicMac} proposes two strategies:
 \begin{itemize}
-\item a less rigorous one and \underline{with few control points}: the so-called non-linear Bascule where on top of the 7 parameters some polynomials are defined to compensate for the bending artefact
+\item a less rigorous one and \underline{with few control points}: the so-called non-linear Bascule where  to compensate for the bending artefact\footnote{It is present in the camera "trajectory" and the 3D structure.}, on top of the 7 parameters some polynomials are defined and estimated (see Subsection~\ref{subsec:basc});
 \item a more rigorous one but \underline{with abundant control points}: the bundle adjustment as explained in Subsection~\ref{subsec:compensation}
 \end{itemize} 
+%
+\subsection{La transformation de similitude (Bascule)}\label{subsec:basc}
+%
+Given at least 3 control points (GCP) visible in at least two images the {\tt GCPBascule} tool, by default, performs a 7-parameter spatial similarity transformation (3 rotations, 3 translations and a scale factor). Most favourably the three GCP shall be distributed across the site, rather than located one next to another.\par 
+%
+To remove the bending effect from the data the {\tt GCPBascule} allows to define some additional correction funtions, namely some 3D generic polynomials. During the estimation phase, it is imposed that the polynomials minimize the differences between the GCPs furnished by external measurements, and those calculated from the bundles' intersection. \par 
+%
+{\tt MicMac} lets the user define a generic polynomial function for each coordinate, i.e.:
+%
+\begin{itemize}
+   \item[--] $C(X',Y',Z') = (X'^c,Y'^c,Z'^c)$;
+   \item[--] $X'^c = \sum c^x_{ij} X'^i Y'^j$
+   \item[--] $Y'^c = \sum c^y_{ij} X'^i Y'^j$
+   \item[--] $Z'^c = \sum c^z_{ij} X'^i Y'^j$
+\end{itemize}
+%
+For example, suppose that the acquisition is made from a single strip, the errors are only along the $Z^c$-coordinate,  and they depend only on  the "main" variable $X'$, a possible model could be :
+%
+\begin{itemize}
+   \item[--] $X'^c = 0$
+   \item[--] $Y'^c = 0$
+   \item[--] $Z'^c =  c^z_{00} + c^z_{10} X' + c^z_{20} X'^2$
+\end{itemize}
 %
 \subsection{Compensation par ajustement de faisceaux}\label{subsec:compensation}
 
 \section{Méthodes d’évaluation de résultats}
-
+%after relative              - residuals, MMTestOrient
+%after GCPBascule standard   - residuals on GCP + visual in AperiCloud
+%after GCPBascule non-linear - residuals on GCP + APeriCloud
+%after Campari				- residuals on check points 
 
 
 \section{Traitement dans MicMac}
