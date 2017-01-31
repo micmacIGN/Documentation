@@ -29,7 +29,7 @@ generally and the dataset processed here
 %%%%%%%%%%%%%%%%%%%%%%%% 
 \chapter{Estimation des poses}
 
-\section{Orientation interne et relatif -- auto-calibration}
+\section{Orientation interne et relatif -- auto-calibration}\label{sec:oriRel}
 Pour la calibration d'une acquisition linéaire avec peu de points de contrôle on utilise les modèles de distorsion unifié (\textit{Unified polynomial model} caractérisé dans le xml par {\tt <ModUnif>}). 
 La distorsion finale d'une camera sera une composition de plusieurs modèles de distorsion (par example une composition des polynômes radiaux et génériques). A la sortie du traitement ils ont les paramètres des cameras (selon le modèle de calibration choisi) et les paramètres d'orientation relatif. Le traitement se déroule dans 3 étapes:
 %
@@ -191,7 +191,7 @@ To remove the bending effect from the data the {\tt GCPBascule} allows to define
    \item[--] $Z'^c = \sum c^z_{ij} X'^i Y'^j$
 \end{itemize}
 %
-For example, suppose that the acquisition is made from a single strip, the errors are only along the $Z^c$-coordinate,  and they depend only on  the "main" variable $X'$, a possible model could be :
+For example, suppose that (i) the acquisition is made from a single strip, (ii) the errors are only along the $Z^c$-coordinate,  and (iii) they depend only on  the "main" variable $X'$, a possible model could be :
 %
 \begin{itemize}
    \item[--] $X'^c = 0$
@@ -200,14 +200,25 @@ For example, suppose that the acquisition is made from a single strip, the error
 \end{itemize}
 %
 \subsection{Compensation par ajustement de faisceaux}\label{subsec:compensation}
+%
+Unlike in the {\tt Tapas }, where only the tie points can serve as the input observations, the {\tt Campari} tool permits to include heterogeneous observations in the adjustment routines. The additional observations in the majority of cases are the ground control points or the positions of the camera's optical center measured by some GNSS system. In other words, these are pieces of information that handle the georeferencing of your data.\par 
+%
+Bundle adjustment "by compensation" is a refinement stage and it expects that initial values of all the unknowns are provided. Consequently, it required that the relative orientation calculated in Section~\ref{sec:oriRel} is transformed to the reference coordinate system prior to the compensation. All the tools containing the {\tt Bascule} keyword can execute the transformation, yet in the considered scenario we would use the {\tt GCPBascule}.\par 
+%
+Once again, the difference between {\tt GCPBascule} and {\tt Campari} is in the mathematical model. {\tt GCPBascule} estimates the parameters of the spatial similarity transformation while {\tt Campari} works with the collinearity equations.
 
+%
 \section{Méthodes d’évaluation de résultats}
-%after relative              - residuals, MMTestOrient
+%
+There exist \textit{internal} and \textit{external} accuracy measures. The internal accuracy refers to how well the mathematical model explains the observations. Examples of internal checks in Mic 
+
+ 
+%after Relative              - residuals, MMTestOrient
 %after GCPBascule standard   - residuals on GCP + visual in AperiCloud
 %after GCPBascule non-linear - residuals on GCP + APeriCloud
 %after Campari				- residuals on check points 
 
-
+%
 \section{Traitement dans MicMac}
 
 
