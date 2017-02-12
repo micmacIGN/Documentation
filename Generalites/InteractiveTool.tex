@@ -353,9 +353,60 @@ For creating a few set of tie points and save in XML format :
 SEL  ./ Face2-IMGP5331.JPG Face2-IMGP5333.JPG KH=S
 \end{verbatim}
 
+\section{Visualize (very large) images with {\tt Vino}}\label{SEC:Vino}
+%
+{\tt Vino } is a visualization tool adapted to display very large (e.g. satellite) images, 
+
+
+\begin{verbatim}
+mm3d Vino
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Image}
+Named args : 
+  * [Name=SzW] Pt2di :: {size of window}
+  * [Name=Bilin] bool :: {Bilinear mode}
+  * [Name=SZG] REAL :: {Speed Zoom Grab}
+  * [Name=SZM] REAL :: {Speed Zoom Molette}
+  * [Name=WS] INT :: {Width Scroller}
+  * [Name=Dyn] Pt2dr :: {Max Min value for dynamic}
+  * [Name=Gray] bool :: {Force gray images (def=false)}
+  * [Name=IsMnt] bool :: {Display altitude if true, def exist of Mnt Meta data}
+  * [Name=FileMnt] string :: {Default toto.tif -> toto.xml}
+  * [Name=ClipCh] vector<std::string> :: {Param 4 Clip Chantier [PatClip,OriClip]}
+
+\end{verbatim}
+\noindent
+where the single obligatory parameter is the image name, while
+\begin{itemize}
+\item {\tt Bilin} turns on and off the interpolated visualization at the pixel level (also accessible via the window menu),
+\item {\tt Dyn} controls the histogram stretching dynamic parameter
+\item {\tt ClipCh} allows to perform a crop of an image including the recalculation of its orientation parameters. {\tt ClipCh}  takes a vector of two arguments as the input, the first indicates a pattern of images you wish to crop (the crop will comply with the delineated crop in the first image), while the second parameter indicates the path to the directory with orientation parameters.
+\end{itemize}
+
+\vspace{0.25cm}
+\noindent
+E.g. 
+\begin{verbatim}
+mm3d Vino IMG_PHR1B_P_201301260750435_SEN_IPU_20130612_0914-003_R1C1.JP2.tif
+ClipCh=[IMG_PHR1B_P_201301260750.*tif,Ori-RPC]
+\end{verbatim}
+%
+\vspace{0.5cm}
+Once the tool is running, performing a crop, equalizing the histogram or switching between visualization zoom (interpolated, non-interpolated) is possible via a menu window. The menu can be called with the mouse right-click (see Fig.~\ref{FIG:Vino}). For a very concise help on imge manipulation within {\tt Vino} click on the {\tt Help} in the top-right corner of the visualization window.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=8cm]{FIGS/Vino/Vino_menu.png}
+\end{center}
+\label{FIG:Vino}
+\end{figure}
 
 %=======================================
-\COM{
+%\COM
+{
 
 \section{Generating auxiliary ply visualisation}
 

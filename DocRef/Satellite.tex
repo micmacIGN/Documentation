@@ -64,6 +64,100 @@ Below is an example of the coordinate system file. It uses the UTM coordinate sy
 </SystemeCoord>
 \end{verbatim}
 
+
+\subsection{Useful tools}
+
+\paragraph*{Print the satellite images' footprints}
+%
+\vspace{0.5cm}
+%
+\begin{verbatim}
+mm3d SateLib SatFootprint
+
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Pattern of orientation files (in cXml_CamGenPolBundle format)}
+Named args : 
+  * [Name=Out] string :: {Output file name, def=Footprints.ply}
+\end{verbatim}
+%
+e.g. 
+\begin{verbatim}
+mm3d SateLib SatFootprint "Ori-RPC-d1/GB-Orientation-IMG_PHR1B_P_201301260750(4|5)(3|6).*"
+\end{verbatim}
+
+
+\paragraph*{Retrieve a satellite image trajectory}
+%
+\vspace{0.5cm}
+%
+\begin{verbatim}
+mm3d SateLib SatTrajectory
+
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Orientation file (RPC/SPICE) full name (Dir+Pat)}
+  * string :: {Output cartographic coordinate system (proj format)}
+Named args : 
+  * [Name=GrSz] Pt2di :: {No. of grids of bundles, e.g. GrSz=[10,10]}
+  * [Name=VGCP] vector<std::string> :: {Validate the prj fn with the provided GCPs [GrMes.xml,ImMes.xml]; optical centers not retrieved}
+\end{verbatim}
+where {\tt GrSz } correponds to the grid of points in the image space that will be used to calculate the trajectory (as the result of ray intersection)
+e.g. 
+\begin{verbatim}
+mm3d SateLib SatTrajectory RPC_PHR1B_P_20130126075.* WGS84toUTM.xml  GrSz=[20,100]
+\end{verbatim}
+
+\paragraph*{Crop a satellite image and recalculate its RPC}
+ 
+
+\begin{verbatim}
+mm3d SateLib CropRPC
+
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Orientation file of the image defining the crop extent (in cXml_CamGenPolBundle format)}
+  * string :: {Pattern of orientation files to be cropped accordingly (in cXml_CamGenPolBundle format)}
+  * string :: {Directory of output orientation files}
+Named args : 
+  * [Name=Org] Pt2dr :: {Origin of the rectangular crop; Def=[100,100]}
+  * [Name=Sz] Pt2dr :: {Size of the crop; Def=[10000,10000]}
+\end{verbatim}
+
+e.g.
+\begin{verbatim}
+mm3d SateLib CropRPC Ori-RPC/GB-Orientation-IMG_PHR1B_P_201301260750435_SEN_IPU_20130612_0914-003_R1C1.JP2.tif.xml Ori-RPC/GB.* Cropped Org=[200,300] Sz=[3000,4000]
+\end{verbatim}
+
+
+\paragraph*{Recalculate the RPC}
+The objective of this tool is to allow the users to transfer the adjusted RPC parameters to other software solutions. This function will recalculate the RPC such that the added polynomials will not need to be taken into account.
+
+\begin{verbatim}
+mm3d SateLib RecalRPC
+
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Orientation file (or pattern) in cXml_CamGenPolBundle format}
+Named args : 
+  * [Name=Vf] bool
+
+\end{verbatim}
+
+e.g.
+\begin{verbatim}
+mm3d SateLib RecalRPC Ori-RPC/GB.*xml
+\end{verbatim}
+
+
 %* adjustment
 %Campari
 %MMTestOrient

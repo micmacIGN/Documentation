@@ -1149,6 +1149,8 @@ The DSM generation is handled, again, by the simplified tool {\tt Malt} (see Sub
 mm3d Malt UrbanMNE .*.tif Ori-RPC-deg1_adj ZMoy=0 ZInc=500
 \end{verbatim}
 %
+You may as well use the {\tt Malt GeomImage} mode in which case the dense matching will be executed in the image space of a selected master image. If you choose this option and wish to transfer your results to a terrain coordinate system \textit{a posteriori}, you can do it with the help of the tools {\tt NuageBascule} followed by {\tt SMDM}. Documentation of these tools in the satellite image context will soon be added.
+
 
 \subsection{Understanding the bundle adjustment output ({\tt Campari})} 
 %
@@ -1197,7 +1199,7 @@ ZMoy=0.064 ; Sigma=0.122
 ZMinMax=[-2.70 , 2.03]
 \end{verbatim}
 %   
-The two most relevant statistics are: the mean transverse parallax which is very close to zero, and the sigma equal to $\approx 0.1$ pixel. The min/max values are relief-related and occur in places of low correlation, e.g. on vegetation, water surfaces, or in places of shadows and occlusions. The magnitude of systematic pattern visible in Fig.~\ref{fig:satMMTestOri} remains at the level of the sigma value, hence well below the adjustment precision ($~0.6$ pixel). The user is encouraged to use \texttt{mm3d Vino} tool to display very big image files.
+The two most relevant statistics are: the mean transverse parallax which is very close to zero, and the sigma equal to $\approx 0.1$ pixel. The min/max values are relief-related and occur in places of low correlation, e.g. on vegetation, water surfaces, or in places of shadows and occlusions. The magnitude of systematic pattern visible in Fig.~\ref{fig:satMMTestOri} remains at the level of the sigma value, hence well below the adjustment precision ($~0.6$ pixel). The user is encouraged to use \texttt{mm3d Vino} tool (see Section~\ref{SEC:Vino}) to display very big image files.
 %
 \begin{figure}[h!]
 \centering
