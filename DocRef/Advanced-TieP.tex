@@ -777,7 +777,158 @@ series is some statistic on the distribution of tie points  :
 \end{itemize}
 
 
+%=======================================================================================================
+
+\section{New Tie Points format}
 
 
+% - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\subsection{Motivation}
 
+The original tie points format, is made of independant file for each pair of images.
+The multiple tie point are constructed "on the fly" when needed.  If this format 
+is very flexible, it has also some drawback in efficiency. The main requirement of
+the new format for future optimisation in MicMac is :
+
+\begin{itemize}
+   \item  explicit representation of multiple tie points;
+   \item  gather at the same location the points that correspond at the same subset of images.
+\end{itemize}
+
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\subsection{Format specification}
+
+
+\subsubsection{Text format}
+
+Here is an extract of a file in text mode :
+
+
+{\tiny
+\begin{verbatim}
+BeginHeader-MicMacTiePointFormat
+   Version=0.0.0
+EndHeader
+#=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=
+15 #Nb Images
+IMGP7040.JPG=0
+....
+IMGP7054.JPG=14
+#=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=
+323 #Number of configuration
+
+#NbPts this config,  NbIm in this config
+#Im0 Im1 Im2..
+#x(0,0) y(0,0) ... x(0,NbIm-1) y(0,NbIm-1) NbEgdes(0)
+#x(1,0) y(1,0) ... x(1,NbIm-1) y(1,NbIm-1) NbEgdes(1)
+#.....
+#x(NbPts-1,0) y(NbPts-1,0) ... x(NbPts-1,NbIm-1) y(NbPts-1,NbIm-1) NbEgdes(NbPts-1)
+
+1074 2 
+0 1 
+21.010 1931.080 22.398 1900.908 1 
+31.446 2826.430 206.656 2696.484 1 
+...
+32 7 
+2 3 4 5 6 7 8 
+385.146 1148.312 219.456 1410.204 286.010 1414.386 233.278 1669.692 310.846 1597.130 200.618 1615.302 409.028 1769.018 6 
+896.962 966.398 732.642 1345.464 803.640 1450.056 770.078 1788.134 872.164 1795.058 812.206 1872.092 1045.480 2061.770 7 
+998.136 884.890 823.854 1242.108 876.958 1336.842 827.590 1672.846 915.386 1684.982 839.480 1774.188 1065.554 1987.582 9 
+....
+\end{verbatim}
+}
+
+
+Here are some comments :
+
+\begin{itemize}
+   \item the file must begin by {\tt BeginHeader-MicMacTiePointFormat} (more a less majic number), the header ends
+         at {\tt EndHeader}, for now the header is not interpreted;
+
+   \item in a line, all the caracter after a  {\tt \#} are uninterpreted (commentary)
+   \item the first integer $Nb^{IM}$ intdicate the number of images  (here $15$);
+   \item the $Nb^{IM}$ next line indicates  the name of the images  and the integer identifiant associated;
+   \item the next integer $Nb^{CONF}$ indicate the number of configuration (here $323$), a configuration correspond
+         to a subset of images;
+   \item then follow the  $Nb^{CONF}$ configuration, each configuration is made of :
+   \begin{itemize}
+      \item  two integers $Nb_{p} \; Nb_{i}$  : number of points) and  number of images, for example $1074 \; 2$ 
+             or $32 \; 7 $ in the given extract
+      \item a line that contains the  $Nb_{i}$ identifier (in the file : $0 \; 1$ and : $2 \; 3 \; 4 \; 5 \; 6 \; 7 \; 8 $);
+      \item $Nb_{p}$ line one for each point, a line contains the $ Nb_{i}$ points in the form 
+            $x_0 \; y_0 \; x_1 \dots x_{Nb_{i}}$, at the end of the point an integer indicates  if appropriate
+            the numbers of  pair that has been used to create the points, the value $-1$ indicate that this
+            value is unknown;
+   \end{itemize}
+
+\end{itemize}
+
+
+\subsubsection{Binary format}
+
+Same format with usual modification :
+
+\begin{itemize}
+    \item no commentary (\#...)
+    \item integer, real \dots in binary form
+    \item lines of image, similar to text files;
+
+\end{itemize}
+
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\subsection{Global manipulation}
+
+
+\subsubsection{Conversion}
+
+The command {\tt ConvNewFH} in {\tt TestLib} make the conversion from a folder
+{\tt Homol/} to the new format :
+
+\begin{verbatim}
+mm3d TestLib ConvNewFH
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Pattern of images}
+  * string :: {Output}
+Named args : 
+  * [Name=DoNewOri] bool :: {Tuning}
+
+
+mm3d TestLib  ConvNewFH IMGP70.*JPG PMul.txt
+\end{verbatim}
+
+The {\tt Ouput} must finish by {\tt .txt} for texte file or {\tt .dat}
+for binary files.
+
+\subsubsection{Merging}
+
+It is possible to merge multiple files in a single  one with
+the command {\tt MergeFilterNewFH} in {\tt TestLib}.
+
+\begin{verbatim}
+mm3d TestLib MergeFilterNewFH
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Pattern of HomFile}
+  * string :: {Destination}
+Named args : 
+  * [Name=Filter] string :: {Filter for selecting images}
+
+mm3d TestLib MergeFilterNewFH PMul-Hom/H.*txt Merg.txt
+mm3d TestLib  ConvNewFH IMGP70.*JPG PMul.txt "Filter=IMGP70.*[02468].JPG"
+\end{verbatim}
+
+It is possible to have file corresponding only to a subset of images with
+the parametr {\tt Filter}.
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\subsection{Use in MicMac commands}
+
+To be devlopped \dots 
 
