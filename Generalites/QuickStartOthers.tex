@@ -555,7 +555,7 @@ Inputs:
 \begin{itemize}
 \item Two images (reference and projected image)
 \item Ori of the two images
-\item DEM of refenence image
+\item DEM of reference image
 \end{itemize}
 
 The output is the image reprojected into reference orientation.
@@ -879,4 +879,23 @@ mm3d TestLib PseudoIntersect ".*JPG" Ori-All/ MesuresFinales-S2D.xml
 
 Each point needs to be measured at least in 2 images to compute an intersection.
 The output .xml file can be directly used as a GCP file with {\tt GCPBascule} tool.
+
+%--------------------------%
+\subsection{MasqMaker}
+The {\tt MasqMaker} command create masks for each picture to remove too dark or too light areas.
+
+\begin{verbatim}
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Pattern images}
+  * INT :: {Minimum value}
+  * INT :: {Maximum value}
+Named args : 
+  * [Name=MasqSup] string :: {Supplementary mask}
+  * [Name=SzW] INT :: {SzW for masking (def=0)}
+\end{verbatim}
+
+It is useful to avoid correlation in burned areas.
 
