@@ -932,3 +932,198 @@ the parametr {\tt Filter}.
 
 To be devlopped \dots 
 
+%=======================================================================================================
+
+\section{New procedure to enhance images orientation precision by {\tt TaskCorrel} and {\tt TiepTri}}
+\textbf{Attention:} \textit{Require the images orientation and mesh as input.}
+
+
+This procedure is used to ameliorate the precision of existed relative orientation by re-estimate the images orientation on the new tie-point. These new tie-points will be guided extracted using existed relative orientation and a mesh 3D of the scene as information geometry. We hope to attain the improved tie-points with better precision, distribution and multiplicity. Finally, by re-compensate on these improved tie-points, a better precision in image orientation estimation can be obtained.
+
+
+\subsection{Algorithm}
+\subsubsection{A general view}
+Considered as the first step to obtain the main input mesures for estimating images orientation, the quality of tie point is thus influence potentially on the precision of orientation relative of images. 
+As a result, the improvement in quality of tie point could ameliorate the precision of image orientation.
+There are several main terms could describe the quality of tie point in photogrammetry likes accuracy, redundancy and distribution.
+Above all, obtainment the good quality tie-point rest limit if we just using the raw image information itself, especially in hard scenarios like complex indoor structure or image aerial oblique.  
+\newline
+
+
+For this reason, we would like to use the result of existed photogrammetric pipeline as an supply information about the scenario to regenerate the high quality tie-points. Then, a final block adjustment based on improved tie points expect an significant amelioration in image orientation.
+\newline
+
+
+The whole processing procedure is present at \autoref{fig:2ndIteration}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=1\textwidth]{FIGS/TaskCorrel/2ndIteration.png}
+\caption{"The new procedure to enhance images orientation precision"}
+\label{fig:2ndIteration}
+\end{center}
+\end{figure}
+
+
+
+At this time, the implemented method requires a mesh, orientation relative and camera calibration as input data. 
+
+A detail of implemented algorithm describes below:
+
+
+As the scene’s 3D is given by a mesh, the extraction new tie-points procedure can be decomposed in three step applied for each triangle 3D in the mesh:
+
+\begin{enumerate}
+\item Selection a group of interest images for each triangle 3D:
+\begin{itemize}
+\item A Z-Buffer filter is used to decide if a triangle 3D is visible in image before processing.
+\item Images are selected based on a condition of optimal resolution in all visual direction.
+This condition could be modeled by a deformation of an “ellipse stretching” through different image plans.
+\item An image master (possess a maximum resolution in its visual direction) for each triangle 3D is also selected.\autoref{fig:ellipse_deform}
+\end{itemize}
+
+\begin{figure}
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/ElspA.png}
+        \end{subfigure}%
+        	\hfill
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/ElspB.png}
+        \end{subfigure}%
+                \hfill
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/ElspC.png}
+        \end{subfigure}%
+                \hfill
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/ElspD.png}
+        \end{subfigure}
+                \hfill
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/ElspE.png}
+        \end{subfigure}
+                 \hfill
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/ElspF.png}
+        \end{subfigure}
+        \newline
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/imgA.png}
+        \end{subfigure}%
+        	\hfill
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/imgB.png}
+        \end{subfigure}%
+                \hfill
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/imgC.png}
+        \end{subfigure}%
+                \hfill
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/imgD.png}
+        \end{subfigure}
+                \hfill
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/imgE.png}
+        \end{subfigure}
+                 \hfill
+        \begin{subfigure}[b]{0.16\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/EllipseAffine/imgF.png}
+        \end{subfigure}
+        \caption{Condition of optimal resolution based on deformation of ellipse through different visual direction. In this case, the most right image will be choosen as image master for the 3D triangle considered}
+        \label{fig:ellipse_deform}
+\end{figure}
+
+\item Detection interest points:
+\begin{itemize}
+\item Create affine invariant regions (interest region) for each image of each image pair master–slave in group.
+These regions are given by the projection of triangle 3D on each image. 
+Interest region in image slave will be transformed to image master geometry by an affine estimated from correspondent coordinates of triangle projected ‘s peaks.
+\item A detection of interest points is performed on these regions. This detection using multi conditions to select point interest suitable for matching by correlation. The risk of repetitive patterns and low contrast that could cause fail matching by correlation is also handle.
+\end{itemize}
+
+\item Optimal correlation for matching:
+\begin{itemize}
+\item For each interest point in interest region of image master, points candidate for matching are chosen in image slave.
+\item The optimal correlation matches each pair of interest points on multi scale to ameliorate speed and accuracy.
+\item Correlation search for best match in three scale level. An independent threshold applied at each level to quickly eliminate non potential match pair. 
+\begin{itemize}
+ \item A quick correlation with 2 pixel scale without interpolation (consider 1 pixel every 2 pixels).
+ \item An original scale correlation (entier of pixel - original image resolution). 
+ \item A sub-pixel correaltion at 0.01 pixel (by interpolation image original). 
+\end{itemize}
+\end{itemize}
+After matching procedure, a spatial filter is applied to keep a uniform distribution of tie points on image. 
+
+\end{enumerate}
+
+
+
+
+\subsection{New tie-point extraction procedure}
+\subsubsection{Input data requirements}
+\begin{itemize}
+  \item A mesh triangulation (can be generated from point cloud by {\tt TiPunch}) 
+  \item Images orientations (Ori-XXX folder computed by {\tt Tapas} for example)
+  \item Cameras calibrations (Ori-XXX/AutoCalXXX - computed by {\tt Tapas} for example)
+\end{itemize}
+\subsubsection{First step: Selection images by {\tt TestLib TaskCorrel}}
+\begin{verbatim}
+mm3d TestLib TaskCorrel
+
+
+********************************************************
+*    TaskCorrel - creat XML for TiepTri                *
+********************************************************
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Pattern of images}
+  * string :: {Input Initial Orientation}
+  * string :: {path to mesh(.ply) file - created by Inital Ori}
+Named args : 
+  * [Name=xmlCpl] string :: {file contain couple of image - processe by couple}
+  * [Name=assum1er] bool :: {always use 1er pose as img master, default=0}
+  * [Name=useExist] bool :: {use exist homol struct - default = false}
+  * [Name=angleV] REAL :: {limit view angle - default = 90 (all triangle is viewable)}
+  * [Name=OutXML] string :: {Output directory for XML File. Default = XML_TiepTri}
+  * [Name=Test] bool :: {Test stretching}
+  * [Name=nInt] INT :: {nInteraction}
+  * [Name=aZ] REAL :: {aZoom image display}
+  * [Name=aZEl] REAL :: {fix size ellipse display (in pxl)}
+  * [Name=clIni] Pt3dr :: {color mesh (=[255,255,255])}
+  * [Name=distMax] REAL :: {Limit distant process from camera}
+  * [Name=rech] INT :: {calcul ZBuffer in Reechantilonage (def=2)}
+
+\end{verbatim}
+
+The meaning of main parameters is:
+
+\begin{itemize}
+   \item mandatory parameter: the pattern of images.
+   
+   \item mandatory parameter: orientation relative.
+   
+   \item mandatory parameter: mesh file (in coordonate relative coherent with orientation relative above).
+
+   \item  {\tt OutXML} Suffix for output folder (will contain XML file for the next command)
+
+   \item  {\tt distMax} Distant maximum to consider from image (use to calculate ZBuffer and to limit in case of large scenario) 
+
+   \item  {\tt rech} DeZoom for calculate ZBuffer (def=2 => 1/2 resolution image);
+
+\end{itemize}
+
+
+Output of the command is XML files for each images.
+
+
+\subsubsection{Second step: Extraction tie-point with {\tt TiepTri}}
+
+\subsubsection{Third step: Compensation images orientations and calibration with  {\tt Campari}}
+
+\subsection{An example}
+
+%=======================================================================================================
+
