@@ -1068,6 +1068,10 @@ After matching procedure, a spatial filter is applied to keep a uniform distribu
   \item Cameras calibrations (Ori-XXX/AutoCalXXX - computed by {\tt Tapas} for example)
 \end{itemize}
 \subsubsection{First step: Selection images by {\tt TestLib TaskCorrel}}
+
+This command will select master image and a set of slave images for each triangle 3D in mesh.
+Output is represent in form of XML file for each master image.
+
 \begin{verbatim}
 mm3d TestLib TaskCorrel
 
@@ -1111,19 +1115,184 @@ The meaning of main parameters is:
 
    \item  {\tt distMax} Distant maximum to consider from image (use to calculate ZBuffer and to limit in case of large scenario) 
 
-   \item  {\tt rech} DeZoom for calculate ZBuffer (def=2 => 1/2 resolution image);
+   \item  {\tt rech} DeZoom for calculate ZBuffer (def=2 $\rightarrow$ 1/2 resolution image)
 
 \end{itemize}
 
 
-Output of the command is XML files for each images.
+Output of the command is XML files in OutXML folder. Each XML file correspondant with each master image in pattern.
 
+
+\textbf{Tips:} User can make a new folder named \textit{PLYVerif} in working directory before executing the command \textit{TaskCorrel} to obtain the visualization of scene's partrition between images.
 
 \subsubsection{Second step: Extraction tie-point with {\tt TiepTri}}
 
+After obtain XML files by \textit{TaskCorrel}, the command {\tt TiepTri}} will read XML file to execute the extraction of new tie-points.
+\begin{verbatim}
+mm3d TestLib TiepTri
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Name XML for Triangu}
+  * string :: {Orientation dir}
+Named args : 
+  * [Name=SzWEnd] INT :: {SzW Final}
+  * [Name=DistF] REAL :: {Average distance between tie points}
+  * [Name=IntDM] INT :: { Interpol for Dense Match, -1=NONE, 0=BiL, 1=BiC, 2=SinC}
+  * [Name=DRInit] bool :: { Do refinement on initial images, instead of resampled}
+  * [Name=LSQC] INT :: {Test LSQ,-1 None (Def), Flag 1=>Affine Geom, Flag 2=>Affin Radiom}
+  * [Name=NbByPix] INT :: { Number of point inside one pixel}
+  * [Name=Randomize] REAL :: {Level of random perturbationi, def=1.0 in interactive, else 0.0  }
+  * [Name=KeyMasqIm] string :: {Key for masq, Def=NKS-Assoc-STD-Masq, set NONE or key with NONE result}
+  * [Name=SzW] Pt3di :: {if visu [x,y,Zoom]}
+  * [Name=Debug] bool :: {If true do debuggibg}
+  * [Name=Interaction] INT :: {0 none,  2 step by step}
+  * [Name=PSelectT] Pt2dr :: {for selecting triangle}
+  * [Name=NumSelIm] vector<int> :: {for selecting imade}
+  * [Name=UseABCorrel] bool :: {Tuning use correl in mode A*v1+B=v2 }
+  * [Name=NoTif] bool :: {Not an image TIF - read img in Tmp-MM-Dir}
+
+\end{verbatim}
+
+The meaning of main parameters is:
+
+\begin{itemize}
+   \item mandatory parameter: XML file.
+   
+   \item mandatory parameter: orientation (same as orientation used in \textit{TaskCorrel} to generate XML).
+   
+\end{itemize}
+
+User must execute each command \textit{TiepTri} for each XML file separatement.
+There is another interface for command \textit{TiepTri} to process all XML file in one time: command  \textit{TiepTriPrl} :
+\begin{verbatim}
+*********************************
+* Interface paralell of TiepTri *
+*********************************
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Pattern of XML for Triangu}
+  * string :: {Orientation dir}
+Named args : 
+  * [Name=KeyMasqIm] string :: {Key Masq, def=NONE}
+  * [Name=NoTif] bool :: {No Img TIF, def=false}
+  * [Name=nInt] INT :: {display command}
+\end{verbatim}
+
+The meaning of main parameters is:
+
+\begin{itemize}
+   \item mandatory parameter: Pattern of all XML files.
+   
+   \item mandatory parameter: orientation (same as orientation used in \textit{TaskCorrel} to generate XML).
+   
+    \item  {\tt NoTif} enable it if process on another image format (not format tif) -- to be fixed.
+   
+\end{itemize}
+
+Output of the command is new tie-points in Homol\_TiepTri
+
 \subsubsection{Third step: Compensation images orientations and calibration with  {\tt Campari}}
 
-\subsection{An example}
+
+After extraction the new tie-point, a final compensation to re-estimate images orientation and calibration can be done by using these tie-points.
+
+
+It can be done by command \textit{Campari} with the optional parameters:
+
+\begin{itemize}
+ \item \textit{SH=\_TiepTri} (new tie-points) 
+ \item \textit{AllFree=1} (re-estimate calibration also). 
+ \item User can also execute additional iteration by set parameter \textit{NbIterEnd}.
+\end{itemize}
+
+
+\textbf{\textit{Example:}}
+\begin{verbatim}
+mm3d Campari ".*.tif" Ori-XXX Ori-XXX_TiepTri SH=_TiepTri AllFree=1 NbIterEnd=10
+\end{verbatim}
+
+
+\subsection{An example - The Viabon dataset}
+This section show an example processing on the dataset {\tt Viabon/} in {\tt /micmac\_data/ExempleDoc/}. \autoref{fig:viabon_3img}
+
+This UAV acquisition is done by {\tt Vinci-Construction-Terrassement}\footnote{\url{http://www.vinci-construction-terrassement.com/}} with  panchromatic light camera developed at the {\tt LOEMI-IGN}\footnote{Opto-Electronics, Instrumentation and Metrology Laboratory} laboratory.\newline
+
+
+\begin{figure}[H]
+    \begin{center}
+    \setlength{\unitlength}{0.5cm}
+    \includegraphics[width=0.5\linewidth]{FIGS/Viabon/panel.jpg}
+    \end{center}
+    \caption{The Viabon dataset}
+    \label{fig:iris}
+\end{figure}
+
+Orientation relative and camera calibration is computed with \textit{Tapas}, dense matching is done by \textit{C3DC}.
+
+\begin{verbatim}
+mm3d Tapioca All ".*.tif" -1
+mm3d Tapas Fraser ".*.tif" Out=RelativeInit
+mm3d C3DC MicMac ".*.tif" RelativeInit Out=Dense_Cloud.ply
+\end{verbatim}
+
+The mesh relative is generated with \textit{TiPunch}:
+
+\begin{verbatim}
+mm3d TiPunch Dense_Cloud.ply Pattern=".*.tif" Out=Mesh_Init.ply Mode=MicMac
+\end{verbatim}
+
+\begin{figure}
+        \begin{subfigure}[b]{0.33\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/Viabon/Protocol_Acquisition_2.png}
+        \end{subfigure}%
+        	\hfill
+        \begin{subfigure}[b]{0.33\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/Viabon/PtsTerrainDistribution_2.png}
+        \end{subfigure}%
+                \hfill
+        \begin{subfigure}[b]{0.33\textwidth}
+                \includegraphics[width=\linewidth]{FIGS/TaskCorrel/Viabon/mesh_2.png}
+        \end{subfigure}%
+        \caption{From the left : The acquisition's protocol - The GCPs (green) and CPs (red) - Mesh generated with TiPunch}
+    \label{fig:viabon_3img}
+\end{figure}        
+
+After the computation of images orientation and mesh, we start to enhance the precision of images orientation by \textit{TaskCorrel} and \textit{TiepTri}.
+
+\begin{enumerate}
+\item Using \textit{TaskCorrel} to generate XML: 
+\begin{verbatim}
+mm3d TestLib TaskCorrel ".*.tif" Ori-RelativeInit Mesh_Init.ply rech=4
+\end{verbatim}
+
+
+
+XML files generated is stored in \textit{XML\_TiepTri} folder by default (if user not specified it by \textit{OutXML} parameter). 
+Result of scene's partrition stored in \textit{PLYVerif} folder (folder must be created before execute the command). 
+Each images in dataset posses one \textit{XML} file in \textit{XML\_TiepTri} and one \textit{ply} file in \textit{PLYVerif} as a result. 
+The part of scene that select an image as master will be shown in correspondant \textit{ply} file.
+
+\item Using \textit{TiepTriPrl} to extraction new tie-points: 
+\begin{verbatim}
+mm3d TestLib TiepTriPrl "XML_TiepTri/.*.xml" Ori-RelativeInit
+\end{verbatim}
+Result of extraction new tie-points is stored in \textit{Homol\_TiepTri} by defaut.
+
+
+\item Then, a final compensation on new tie-points is done by \textit{Campari}:
+\begin{verbatim}
+mm3d Campari ".*.tif" Ori-RelativeInit Ori-Relative_NewTieP SH=_TiepTri AllFree=1 NbIterEnd=10
+\end{verbatim}
+\end{enumerate}
+
+After obtaining two images orientaion (\textit{Ori-RelativeInit} and \textit{Ori\-Relative\_NewTieP}), a bascule to absolute coordinate on GCPs by \textit{GCPBascule} and a precision control on CPs by \textit{GCPCtrl} shown a significative enhancement in the precision of images orientation.
+
+
+
 
 %=======================================================================================================
 
