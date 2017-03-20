@@ -383,6 +383,8 @@ Aiming at measuring very small displacements, we use a sinus cardinal interpolat
 
 \subsubsection{Image term}
 
+\label{Image:Term}
+
 By default in MicMac, the image term is $1-Cor$ where $Cor$ is the normalized cross correlation
 coefficient. In such data-sets, where there is a very important change locally, this can not be
 suitable because when there are changes of the nature (snow \dots)  the correlation has no
@@ -561,5 +563,349 @@ The offsets values are saved into a file (e.g \verb++offsets.txt++ to which a su
 The input file needed is the offsets output file and the slip curve will be drawn accordingly to these values.
 
 
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
 
+\section{Modelization of analytical deformation}
+
+%-------------------------------------------------------------------
+\subsection{Mathematicall models and their implementation}
+
+This section contain information about evaluation and use of analytical  $2D$
+deformation  between images. The mathematicall model supported are :
+homothety, similitud, affinity, homography, camera distortion, composition.
+Probably an (easy) extension will be done to integrate  polynomial model.
+Table~\ref{TAB:ANALYTICAL:MAP} present a synthesis of the model supported ,
+some comments :
+
+\begin{itemize}
+   \item the Estimable model are the model that can be estimated (by least square or
+         other estimator) with a single set of homologous points; each estimable model 
+         has a well known set of unknown parameters;
+
+   \item the camera model is not estimable with a single set, but it can be usefull
+         for correcting measure from known distorsion and must be reexported, that's why it belongs 
+         to the set;
+
+   \item the composition model is usefull for example to  handle a composition of
+         distortion an homography in the case of planar movement with distorted camera.
+\end{itemize}
+
+
+
+\begin{figure}
+\vspace{4cm}
+\begin{tabular} { c || c | c | c | c}
+                \hspace{1mm} \begin{rotate}{45} {\tt Physicall/Mathematical Model} \end{rotate}
+              & \hspace{1mm} \begin{rotate}{45} {\tt Estimable } \end{rotate}
+              & \hspace{1mm} \begin{rotate}{45} {\tt Degree of freedom} \end{rotate}
+              & \hspace{1mm} \begin{rotate}{45} {\tt Xml class} \end{rotate}
+              & \hspace{1mm} \begin{rotate}{45} {\tt \CPP class} \end{rotate} \\  \hline
+
+          {\tt Homothety} & Yes & 3 &  SimilitudePlane  & ElSimilitude   \\  \hline
+          {\tt Similitud} & Yes & 4 &  Xml\_Homot       & ElHomot        \\  \hline
+          {\tt Affinity } & Yes & 6 &  AffinitePlane    & ElAffin2D      \\  \hline
+          {\tt Homography}& Yes & 8 &  XmlHomogr        & cElHomographie \\  \hline
+          {\tt Camera }& No & ? &  Xml\_MapCam          & cCamAsMap      \\  \hline
+          {\tt Composition of functions }& No & ? &  Xml\_Map2D      & cComposElMap2D \\  \hline
+\end{tabular}
+
+\caption { Class of analyticall $2d$ maps}
+\label{TAB:ANALYTICAL:MAP}
+\end{figure}
+
+%-------------------------------------------------------------------
+
+\subsection{Description of \CPP classe}
+
+All the  \CPP classes inherit from {\tt cElMap2D} which is the interface
+class. Let's descibes the interface, elementary methods :
+
+\begin{itemize}
+    \item {\tt virtual Pt2dr operator () (const Pt2dr \& p) const = 0;} 
+           fundamuntal method returns the image of a point;
+    \item {\tt  virtual \~{}cElMap2D();} classical virtual destructor for interface class;
+    \item {\tt virtual int Type() const = 0;} dynamic typing, the value is in fact 
+          an {\tt eTypeMap2D} as defined in {\tt SuperposImage.xml};
+\end{itemize}
+
+Methods to create new maps :
+
+\begin{itemize}
+    \item {\tt virtual cElMap2D * Map2DInverse() const;} return the invert map of a given map,
+           defined for all the existing class up to now;
+    \item {\tt  virtual cElMap2D * Identity();} return the identity  map in the given type;
+
+    \item {\tt     virtual cElMap2D * Duplicate() ; } return a copy;
+
+    \item {\tt    virtual cElMap2D * Simplify() ;} usefull for composition only 
+          (if the vector is of size $1$, return its single object);
+    \item {\tt static cElMap2D * IdentFromType(int);} return the identity of a given type 
+          ({\tt int} is in fact an {\tt eTypeMap2D});
+\end{itemize}
+
+Methods to estimate a model from estimator (typically least square) :
+
+\begin{itemize}
+    \item {\tt virtual int   NbUnknown() const;} return the degree of freedom when applyable;
+
+    \item {\tt   virtual void  InitFromParams(const std::vector<double> \&aSol);} given a solution obtained
+          from a least square solution, initialise the object; 
+
+    \item {\tt     virtual void  AddEq(Pt2dr \& aC,std::vector<double> \& aVx,
+                   std::vector<double> \& aVy,const Pt2dr \& aP1,const Pt2dr \& aP2 ) const;}
+          if $P_1$ and $P_2$ are homologous points, fill  $V_x$ and $C.x$ (resp. $V_y$ and $C.y$) 
+          to have an observation $ \sum\limits_k V_x^k p_k = C.x $ where $p_k$  is the internal parameter
+          of the object.
+\end{itemize}
+
+Function {\tt cElMap2D * L2EstimMapHom(eTypeMap2D aType,const ElPackHomologue \& aPack);} show how this
+can be used to estimate a map from tie points (this is an easy example assuming no outlayer and
+using unweighted least square).
+
+
+Methods to load/save object from file :
+
+\begin{itemize}
+   \item {\tt virtual cXml\_Map2D    ToXmlGen() ;} return the \CPP object that corresponds to  
+         Xml object;
+
+   \item {\tt void  SaveInFile(const std::string \&);} save the object in xml format;
+
+   \item {\tt  static cElMap2D * FromFile(const std::string \&);} read an object from a file;
+\end{itemize}
+
+
+%-------------------------------------------------------------------
+
+\subsection{Fitting models with {\tt CalcMapAnalytik}}
+
+
+The command {\tt CalcMapAnalytik} compute an analytical model from a set
+of tie points.  The syntax is :
+
+\begin{itemize}
+   \item {\tt Im1},{\tt Im2}, used for computing name of homologous file
+   \item name of used model;
+   \item name of file storing the model;
+   \item {\tt SH=}, option for folder of tie points;
+   \item {\tt Ori=}, option for correcting measur from distorsion;
+   \item {\tt PerResidu=}, option for setting the period for computing image of residuals, generally
+         it will come from printed by {\tt DMatch2Hom} which knows what value it used to compute tiles;
+\end{itemize}
+
+For each tie point $Q_1$ and $Q_2$:
+
+\begin{itemize}
+   \item let $Map$ be the computed;
+   \item $R=Map(Q_1)-Q_2=  ^t (X_R,Y_R)$,
+   \item let $P=  ^t (X_P,Y_P)$ be {\tt PerResidu=}; 
+   \item let $I= ^t ([\frac{X_1}{X_P}],[\frac{Y_1}{Y_P}])$
+   \item $R$ will be written at point $I$ in two images.
+\end{itemize}
+
+
+
+\begin{verbatim}
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Name Im1}
+  * string :: {Name Im2}
+  * string :: {Model in [Homot,Simil,Affine,Homogr]}
+  * string :: {Name Out}
+Named args : 
+  * [Name=SH] string :: {Set of homologue}
+  * [Name=Ori] string :: {Directory to read distorsion}
+  * [Name=PerResidu] Pt2dr :: {Period for computing residual}
+\end{verbatim}
+
+
+\begin{verbatim}
+mm3d CalcMapAnalytik \
+     img_029_002_00605.thm.tif \
+     img_029_002_01313.thm.tif \
+     Homogr Map.xml \
+     SH=DM PerResidu=[146.286,147.692] Ori=Ori-Calib
+  Residu at 0 percentil = 0.00578842
+  Residu at 10 percentil = 0.035193
+  Residu at 20 percentil = 0.0476446
+  Residu at 30 percentil = 0.0571207
+  Residu at 40 percentil = 0.0675328
+  Residu at 50 percentil = 0.0827726
+  Residu at 60 percentil = 0.100723
+  Residu at 70 percentil = 0.125325
+  Residu at 80 percentil = 0.152175
+  Residu at 90 percentil = 0.188798
+  Residu at 100 percentil = 0.417428
+MoyD2 = 0.0817474 0.0878647
+\end{verbatim}
+
+The file {\tt  Map.xml} may contain something like :
+
+{\tiny
+\begin{verbatim}
+<?xml version="1.0" ?>
+<Xml_Map2D>
+     <Maps>
+          <Cam>
+               <PartieCam>
+                     ...
+               </PartieCam>
+               <Directe>false</Directe>
+          </Cam>
+     </Maps>
+     <Maps>
+          <Homog>
+                ...
+          </Homog>
+     </Maps>
+     <Maps>
+          <Cam>
+               <PartieCam>
+                      ...
+               </PartieCam>
+               <Directe>true</Directe>
+          </Cam>
+     </Maps>
+</Xml_Map2D>
+\end{verbatim}
+}
+
+Some comments :
+
+\begin{itemize}
+   \item the map is the composition of three maps;
+
+   \item the first and last one are distorsion, first is "inverse" distorsion 
+         while second is "direct" \footnote{according to MicMac convention where 
+         distorsion is code from "word" to images} ; they were integrated because
+         parameter {\tt Ori} was used;
+
+   \item middle map is here  an homography;
+\end{itemize}
+
+%-------------------------------------------------------------------
+
+\subsection{Converting dense map to homologues with {\tt DenseMapToHom}}
+
+The command {\tt CalcMapAnalytik} expect tie point in the current format adapted
+to sparse tie points. When they come from dense matching like, for example,
+those furnished by MicMac, the command {\tt DenseMapToHom} make the conversion
+to the expected format. The syntax is : 
+
+
+\begin{verbatim}
+mm3d DMatch2Hom
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Name Im1}
+  * string :: {Name Im2}
+  * string :: {Name Px1 (dx)}
+  * string :: {Name Px2 (dy)}
+Named args : 
+  * [Name=SH] string :: {Set of homologue, def=DM}
+  * [Name=NbTiles] REAL :: {Number of tile / side (will be slightly changed), Def=30}
+\end{verbatim}
+
+Some comments :
+
+\begin{itemize}
+   \item parameter {\tt SH} specify the folder  for export;
+   \item parameter {\tt NbTiles} specify approximately the number of tiles per side;
+         the total number will be close to {\tt NbTiles * NbTiles} (not exacly because of rounding effects);
+\end{itemize}
+
+Here could be an example :
+
+\begin{verbatim}
+mm3d DMatch2Hom  \
+     img_029_002_00605.thm.tif \
+     img_029_002_00752.thm.tif \
+     MEC-img_029_002_00605.thm.tif-img_029_002_00752.thm.tif/Px1_Num12_DeZoom1_LeChantier.tif \
+     MEC-img_029_002_00605.thm.tif-img_029_002_00752.thm.tif/Px2_Num12_DeZoom1_LeChantier.tif 
+PerResidu=[146.286,147.692]
+\end{verbatim}
+
+The value {\tt PerResidu} indicates the precise size of the computed tiles,
+it may be usefull to give to the command {\tt CalcMapAnalytik} to reconstruct
+an image structure from sparse points.
+
+%-------------------------------------------------------------------
+
+\subsection{Using maps to resample images with {\tt ReechImMap}}
+
+One use of these analyticall maps is to ressample images,
+this can be done with {\tt  ReechImMap}. For now it's quite minimalist. 
+The syntax is :
+
+\begin{verbatim}
+mm3d ReechImMap
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Name Im}
+  * string :: {Name map}
+\end{verbatim}
+
+Typically, the image could be the second image of {\tt CalcMapAnalytik} 
+to get an image registred to the first image (of {\tt CalcMapAnalytik}).
+
+
+%-------------------------------------------------------------------
+
+\subsection{XML Parameter}
+
+   %  - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsubsection{Example}
+
+The folder {\tt include/XML\_MicMac} contains different exemple of file
+adapted to $2d$ matchings when the matching is expected to be small and smooth :
+
+\begin{itemize}
+   \item {\tt New-Param-Bayer.xml} developped to compute matchings between 
+         different channels of a bayer matrix images
+
+   \item {\tt MM-DeformThermik.xml} devlopped to compute matching between
+         two images of fix camera subject to internal thermal deformation;
+\end{itemize}
+
+\subsubsection{Usefull tags}
+
+   %  - - - - - - - - - - - - - - - - - - - - - - - - -
+
+The dynamic of correlation can be controled by the tags (see \ref{Image:Term}) :
+
+\begin{itemize}
+    \item  GammaCorrel
+    \item  DynamiqueCorrel
+    \item  CorrelMin
+\end{itemize}
+
+The exponential window for correlation can be controled by the tag (see \ref{Fenetre:Correl}) :
+
+\begin{itemize}
+    \item  {\tt    <TypeWCorr> eWInCorrelExp            </TypeWCorr>} to select exponential window
+    \item  {\tt    <NbIterFenSpec>   2           </NbIterFenSpec>}  to create a double iteratio,
+\end{itemize}
+
+To limit residual noise, it is possible to  post filter the computed  maps with the
+tag {\tt PostFiltragePx} :
+
+\begin{verbatim}
+        <PostFiltragePx>
+                  <OneFitragePx>
+                        <TypeFiltrage >  eFiltrageMedian  </TypeFiltrage>
+                        <SzFiltrNonAd  >   4        </SzFiltrNonAd>
+                        <SzFiltrage>       0         </SzFiltrage>
+                        <NbIteration  >  2       </NbIteration>
+                  </OneFitragePx>
+        </PostFiltragePx>
+\end{verbatim}
 
