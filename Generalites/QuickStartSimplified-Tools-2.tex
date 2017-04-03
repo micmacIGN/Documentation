@@ -1211,6 +1211,9 @@ The two most relevant statistics are: the mean transverse parallax which is very
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{The Viabon dataset}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The directory {\tt Viabon/} in {\tt /micmac\_data/ExempleDoc/} contains a set of data which will allow us to perform a direct-georeferencing\footnote{To be more precise, this dataset deals with Integrated Sensor Orientation (ISO) because no inertial measurements are available} of images based on embedded GPS data. Below we will detail all the necessary steps to achieve maximum ground accuracy, here, in the range of {\tt 1-2 cm}. First, we will compute different GPS trajectories in order to make comparisons and in a second time we will be interested in the fusion of these results with the photogrammetric processing part.\newline
 
 This UAS acquisition has been performed by the surveying service of {\tt Vinci-Construction-Terrassement}\footnote{\url{http://www.vinci-construction-terrassement.com/}}. A {\tt DJI-F550}\footnote{\url{http://dl.djicdn.com/downloads/flamewheel/en/F550_User_Manual_v2.0_en.pdf}} hexa-copter has been used to achieve the flight. The images were acquired by the {\tt IGN} panchromatic light camera developed at the {\tt LOEMI}\footnote{Opto-Electronics, Instrumentation and Metrology Laboratory} laboratory. The GPS on-board raw measurements were acquired by the {\tt GeoCube}, a multi-sensor geo-monitoring system developed at the same laboratory.\newline
@@ -1727,17 +1730,17 @@ The {\tt mm3d PIMs} command is used to generate the digital surface model using 
 \begin{verbatim}
 mm3d PIMs QuickMac "image_002_00*.*tif" Ori-Compense-AF15P7-DPhase-La/ 
      Masq3D=AperiCloud_Compense-AF15P7-DPhase-La_polyg3d.xml 
-     Out=NuageGps.ply FilePair=CpleImgs.xml
+     FilePair=CpleImgs.xml
 \end{verbatim}
 
-We use {\tt mm3d PIMs2Mn} command to merge the result of the stereo depth maps computed above. The optional argument {\tt DoOrtho} is used to generate individual orthoimages.
+We use {\tt mm3d PIMs2Mnt} command to merge the result of the stereo depth maps computed above. The optional argument {\tt DoOrtho} is used to generate individual orthoimages.
 \begin{verbatim}
 mm3d PIMs2Mnt QuickMac DoOrtho=1
 \end{verbatim}
 
 The orthomosaic image is generated using the {\tt mm3d Tawny} command without performing any radiometric equalization.
 \begin{verbatim}
-Tawny PIMs-ORTHO/ RadiomEgal=false
+mm3d Tawny PIMs-ORTHO/ RadiomEgal=false
 \end{verbatim}
 
 \begin{figure}[H]
@@ -1787,3 +1790,189 @@ Visualization of the 3d points cloud using {\tt meshlab}.
 \begin{verbatim}
 meshlab GpsNuage.ply
 \end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The Chambord tower dataset}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In the following we will process a dataset consisting of a terrestrial images acquisition around one of the towers of the Ch\^{a}teau de Chambord. This tower has the particularity of having a cylindrical geometric shape. We will proceed to the generation of an unrolled orthoimage taking into account this geometry.\newline
+
+This dataset consists of 51 circular images and are available on the {\tt MicMac} wiki at the following link: \url{http://micmac.ensg.eu/data/}
+
+\subsection{Computing Tie Points}
+The {\tt mm3d Tapioca} command is used in the {\tt Line} mode to speed up tie points extraction as the geometry of acquisition is circular. Tie points extraction is performed on sub-sampled images (by a factor of $\sim$4) and number of adjacent images to look for is fixed to 10 images:
+
+\begin{verbatim}
+mm3d Tapioca Line ".*JPG" 1500 10
+\end{verbatim}
+
+The {\tt mm3d SEL} command is used to visualize tie points between 2 images and a homography is estimated to superimpose the 2 images using the option {\tt R=1}. 
+
+\begin{verbatim}
+mm3d SEL './' TS_35_482.JPG TS_35_483.JPG KH=NB R=1
+\end{verbatim}
+
+\begin{figure}[H]
+    \begin{center}
+    \setlength{\unitlength}{0.5cm}
+    \includegraphics[width=0.4\linewidth]{FIGS/ChambordTower/sel_chambord_tower.png}
+    \end{center}
+    \caption{Tie Points visualization}
+    \label{fig:sel}
+\end{figure}
+
+\subsection{Computing exterior orientation}
+The {\tt mm3d Tapas} command is used to perform a bundle block adjustment to compute the relative orientation with a {\tt Fraser} camera model. Then, the {\tt mm3d AperiCloud} command is used to export the geometry of the acquisition in a {\tt .ply}.
+
+\begin{verbatim}
+mm3d Tapas Fraser ".*JPG" Out=All
+mm3d AperiCloud ".*JPG" All
+meshlab AperiCloud_All.ply
+\end{verbatim}
+
+\begin{figure}[H]
+    \begin{center}
+    \setlength{\unitlength}{0.5cm}
+    \includegraphics[width=0.6\linewidth]{FIGS/ChambordTower/aero_chambord_tower.png}
+    \end{center}
+    \caption{Geometry of the acquisition}
+    \label{fig:aero}
+\end{figure}
+
+\subsection{Fixing orientation of the cylinder}
+The {\tt mm3d SaisieCyl} tool is used to capture information about cylinder orientation on images. To set the orientation of the cylinder, the user must measure 4 points (top, bottom, left, right) on at least 2 images.
+
+\begin{verbatim}
+mm3d SaisieCyl "TS_35_49[4-5].JPG" Ori-All/ MesCyl.xml
+\end{verbatim}
+
+\begin{figure}[H]
+    \begin{center}
+    \setlength{\unitlength}{0.5cm}
+    \includegraphics[width=0.4\linewidth]{FIGS/ChambordTower/SaisieCyl_chambord_tower.png}
+    \end{center}
+    \caption{Fixing the cylinder orientation}
+    \label{fig:saisiecyl}
+\end{figure}
+
+\subsection{Dense matching on the surface of the cylinder}
+At this step we will choose a number (1 to 5) of master images and compute the depth map in image geometry. We can draw a mask on each master image to delimit the area that belongs only to the surface of the cylinder. The {\tt mm3d SaisieMasq} and {\tt mm3d Malt} commands will be used. In this example we will choose 3 master images distributed over the entire cylinder.\newline
+
+For the first master image:
+\begin{verbatim}
+mm3d SaisieMasq TS_35_511.JPG
+mm3d Malt GeomImage "TS_35_50[6-9].JPG|TS_35_51[0-7].JPG" Ori-All/ Master=TS_35_511.JPG ZoomF=4
+\end{verbatim}
+
+\begin{figure}[H]
+    \begin{center}
+    \setlength{\unitlength}{0.5cm}
+    \includegraphics[width=0.4\linewidth]{FIGS/ChambordTower/masq_m1_chambord_tower.png}
+    \end{center}
+    \caption{Mask on the cylinder surface for the first master image}
+    \label{fig:maskImg1}
+\end{figure}
+
+For the second master image:
+\begin{verbatim}
+mm3d SaisieMasq TS_35_494.JPG
+mm3d Malt GeomImage "TS_35_49[0-9].JPG" Ori-All/ Master=TS_35_494.JPG ZoomF=4
+\end{verbatim}
+
+\begin{figure}[H]
+    \begin{center}
+    \setlength{\unitlength}{0.5cm}
+    \includegraphics[width=0.4\linewidth]{FIGS/ChambordTower/masq_m2_chambord_tower.png}
+    \end{center}
+    \caption{Mask on the cylinder surface for the second master image}
+    \label{fig:maskImg2}
+\end{figure}
+
+For the third master image:
+\begin{verbatim}
+mm3d SaisieMasq TS_35_465.JPG
+mm3d Malt GeomImage "TS_35_46[0-9].JPG" Ori-All/ Master=TS_35_465.JPG ZoomF=4
+\end{verbatim}
+
+\begin{figure}[H]
+    \begin{center}
+    \setlength{\unitlength}{0.5cm}
+    \includegraphics[width=0.4\linewidth]{FIGS/ChambordTower/masq_m3_chambord_tower.png}
+    \end{center}
+    \caption{Mask on the cylinder surface for the third master image}
+    \label{fig:maskImg3}
+\end{figure}
+
+\subsection{Estimate the cylinder equation}
+From the depth maps computed for the 3 master images, the equation of the cylinder can be estimated using the {\tt mm3d Casa} tool. Then, the cylinder can be generated by the {\tt mm3d TestLib San2Ply} command and one can visualize the cylinder and the orientation calculated previously.
+
+\begin{verbatim}
+mm3d Casa MM-Malt-Img-TS_35_465/NuageImProf_STD-MALT_Etape_6.xml 
+     N2=MM-Malt-Img-TS_35_494/NuageImProf_STD-MALT_Etape_6.xml 
+     N3=MM-Malt-Img-TS_35_511/NuageImProf_STD-MALT_Etape_6.xml 
+     PtsOri=[MesCyl-S2D.xml,Ori-All/]
+     
+mm3d TestLib San2Ply ".*JPG" Ori-All/ TheCyl.xml
+\end{verbatim}
+
+\begin{figure}[H]
+    \begin{center}
+    \setlength{\unitlength}{0.5cm}
+    \includegraphics[width=0.6\linewidth]{FIGS/ChambordTower/cyl_chambord_tower.png}
+    \end{center}
+    \caption{Visualization of the Cylinder \& images poses}
+    \label{fig:cyl}
+\end{figure}
+
+\subsection{Dense matching \& Orthoimage}
+The {\tt mm3d Tarama} tool is first used to generate an assembly table image of the cylinder with the optional argument {\tt Repere} and the {\tt mm3d SaisieMasq} tool is used to draw a mask on the area of interest.
+
+\begin{verbatim}
+mm3d Tarama ".*JPG" Ori-All/ Repere=TheCyl.xml
+mm3d SaisieMasq TA/TA_LeChantier.tif
+\end{verbatim}
+
+\begin{figure}[H]
+    \begin{center}
+    \setlength{\unitlength}{0.5cm}
+    \includegraphics[width=0.8\linewidth]{FIGS/ChambordTower/TA_chambord_tower.png}
+    \end{center}
+    \caption{Mask on the approximate assembly of the unrolled cylinder}
+    \label{fig:TA}
+\end{figure}
+
+The {\tt mm3d Malt} tool is used to calculate the depth map in ground geometry by specifying the equation of the cylinder with optional argument {\tt Repere}.
+
+\begin{verbatim}
+mm3d Malt Ortho ".*JPG" Ori-All/ Repere=TheCyl.xml ZoomF=4
+\end{verbatim}
+
+The orthomosaic image is generated using the {\tt mm3d Tawny} command.
+
+\begin{verbatim}
+Tawny Ortho-MEC-Malt/ DEqXY=[3,2]
+\end{verbatim}
+
+
+\begin{figure}[H]
+    \begin{center}
+    \setlength{\unitlength}{0.5cm}
+    \includegraphics[width=\linewidth]{FIGS/ChambordTower/ortho_chambord_tower.png}
+    \end{center}
+    \caption{Orthoimage of the unrolled cylinder}
+    \label{fig:ortho}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
