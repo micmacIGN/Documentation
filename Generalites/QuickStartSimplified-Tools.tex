@@ -48,29 +48,30 @@ compatibility with previous version, it is recommended to use the new mechanisms
 The main modification on the distribution are :
 
 \begin{itemize}
-   \item  the versionning tool is now {\tt mercurial}
+   \item the  versionning tool was mercurial until the end of 2016
+   \item  the versionning tool is now {\tt GitHub} since beginning of 2017
    \item  the tools are working on {\tt Linux}, {\tt MacOs} and  {\tt Windows};
-   \item  the tools are also distributed on binary version (however, it remains of course
-	  an open source project and it is still possible to download the source code).
+   \item  the tools are also distributed on binary version (however, it remains of course an open source project and it is still possible to download the source code).
 \end{itemize}
 
-To get the binary version, go to : \url{http://logiciels.ign.fr/?Telechargement,20}
+\vspace{0.5cm}
+To get the binary version, go to : \url{https://github.com/micmacIGN/micmac/releases}
 
+\vspace{0.5cm}
+For binary versions from 2016 and before, go to : \url{http://logiciels.ign.fr/?Telechargement,20}
 
-To get the source (you will need to install the mercurial versionning system) type :
+\vspace{0.5cm}
+To get the source (you will need to install the {\tt Git} versionning system) type :
 
 \begin{verbatim}
- hg clone https://culture3d:culture3d@geoportail.forge.ign.fr/hg/culture3d
+git clone https://github.com/micmacIGN/micmac.git
 \end{verbatim}
 
 To update source code, type:
 
 \begin{verbatim}
- hg pull https://culture3d:culture3d@geoportail.forge.ign.fr/hg/culture3d
-\end{verbatim}
-
-\begin{verbatim}
-hg up https://culture3d:culture3d@geoportail.forge.ign.fr/hg/culture3d
+cd micmac/ 
+git pull
 \end{verbatim}
 
 \subsection{The \emph{new universal} command {\tt mm3d}}
@@ -2509,7 +2510,7 @@ Some comments:
 \subsection{Image geometry with {\tt Malt}}
 
 An example of using {\tt Malt} in mode {\tt GeomImage}
-with the {\tt Ramses} data set:
+with the {\tt Ramses} data set available at the following link \url{http://micmac.ensg.eu/data/Ramses_Dataset.zip} :
 
 \begin{verbatim}
 Malt GeomImage ".*CR2" All Master=IMG_0355.CR2
