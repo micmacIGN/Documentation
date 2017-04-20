@@ -1217,7 +1217,7 @@ mm3d Campari ".*.tif" Ori-XXX Ori-XXX_TiepTri SH=_TiepTri AllFree=1 NbIterEnd=10
 
 
 \subsection{An example - The Viabon dataset}
-This section show an example processing on the dataset {\tt Viabon/} in {\tt /micmac\_data/ExempleDoc/}. \autoref{fig:viabon_3img}
+This section show an example processing on the dataset {\tt Viabon/} available at the following link \url{http://micmac.ensg.eu/data/Viabon_Dataset.zip}. \autoref{fig:viabon_3img}
 
 This UAV acquisition is done by {\tt Vinci-Construction-Terrassement}\footnote{\url{http://www.vinci-construction-terrassement.com/}} with  panchromatic light camera developed at the {\tt LOEMI-IGN}\footnote{Opto-Electronics, Instrumentation and Metrology Laboratory} laboratory.\newline
 
@@ -1285,7 +1285,8 @@ Result of extraction new tie-points is stored in \textit{Homol\_TiepTri} by defa
 
 \item Then, a final compensation on new tie-points is done by \textit{Campari}:
 \begin{verbatim}
-mm3d Campari ".*.tif" Ori-RelativeInit Ori-Relative_NewTieP SH=_TiepTri AllFree=1 NbIterEnd=10
+mm3d Campari ".*.tif" Ori-RelativeInit Ori-Relative_NewTieP SH=_TiepTri AllFree=1
+     NbIterEnd=10
 \end{verbatim}
 \end{enumerate}
 

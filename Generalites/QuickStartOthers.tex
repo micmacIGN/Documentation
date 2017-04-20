@@ -361,6 +361,126 @@ The corrected tie points are then applied to a grid also through inverse distanc
 Once the appropriate input data (see~\ref{inputArsenic}) is computed, the command can be run. The images produced in the output folder are to be used as "Attr" arguments in the "Nuage2Ply" command to produce equalized sub-point clouds.
 
 %***************************%
+\section{Comparaison tools}
+This part concerns all the tools to compare files or results of calculations coming from {\tt MicMac}:
+
+%-----------------%
+\subsection{CmpOri}
+The {\tt CmpOri} command computes average norme differences of all external parametrs of images from 2 Ori-XXX/ folders.
+
+\begin{verbatim}
+mm3d CmpOri -help
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Full Name (Dir+Pattern)}
+  * string :: {Orientation 1}
+  * string :: {Orientation 2}
+Named args : 
+  * [Name=DirOri2] string :: {Orientation 2}
+  * [Name=XmlG] string :: {Generate Xml}
+\end{verbatim}
+
+Example :
+\begin{verbatim}
+mm3d CmpOri ".*JPG" Ori-Bascule/ Ori-Compense/ XmlG=Delta_Basc_Comp.xml
+\end{verbatim}
+
+For example the result displayed and saved in {\tt Delta\_Basc\_Comp.xml} :
+\begin{verbatim}
+<?xml version="1.0" ?>
+<XmlTNR_TestOriReport>
+     <OriName>RTL-Compense-AllPts</OriName>
+     <TestOriDiff>false</TestOriDiff>
+     <DistCenter>0.0397097570172935677</DistCenter>
+     <DistMatrix>3.87112370850761372e-07</DistMatrix>
+</XmlTNR_TestOriReport>
+\end{verbatim}
+
+
+%-------------------%
+\subsection{CmpCalib}
+The {\tt CmpCalib} command compares two files of calibrations Ori-XXX/AutoCal\_Foc-XXX.xml (in general of the same camera).
+
+\begin{verbatim}
+mm3d CmpCalib -help
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {First calibration file}
+  * string :: {Second calibration file}
+Named args : 
+  * [Name=Teta01] REAL
+  * [Name=Teta02] REAL
+  * [Name=Teta12] REAL
+  * [Name=L1] INT
+  * [Name=SzW] INT
+  * [Name=DynV] REAL
+  * [Name=Out] string :: {Result (Def=Name1_ecarts.txt)}
+  * [Name=DispW] bool :: {Display window}
+  * [Name=XmlG] string :: {Generate Xml}
+\end{verbatim}
+
+Example :
+\begin{verbatim}
+mm3d CmpCalib Ori-Basc/AutoCal_Foc-35000_Cam.xml Ori-Comp/AutoCal_Foc-35000_Cam.xml Out=Delta_Calib.txt
+\end{verbatim}
+
+Internal parameters of a camera cannot be directly compared. The command estimates a rotation to align the parameters.
+The output file {\tt Delta\_Calib.txt} contains a function which gives the differences between the two sets of calibration models as function of the radius and 
+a grid which provides planimetric vector deviation between each rays directions. Example of output :
+
+\begin{verbatim}
+--------------  Ecart radiaux  -----------
+ Rayon   Ecart
+ 0.000000 0.035861
+ 200.000000 0.094960
+ 400.000000 0.184629
+ ...
+ --------------  Ecart plani  -----------
+Im.X Im.Y  PhG.X Phg.Y Ec
+5017.600000 3763.200000 -0.855326 -0.588127 1.038015
+5017.600000 3394.560000 -0.951363 -0.529560 1.088818
+5017.600000 3025.920000 -0.988994 -0.465235 1.092956
+...
+\end{verbatim}
+
+%----------------%
+\subsection{CmpIm}
+The {\tt CmpIm} command computes deviations between 2 images.
+
+\begin{verbatim}
+mm3d CmpIm -help
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {First image name}
+  * string :: {Second image name}
+Named args : 
+  * [Name=FileDiff] string :: {Difference image output file}
+  * [Name=Dyn] REAL :: {Dynamic of difference}
+  * [Name=Brd] Pt2di :: {Border to eliminate}
+  * [Name=OkSzDif] bool :: {Process files with different sizes}
+  * [Name=Mul2] REAL :: {Multiplier of file2 (Def 1.0)}
+  * [Name=UseFOM] bool :: {Consider file as DTSM and use XML FileOriMnt}
+  * [Name=ColDif] REAL :: {Color file of diff using Red/Blue for sign}
+  * [Name=XmlG] string :: {Generate Xml}
+
+\end{verbatim}
+%------------------%
+\subsection{CmpTieP}
+
+%--------------------%
+\subsection{CmpOrthos}
+
+%---------------------%
+\subsection{CmpTrajGps}
+
+
+%***************************%
 \section{Miscellaneous tools}
 
 %------------------------%
@@ -769,89 +889,6 @@ mm3d TestLib Export2Ply "#F=N_X_Y_Z" AppAll-Txt.txt Ray=0.5 FixColor=[0,0,255]
 \end{verbatim}
 
 This is sometimes useful for example when one wants to represent GCPs into a point cloud to clearly visualize its distribution.
-
-%-----------------%
-\subsection{CmpOri}
-The {\tt CmpOri} command computes average norme differences of all external parametrs of images.
-
-\begin{verbatim}
-mm3d CmpOri -help
-*****************************
-*  Help for Elise Arg main  *
-*****************************
-Mandatory unnamed args : 
-  * string :: {Full Name (Dir+Pattern)}
-  * string :: {Orientation 1}
-  * string :: {Orientation 2}
-Named args : 
-  * [Name=DirOri2] string :: {Orientation 2}
-  * [Name=XmlG] string :: {Generate Xml}
-\end{verbatim}
-
-Example :
-\begin{verbatim}
-mm3d CmpOri ".*JPG" Ori-Bascule/ Ori-Compense/ XmlG=Delta_Basc_Comp.xml
-\end{verbatim}
-
-For example the result displayed and saved in {\tt Delta\_Basc\_Comp.xml} :
-\begin{verbatim}
-<?xml version="1.0" ?>
-<XmlTNR_TestOriReport>
-     <OriName>RTL-Compense-AllPts</OriName>
-     <TestOriDiff>false</TestOriDiff>
-     <DistCenter>0.0397097570172935677</DistCenter>
-     <DistMatrix>3.87112370850761372e-07</DistMatrix>
-</XmlTNR_TestOriReport>
-\end{verbatim}
-
-
-%-------------------%
-\subsection{CmpCalib}
-The {\tt CmpCalib} command compares two files of calibrations (in general of the same camera).
-
-\begin{verbatim}
-mm3d CmpCalib -help
-*****************************
-*  Help for Elise Arg main  *
-*****************************
-Mandatory unnamed args : 
-  * string :: {First calibration file}
-  * string :: {Second calibration file}
-Named args : 
-  * [Name=Teta01] REAL
-  * [Name=Teta02] REAL
-  * [Name=Teta12] REAL
-  * [Name=L1] INT
-  * [Name=SzW] INT
-  * [Name=DynV] REAL
-  * [Name=Out] string :: {Result (Def=Name1_ecarts.txt)}
-  * [Name=DispW] bool :: {Display window}
-  * [Name=XmlG] string :: {Generate Xml}
-\end{verbatim}
-
-Example :
-\begin{verbatim}
-mm3d CmpCalib Ori-Bascule/AutoCal_Foc-35000_Cam.xml Ori-Compense/AutoCal_Foc-35000_Cam.xml Out=Delta_Calib.txt
-\end{verbatim}
-
-Calibration parameters of a camera can not be directly compared, the command estimates a rotation to align the parameters.
-The output file {\tt Delta\_Calib.txt} contains a function which gives the differences between the two sets of calibration as function of the radius and 
-a grid which provides planimetric vector deviation between each rays directions. Example of output :
-
-\begin{verbatim}
---------------  Ecart radiaux  -----------
- Rayon   Ecart
- 0.000000 0.035861
- 200.000000 0.094960
- 400.000000 0.184629
- ...
- --------------  Ecart plani  -----------
-Im.X Im.Y  PhG.X Phg.Y Ec
-5017.600000 3763.200000 -0.855326 -0.588127 1.038015
-5017.600000 3394.560000 -0.951363 -0.529560 1.088818
-5017.600000 3025.920000 -0.988994 -0.465235 1.092956
-...
-\end{verbatim}
 
 %--------------------------%
 \subsection{PseudoIntersect}
