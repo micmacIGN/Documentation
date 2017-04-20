@@ -683,6 +683,137 @@ Methods to load/save object from file :
    \item {\tt  static cElMap2D * FromFile(const std::string \&);} read an object from a file;
 \end{itemize}
 
+%-------------------------------------------------------------------
+
+\subsection{XML Parameter to create dense map}
+
+The dense map can be create with MicMac.
+
+   %  - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsubsection{Example and naming}
+
+The folder {\tt include/XML\_MicMac} contains different exemple of file
+adapted to $2d$ matchings when the matching is expected to be small and smooth :
+
+\begin{itemize}
+   \item {\tt New-Param-Bayer.xml} developped to compute matchings between 
+         different channels of a bayer matrix images
+
+   \item {\tt MM-DeformThermik.xml} devlopped to compute matching between
+         two images of fix camera subject to internal thermal deformation;
+\end{itemize}
+
+The commands taking dense map as input ({\tt CmpDenseMap, DMatch2Hom,FermDenseMap}) , will take three parameters to 
+specify the location of file coherent with those created in {\tt MM-DeformThermik.xml}.
+
+\begin{itemize}
+    \item  {\tt PrefDir}  to specify the directory
+    \item  {\tt Im1} name of first image
+    \item  {\tt Im2} name of second image
+\end{itemize}
+
+The command xpect that the result of matching are stored in 
+{\tt MEC-\${PrefDir}-\${Im1}-\${Im2}}.
+These three value can be controled with the usal MicMac mecanism :
+
+\begin{verbatim}
+MICMAC  MM-DeformThermik.xml +Im1=img_029_002_00598.thm.tif +Im2=img_029_002_01313.thm.tif \
+        +PrefDir=SquareDA2 +WinExp=false +DilAlt=2
+\end{verbatim}
+
+
+
+   %  - - - - - - - - - - - - - - - - - - - - - - - - -
+\subsubsection{Usefull tags}
+
+   %  - - - - - - - - - - - - - - - - - - - - - - - - -
+
+The dynamic of correlation can be controled by the tags (see \ref{Image:Term}) :
+
+\begin{itemize}
+    \item  GammaCorrel
+    \item  DynamiqueCorrel
+    \item  CorrelMin
+\end{itemize}
+
+The exponential window for correlation can be controled by the tag (see \ref{Fenetre:Correl}) :
+
+\begin{itemize}
+    \item  {\tt    <TypeWCorr> eWInCorrelExp            </TypeWCorr>} to select exponential window
+    \item  {\tt    <NbIterFenSpec>   2           </NbIterFenSpec>}  to create a double iteratio,
+\end{itemize}
+
+To limit residual noise, it is possible to  post filter the computed  maps with the
+tag {\tt PostFiltragePx} :
+
+\begin{verbatim}
+        <PostFiltragePx>
+                  <OneFitragePx>
+                        <TypeFiltrage >  eFiltrageMedian  </TypeFiltrage>
+                        <SzFiltrNonAd  >   4        </SzFiltrNonAd>
+                        <SzFiltrage>       0         </SzFiltrage>
+                        <NbIteration  >  2       </NbIteration>
+                  </OneFitragePx>
+        </PostFiltragePx>
+\end{verbatim}
+
+%-------------------------------------------------------------------
+
+\subsection{Testing dense maps with FermDenseMap}
+
+%-------------------------------------------------------------------
+
+\subsection{Comparing dense maps with CmpDenseMap}
+
+%-------------------------------------------------------------------
+
+\subsection{Converting dense map to homologues with {\tt DMatch2Hom}}
+
+The command {\tt DMatch2Hom} expect tie point in the current format adapted
+to sparse tie points. When they come from dense matching like, for example,
+those furnished by MicMac, the command {\tt DMatch2Hom} make the conversion
+to the expected format. The syntax is : 
+
+
+\begin{verbatim}
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Pref where , Dir=MEC-${Pref}-{Im1}-{Im2}}
+  * string :: {Name Im1}
+  * string :: {Name Im2}
+Named args : 
+  * [Name=SH] string :: {Set of homologue, def=DM}
+  * [Name=NbTiles] REAL :: {Number of tile/side (will be slightly changed), Def=30}
+  * [Name=Pds] string :: {File for weighting, def W=1.0}
+\end{verbatim}
+
+Some comments :
+
+\begin{itemize}
+   \item parameter {\tt SH} specify the folder  for export;
+   \item parameter {\tt NbTiles} specify approximately the number of tiles per side;
+         the total number will be close to {\tt NbTiles * NbTiles} (not exacly because of rounding effects);
+\end{itemize}
+
+Here could be an example :
+
+\begin{verbatim}
+mm3d DMatch2Hom  \
+     ""\
+     img_029_002_00605.thm.tif \
+     img_029_002_00752.thm.tif \
+PerResidu=[146.286,147.692]
+\end{verbatim}
+
+The command expect that the result of matching are stored in a folder 
+{\tt MEC-img\_029\_002\_00605.thm.tif-img\_029\_002\_00752.thm.tif/}.
+
+The value {\tt PerResidu} indicates the precise size of the computed tiles,
+it may be usefull to give to the command {\tt CalcMapAnalytik} to reconstruct
+an image structure from sparse points.
 
 %-------------------------------------------------------------------
 
@@ -821,53 +952,6 @@ Some comments :
    \item middle map is here  an homography;
 \end{itemize}
 
-%-------------------------------------------------------------------
-
-\subsection{Converting dense map to homologues with {\tt DenseMapToHom}}
-
-The command {\tt CalcMapAnalytik} expect tie point in the current format adapted
-to sparse tie points. When they come from dense matching like, for example,
-those furnished by MicMac, the command {\tt DenseMapToHom} make the conversion
-to the expected format. The syntax is : 
-
-
-\begin{verbatim}
-mm3d DMatch2Hom
-*****************************
-*  Help for Elise Arg main  *
-*****************************
-Mandatory unnamed args : 
-  * string :: {Name Im1}
-  * string :: {Name Im2}
-  * string :: {Name Px1 (dx)}
-  * string :: {Name Px2 (dy)}
-Named args : 
-  * [Name=SH] string :: {Set of homologue, def=DM}
-  * [Name=NbTiles] REAL :: {Number of tile / side (will be slightly changed), Def=30}
-\end{verbatim}
-
-Some comments :
-
-\begin{itemize}
-   \item parameter {\tt SH} specify the folder  for export;
-   \item parameter {\tt NbTiles} specify approximately the number of tiles per side;
-         the total number will be close to {\tt NbTiles * NbTiles} (not exacly because of rounding effects);
-\end{itemize}
-
-Here could be an example :
-
-\begin{verbatim}
-mm3d DMatch2Hom  \
-     img_029_002_00605.thm.tif \
-     img_029_002_00752.thm.tif \
-     MEC-img_029_002_00605.thm.tif-img_029_002_00752.thm.tif/Px1_Num12_DeZoom1_LeChantier.tif \
-     MEC-img_029_002_00605.thm.tif-img_029_002_00752.thm.tif/Px2_Num12_DeZoom1_LeChantier.tif 
-PerResidu=[146.286,147.692]
-\end{verbatim}
-
-The value {\tt PerResidu} indicates the precise size of the computed tiles,
-it may be usefull to give to the command {\tt CalcMapAnalytik} to reconstruct
-an image structure from sparse points.
 
 %-------------------------------------------------------------------
 
@@ -891,55 +975,6 @@ Typically, the image could be the second image of {\tt CalcMapAnalytik}
 to get an image registred to the first image (of {\tt CalcMapAnalytik}).
 
 
-%-------------------------------------------------------------------
 
-\subsection{XML Parameter}
 
-   %  - - - - - - - - - - - - - - - - - - - - - - - - -
-
-\subsubsection{Example}
-
-The folder {\tt include/XML\_MicMac} contains different exemple of file
-adapted to $2d$ matchings when the matching is expected to be small and smooth :
-
-\begin{itemize}
-   \item {\tt New-Param-Bayer.xml} developped to compute matchings between 
-         different channels of a bayer matrix images
-
-   \item {\tt MM-DeformThermik.xml} devlopped to compute matching between
-         two images of fix camera subject to internal thermal deformation;
-\end{itemize}
-
-\subsubsection{Usefull tags}
-
-   %  - - - - - - - - - - - - - - - - - - - - - - - - -
-
-The dynamic of correlation can be controled by the tags (see \ref{Image:Term}) :
-
-\begin{itemize}
-    \item  GammaCorrel
-    \item  DynamiqueCorrel
-    \item  CorrelMin
-\end{itemize}
-
-The exponential window for correlation can be controled by the tag (see \ref{Fenetre:Correl}) :
-
-\begin{itemize}
-    \item  {\tt    <TypeWCorr> eWInCorrelExp            </TypeWCorr>} to select exponential window
-    \item  {\tt    <NbIterFenSpec>   2           </NbIterFenSpec>}  to create a double iteratio,
-\end{itemize}
-
-To limit residual noise, it is possible to  post filter the computed  maps with the
-tag {\tt PostFiltragePx} :
-
-\begin{verbatim}
-        <PostFiltragePx>
-                  <OneFitragePx>
-                        <TypeFiltrage >  eFiltrageMedian  </TypeFiltrage>
-                        <SzFiltrNonAd  >   4        </SzFiltrNonAd>
-                        <SzFiltrage>       0         </SzFiltrage>
-                        <NbIteration  >  2       </NbIteration>
-                  </OneFitragePx>
-        </PostFiltragePx>
-\end{verbatim}
 
