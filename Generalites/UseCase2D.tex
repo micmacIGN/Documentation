@@ -584,11 +584,11 @@ some comments :
          other estimator) with a single set of homologous points; each estimable model 
          has a well known set of unknown parameters;
 
-   \item the camera model is not estimable with a single set, but it can be usefull
+   \item the {\tt "camera"} model is not estimable with a single set, but it can be usefull
          for correcting measure from known distorsion and must be reexported, that's why it belongs 
          to the set;
 
-   \item the composition model is usefull for example to  handle a composition of
+   \item the {\tt "composition"} model is usefull for example to  handle a composition of
          distortion an homography in the case of planar movement with distorted camera.
 \end{itemize}
 
@@ -643,6 +643,9 @@ Methods to create new maps :
           (if the vector is of size $1$, return its single object);
     \item {\tt static cElMap2D * IdentFromType(int);} return the identity of a given type 
           ({\tt int} is in fact an {\tt eTypeMap2D});
+    \item {\tt  void Affect(const cElMap2D \&);} affectation, {\tt A.Affect(B)} set in
+          {\tt A} a copy of {\tt B}, {\tt A} and {\tt B} must be of the same type, which
+          is dynamically checked;
 \end{itemize}
 
 Methods to estimate a model from estimator (typically least square) :
@@ -658,6 +661,11 @@ Methods to estimate a model from estimator (typically least square) :
           if $P_1$ and $P_2$ are homologous points, fill  $V_x$ and $C.x$ (resp. $V_y$ and $C.y$) 
           to have an observation $ \sum\limits_k V_x^k p_k = C.x $ where $p_k$  is the internal parameter
           of the object.
+
+    \item {\tt   std::vector<double> Params() const;} return a vector that contains the internal
+          state  (can be used to copy an object combined with {\tt AddEq}, this actually what is
+          done by {\tt Affect}).
+ 
 \end{itemize}
 
 Function {\tt cElMap2D * L2EstimMapHom(eTypeMap2D aType,const ElPackHomologue \& aPack);} show how this
@@ -693,9 +701,10 @@ of tie points.  The syntax is :
    \item {\tt Ori=}, option for correcting measur from distorsion;
    \item {\tt PerResidu=}, option for setting the period for computing image of residuals, generally
          it will come from printed by {\tt DMatch2Hom} which knows what value it used to compute tiles;
+   \item  {\tt PRE=} parameter for robust estimation.
 \end{itemize}
 
-For each tie point $Q_1$ and $Q_2$:
+The meaning of {\tt PerResidu} is as followe, for each tie point $Q_1$ and $Q_2$:
 
 \begin{itemize}
    \item let $Map$ be the computed;
@@ -704,6 +713,28 @@ For each tie point $Q_1$ and $Q_2$:
    \item let $I= ^t ([\frac{X_1}{X_P}],[\frac{Y_1}{Y_P}])$
    \item $R$ will be written at point $I$ in two images.
 \end{itemize}
+
+
+If  {\tt PRE} ise not set, a standard least square solver, assuming no outlayer, is used.
+Else the robust estimation of fonction {\tt Map2DRobustInit} is used,
+the algorithm used is :
+
+\begin{itemize}
+   \item fisrt select a subset of point for the ransac step ;
+         then run the ransac inialization :
+         \begin{itemize}
+             \item  do $N_{tir}$ random sampling of $Nb_f$ points (where $Nb_f$ is
+                    selected according to degree of freedom of the type of map);
+
+             \item  for each sampling, estimate the map, and  estimate the error
+                    as the $100*prop$ percentille of the error (for example if $prop=0.5$
+                    the median is computed);
+                    
+             \item  select the sample that minimize the error;
+         \end{itemize}
+   \item 
+\end{itemize}
+
 
 
 
@@ -720,7 +751,11 @@ Named args :
   * [Name=SH] string :: {Set of homologue}
   * [Name=Ori] string :: {Directory to read distorsion}
   * [Name=PerResidu] Pt2dr :: {Period for computing residual}
+  * [Name=PRE] vector<double> :: {Param for robust estimation [PropInlayer,NbRan(500),NbPtsRan(+inf)]}
 \end{verbatim}
+
+The norm of residual at different percentil are printed. At the end the
+variance in $x$ and $y$ are printed.
 
 
 \begin{verbatim}
