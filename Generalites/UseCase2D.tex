@@ -685,13 +685,28 @@ Methods to load/save object from file :
 
 %-------------------------------------------------------------------
 
+\subsection{Possible pipeline}
+
+A possible use of these tool would be :
+
+\begin{enumerate}
+   \item compute a dense matching using {\tt MICMAC} and one of the parameters described in~\ref{XMLDeneMatch};
+   \item possibly compute a quality score by closing using {\tt FermDenseMap} described in \ref{FermDenseMap};
+\end{enumerate}
+
+
+%-------------------------------------------------------------------
+
 \subsection{XML Parameter to create dense map}
+\label{XMLDeneMatch}
 
 The dense map can be create with MicMac.
 
    %  - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsubsection{Example and naming}
+
+\label{NameDM2}
 
 The folder {\tt include/XML\_MicMac} contains different exemple of file
 adapted to $2d$ matchings when the matching is expected to be small and smooth :
@@ -762,7 +777,59 @@ tag {\tt PostFiltragePx} :
 
 \subsection{Testing dense maps with FermDenseMap}
 
-%-------------------------------------------------------------------
+\label{FermDenseMap}
+
+The tool {\tt FermDenseMap} can be used to compute the quality of dense matching by closing.
+Basically, if there is three images $a,b$ and $b$, and the dense map $M_{a,b}$ between
+$a$ and $b$, $M_{b,c}$ and $M_{a,c}$ have been computed, it checks the equality :
+
+\begin{equation}
+M_{a,c} - M_{a,b} \circ  M_{b,c}  = 0
+\end{equation}
+
+In the current version, it assume the deplacement are close to identity and check in fact 
+(with $M=Id+m$):
+
+\begin{equation}
+m_{a,c} - m_{a,b}  + m_{b,c}  = 0 \label{EqResFDM}
+\end{equation}
+
+
+\begin{verbatim}
+mm3d FermDenseMap
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Pref where , Dir=MEC-${Pref}-{Im1}-{Im2}}
+  * string :: {ImA}
+  * string :: {ImB}
+  * string :: {ImC}
+Named args : 
+  * [Name=Num] INT :: {Num of Px, def=last}
+  * [Name=SigmaP] REAL :: {Sigma use for pds comp, Pds=1/(1+Sq(Res/Sig))}
+\end{verbatim}
+
+The dense map are loaded from {\tt Pref,ImA,ImB,ImC} using convention described in~\ref{NameDM2}.
+If {\tt ImA = ImC}, then the map $M_{A,A}$ (which generally does not exist) is assumed to
+be null.
+
+The result are stored in a folder {\tt Tmp-Ferm-\${Pref}}, the file created are :
+
+\begin{itemize}
+   \item  {\tt Residu-\${ImA}-\${ImA}-\${ImC}-X.tif} is the $x$-residual of equation ~\ref{EqResFDM};
+   \item  {\tt Residu-\${ImA}-\${ImA}-\${ImC}-Y.tif} is the $y$-residual of equation ~\ref{EqResFDM};
+   \item  {\tt Residu-\${ImA}-\${ImA}-\${ImC}-N.tif} is the  norm of residual of equation ~\ref{EqResFDM};
+   \item  {\tt Residu-\${ImA}-\${ImA}-\${ImC}-P.tif} is the  weight computed when {\tt SigmaP} is used;
+\end{itemize}
+
+If {\tt SigmaP} is used, the weighting is (with $d$ the norm of equation ~\ref{EqResFDM}) :
+
+\begin{equation}
+  W = \frac{1}{1+(\frac{d}{\sigma})^2}
+\end{equation}
+
+%------------------------------------------------------------------FDM
 
 \subsection{Comparing dense maps with CmpDenseMap}
 
