@@ -573,8 +573,7 @@ The input file needed is the offsets output file and the slip curve will be draw
 
 This section contain information about evaluation and use of analytical  $2D$
 deformation  between images. The mathematicall model supported are :
-homothety, similitud, affinity, homography, camera distortion, composition.
-Probably an (easy) extension will be done to integrate  polynomial model.
+homothety, similitud, affinity, homography, camera distortion, composition, polynomial.
 Table~\ref{TAB:ANALYTICAL:MAP} present a synthesis of the model supported ,
 some comments :
 
@@ -607,10 +606,11 @@ some comments :
           {\tt Affinity } & Yes & 6 &  AffinitePlane    & ElAffin2D      \\  \hline
           {\tt Homography}& Yes & 8 &  XmlHomogr        & cElHomographie \\  \hline
           {\tt Camera }& No & ? &  Xml\_MapCam          & cCamAsMap      \\  \hline
+          {\tt Polynomial }& Yes & $ N(N+1)$ (*) &  Xml\_Map2dPol   & cMapPol2d      \\  \hline
           {\tt Composition of functions }& No & ? &  Xml\_Map2D      & cComposElMap2D \\  \hline
 \end{tabular}
 
-\caption { Class of analyticall $2d$ maps}
+\caption { Class of analyticall $2d$ maps \emph{(*) where $N$ is the degree of the polynom}}
 \label{TAB:ANALYTICAL:MAP}
 \end{figure}
 
@@ -692,6 +692,12 @@ A possible use of these tool would be :
 \begin{enumerate}
    \item compute a dense matching using {\tt MICMAC} and one of the parameters described in~\ref{XMLDeneMatch};
    \item possibly compute a quality score by closing using {\tt FermDenseMap} described in \ref{FermDenseMap};
+   \item possibly compare two dense map with {\tt CmpDenseMap}, described in \ref{CmpDenseMap};
+   \item convert the dense map in homologous point format with {\tt DMatch2Hom}, 
+         possibly add a weighting computed in {\tt FermDenseMap},
+         described in~\ref{DMatch2Hom};
+   \item estimate an analyticall model with {\tt CalcMapAnalytik}, described in~\ref{CalcMapAnalytik};
+   \item use model to resample images with  {\tt ReechImMap}, described in~\ref{ReechImMap}.
 \end{enumerate}
 
 
@@ -791,7 +797,7 @@ In the current version, it assume the deplacement are close to identity and chec
 (with $M=Id+m$):
 
 \begin{equation}
-m_{a,c} - m_{a,b}  + m_{b,c}  = 0 \label{EqResFDM}
+m_{a,c} - (m_{a,b}  + m_{b,c})  = 0 \label{EqResFDM}
 \end{equation}
 
 
@@ -833,9 +839,23 @@ If {\tt SigmaP} is used, the weighting is (with $d$ the norm of equation ~\ref{E
 
 \subsection{Comparing dense maps with CmpDenseMap}
 
+\label{CmpDenseMap}
+
+This command does a basic comparison between two dense maps $M_1$ and
+$M_2$ according to the following model :
+
+\begin{equation}
+M_1 = \lambda_{1,2} M_2 \label{EqResCmpDM}
+\end{equation}
+
+It estimate $\lambda_{1,2}$ and print the value of residual of 
+equation~\ref{EqResCmpDM}.
+
 %-------------------------------------------------------------------
 
 \subsection{Converting dense map to homologues with {\tt DMatch2Hom}}
+
+\label{DMatch2Hom}
 
 The command {\tt DMatch2Hom} expect tie point in the current format adapted
 to sparse tie points. When they come from dense matching like, for example,
@@ -886,6 +906,8 @@ an image structure from sparse points.
 
 \subsection{Fitting models with {\tt CalcMapAnalytik}}
 
+\label{CalcMapAnalytik}
+
 
 The command {\tt CalcMapAnalytik} compute an analytical model from a set
 of tie points.  The syntax is :
@@ -901,7 +923,7 @@ of tie points.  The syntax is :
    \item  {\tt PRE=} parameter for robust estimation.
 \end{itemize}
 
-The meaning of {\tt PerResidu} is as followe, for each tie point $Q_1$ and $Q_2$:
+The meaning of {\tt PerResidu} is as follows, for each tie point $Q_1$ and $Q_2$:
 
 \begin{itemize}
    \item let $Map$ be the computed;
@@ -1023,6 +1045,8 @@ Some comments :
 %-------------------------------------------------------------------
 
 \subsection{Using maps to resample images with {\tt ReechImMap}}
+
+\label{ReechImMap}
 
 One use of these analyticall maps is to ressample images,
 this can be done with {\tt  ReechImMap}. For now it's quite minimalist. 
