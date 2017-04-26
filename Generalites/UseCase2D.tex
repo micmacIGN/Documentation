@@ -700,6 +700,8 @@ A possible use of these tool would be :
    \item use model to resample images with  {\tt ReechImMap}, described in~\ref{ReechImMap}.
 \end{enumerate}
 
+In the the case of evolutive, as described in  \ref{EvolutiveMap}, this pipeline will
+be modified in the phase of estimation model.
 
 %-------------------------------------------------------------------
 
@@ -835,7 +837,7 @@ If {\tt SigmaP} is used, the weighting is (with $d$ the norm of equation ~\ref{E
   W = \frac{1}{1+(\frac{d}{\sigma})^2}
 \end{equation}
 
-%------------------------------------------------------------------FDM
+%------------------------------------------------------------------
 
 \subsection{Comparing dense maps with CmpDenseMap}
 
@@ -1065,7 +1067,200 @@ Mandatory unnamed args :
 Typically, the image could be the second image of {\tt CalcMapAnalytik} 
 to get an image registred to the first image (of {\tt CalcMapAnalytik}).
 
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+
+\section{Evolutive analytical deformation}
+
+\label{EvolutiveMap}
+
+%------------------------------------------------------------------
+\subsection{Motivation and modelisation}
+
+Probably the best illustration is to describe the research application where it
+was developped :
+
+\begin{itemize}
+   \item we have a camera which is deformed due to thermal effect, we make
+        the assumption that this deformation is deterministic and want to calibrate it as a
+        function of the temperature;
+
+   \item so given a reference temperature $T_0$, we want to comput $\forall T$, the deformation
+         $M^T_{T0}(X,Y)$  that the thermal effect create on the images;
+
+   \item for each image, if we know $M^T_{T0}(X,Y)$ and $T$  we will be abble to resample the image
+         and get an image corresponding to reference temperature $T_0$,
+         this way we annulate the deformation of the camera ;
+         
+\end{itemize}
+
+To estimate $M^T_{T0}(X,Y)$, we need a model, classically we choose a polynomial model :
+
+\begin{equation}
+  M^T_{T0}(X,Y)  = \sum  T^k  M_k(X,Y)
+\end{equation}
+
+Where $M_k$, belong to one the possible model (rotation, affinity, \dots , polynomial). 
+Practically this always polynomial that are used \footnote{but these polynomial can
+be forced to be closed to a selected model see~\ref{Comp:Evol:Map}} :
 
 
+   %%  \item we put the camera in fix position,  and take images of the same scene,
+
+\begin{equation}
+  M^T_{T0}(X,Y)  = \sum a_{k,i,j}  T^k  X^i Y^j  \; ; \;  k<D_t \; , \; i+j<D_{x,y}
+\end{equation}
+
+As we cannot compute $M^T_{T0}(X,Y)$ for all $T$ the functionnality described here,
+allow to estimate $M^T_{T0}(X,Y)$ from a set of sample $M^{T_1}, M^{T_2}, \dots , M^{T_N}$ .
+
+In our application, we have a fix camera that take image from the same scene at different 
+temparature, and compute deformation between the first image and the other images.
+
+
+
+%------------------------------------------------------------------
+\subsection{XML and \CPP classes}
+
+The  \CPP class who handles a map $M(X,Y,T)$ is {\tt cMapPol2d}.
+Basically it contain a vector of $D_t+1$  {\tt cMapPol2d}  polynomial maps 
+$M_0,M_1 \dots M_{D_t+1} $ .  And it represent :
+
+\begin{equation}
+   M(X,Y,T) = \sum T^k M_k(X,Y)
+\end{equation}
+
+The class who handle a XML copy of  {\tt cMapPol2d} is {\tt cXml\_EvolMap2dPol}.
+
+
+%------------------------------------------------------------------
+\subsection{Computing a map evolutive with {\tt CalcMapXYT}}
+
+\label{Comp:Evol:Map}
+
+The command {\tt CalcMapXYT} allow to create a map $M(X,Y,T)$
+from  different map computed at different temperature:
+
+\begin{verbatim}
+mm3d CalcMapXYT
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Name master}
+  * string :: {Pattern of im}
+  * INT :: {Degre of polynom for temp}
+  * INT :: {Degre of polynom for XY}
+  * string :: {Key to calc T (THOM->read thom mtd, NUM->order,VEC->use VT args )}
+  * string :: {Set of homologue}
+Named args : 
+  * [Name=Model] string :: {Model in [Homot,Simil,Affine,Homogr,Polyn]}
+  * [Name=PdsM] REAL :: {Pds for master, def=1}
+  * [Name=Out] string :: {file for result, def=PolOfTXY.xml}
+\end{verbatim}
+
+The meaning of the param are quite obvious except :
+
+\begin{itemize}
+   \item the {\tt Key} paramater is used to compute the temperature; there are
+         special value (still unimplemanted), else it is the standard key association
+         of MicMac, on figure~\ref{Ex:Key:TempCam}
+
+   \item the {\tt Model} parameter, can impose that for each $T$ , $ M^T_{T0}$ is "close"
+         the given type (Homography, similitude ...), by default no constraint is imposed;
+
+   \item the {\tt PdsM}  parameter, can impose a special weigthing for the master image
+         ; knowing that for it, the Mapping is set  to identity (there is no need to  compute
+          maps  between two identical images);
+\end{itemize}
+
+
+\begin{figure}
+\begin{verbatim}
+<ChantierDescripteur>
+    <KeyedNamesAssociations>
+        <Calcs>
+            <Arrite> 1 1 </Arrite>
+            <Direct>
+                <PatternTransform>  img_029_002_([0-9]*).thm.tif </PatternTransform>
+                <CalcName> $1 </CalcName>
+                </Direct>
+        </Calcs>
+        <Key> Loc-Assoc-Temp </Key>
+    </KeyedNamesAssociations>
+</ChantierDescripteur>
+\end{verbatim}
+\caption{Exemple where the "temperature" is set to the num of order}
+\label{Ex:Key:TempCam}
+\end{figure}
+
+An exemple of two output  of {\tt CalcMapXYT}, one with defaut value for {\tt Model},
+
+
+\begin{verbatim}
+# ============= WITHOUT CONSTRAINT =================
+
+mm3d CalcMapXYT img_029_002_00598.thm.tif "img_029_002_(00640|..|01313).thm.tif" 3 4 Loc-Assoc-Temp DM
+ NAME img_029_002_00640.thm.tif TMP=640
+...
+ NAME img_029_002_01313.thm.tif TMP=1313
+ NAME img_029_002_00598.thm.tif TMP=598
+Residual, For img_029_002_00640.thm.tif moy=0.111051 med=0.0953944 %80=0.15228
+...
+Residual, For img_029_002_00598.thm.tif moy=0.0920234 med=0.099901 %80=0.110051
+ *** MOY DIST GLOB = 0.0829464 ***
+
+
+# ============= WITH CONSTRAINT, force to a similitude =========
+mm3d CalcMapXYT img_029_002_00598.thm.tif "img_029_002_(00640|..|01313).thm.tif" 3 4 Loc-Assoc-Temp DM Model=Simil
+...
+Residual, For img_029_002_00640.thm.tif moy=0.112537 med=0.115781 %80=0.143217
+..
+Residual, For img_029_002_00598.thm.tif moy=0.0900844 med=0.0902867 %80=0.117638
+ *** MOY DIST GLOB = 0.1498 ***
+
+
+mm3d CalcMapXYT img_029_002_00598.thm.tif "img_029_002_(X00619|00640|00661|00682|00724|00752|00780|00801|00850|00927|01049|01126|01170|01203|01247|01313).thm.tif" 3 1 Loc-Assoc-Temp DM Model=Simil
+   ....
+ *** MOY DIST GLOB = 0.1498 ***
+
+\end{verbatim}
+
+
+Some comments :
+
+\begin{itemize}
+   \item for each image of the, several statistic of residual $M_T(P_1)-P_2$ of the homologous point
+         are printed;
+   \item  the global residual is printed at end;
+   \item  if we fix the model, obvisouly the residual increase
+   \item with a similitude model, the residual do not depend from degre in $X,Y$;
+\end{itemize}
+
+                         
+
+%------------------------------------------------------------------
+\subsection{Instanciating a map evolutive with {\tt CalcMapOfT}}
+
+Once we have compute the evolutive map $M(X,Y,Y)$, we need to compute
+the map $M_T(X,Y)$ for each given $T$. This can be done by the command {\tt CalcMapOfT} :
+
+\begin{verbatim}
+mm3d CalcMapOfT
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Name of map evol}
+  * REAL :: {Value of "Temperature"}
+Named args : 
+  * [Name=Out] string :: {Name for result}
+\end{verbatim}
+
+The default name of the created map will depend of temperature,
+for exemple "{\tt mm3d CalcMapOfT  PolOfTXY.xml  1000}" will create
+a map "{\tt PolOfTXY-1000.000000.xml}". This map can finally be
+used to resample the image at temparature $1000$ on refence image.
 
 
