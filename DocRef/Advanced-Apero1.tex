@@ -1355,6 +1355,7 @@ Mandatory unnamed args :
   * string :: {Name File for Image Measures}
 Named args : 
   * [Name=FM] bool :: {Fraser Mode, use all affine parmeters (def=false)}
+  * [Name=Rans] vector<std::string> :: {Parameters for Ransac, [NbTirage,PropInlier]}
   * [Name=Filter] string :: {Filter for Image (Def=.*)}
 \end{verbatim}
 
@@ -1373,6 +1374,19 @@ no distorsion); however, $6$ are required as forcing skew to $0$ and xy ratio to
 
 The folder {\tt Ori-11ParamComp/} also contains the result of a compensation done using the previous value.
 They may be sligthly different and theoretically more accurate, specifically when the {\tt FM=false} option.
+
+By default {\tt Init11P}  assume that the data contain no gross errori and dont try
+to make a robust estimation (the idea is generally the point has been seized by a human operator 
+and that they are few but correct). If it is not the case, for example if the point
+come from an automatic computation with {\tt Im2XYZ} described in~\ref{Im2XYZ:Hom} .
+In this case, it is possible to use a ransac estimation with the optional parameter
+which must contain two value :
+
+\begin{itemize}
+   \item  the number of sampling;
+   \item  an estimation of the proportion of inlier (can be very rough but better to underestimate it);
+\end{itemize}
+
 
 
 \subsection{{\tt Aspro}, space resection for calibrated camera}

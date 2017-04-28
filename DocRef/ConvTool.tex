@@ -735,20 +735,95 @@ The corresponding matrix encoding using $R$ is:
 </ParamRotation>
 \end{verbatim}
 
+%==============================================================
+
+\section{Miscellaneous internal conversion}
+
+These section describe several tools that can be used when exporting MicMac data to
+other tools.
+
+%-------------------------------------------------
+\subsection{{\tt Im2XYZ} and {\tt XYZ2Im}}
+
+The command {\tt Im2XYZ} and {\tt XYZ2Im}  allow to use the geometry of a camera, or a
+"nuage" (camera+depth map) by reading the projection (for {\tt XYZ2Im}) or invert projection (for  {\tt Im2XYZ})
+of points stored in text files.
+
+\subsubsection{{\tt Im2XYZ}, single point version}
+
+Read the values of a depthmap in XML nuage format.
+
+\begin{verbatim}
+mm3d Im2XYZ
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Nuage or Cam}
+  * string :: {File In : I,J  (xml 2d  in Homol mode)}
+  * string :: {File Out : X,Y,Z (xml 3d in Homol mode)}
+Named args : 
+  * [Name=FilterInput] string :: {To generate a file of input superposable to output}
+  * [Name=PointIsImRef] bool :: {Point must be corrected from cloud resolution def = true}
+  * [Name=InputImWithZ] bool :: {Input Im point with Z (for Im2XYZ) def=false}
+  * [Name=PtHom] vector<std::string> :: {Option for hom =[SH,Im1,Im2]}
+\end{verbatim}
+
+Brief comments :
+
+\begin{itemize}
+    \item input file must be a $2$ columns text file;
+
+    \item output will be a $3$ columns text file containing the coordinates of associated points;
+
+    \item {\tt FilterInput}, when there is no data in nuage, no 3D point  are generated; this can be a problem 
+          if it necessary that line of $3d$ points correspond to line of $2d$, if {\tt FilterInput}
+          is set the subset of $2d$ point having a corresponding $3d$ point is generated.
+\end{itemize}
 
 
+\begin{verbatim}
+$ cat FileIm.txt
+20 20
+200 400
+1000 1000
+
+$mm3d Im2XYZ PIMs-MicMac/Nuage-Depth-WIN_20170426_14_42_17_Pro.jpg.xml FileIm.txt FileTer.txt
+Warn :: [20,20] has no data in cloud
+
+$cat FileTer.txt
+-26.071929 10.640127 -34.991093
+-1.984208 0.272717 -8.832780
+
+$cat  Filter.txt 
+200.000000 400.000000
+1000.000000 1000.000000
+\end{verbatim}
 
 
+\subsubsection{{\tt Im2XYZ} , homologous point version}
 
+\label{Im2XYZ:Hom}
 
+If we have a $3d$ nuage on image $Im_1$, and tie points between
+$Im_1$ and $Im_2$, then potentially for each tie point $P_1,P_2$,
+we can use the nuage on $Im1$ to compute $3d$ coordinate of the ground point $Q$, which give
+potentially a ground control point $Q,P_2$ on $Im_2$.  
 
+This is exactly what does {\tt Im2XYZ} when the {\tt PtHom} option is used :
 
+\begin{itemize}
+    \item {\tt PtHom} must contain 3 value : SH for  homologous folder, Im1 and Im2 for two images;
+    \item  the second and third mandatory parameters contain  the output file for $3d$ coordinates
+           and images coordinates; if this file already exist, the points are added wich allow
+           to cumulate points from different nuage.
+\end{itemize}
 
+Here is an example of use :
 
-
-
-
-
-
+\begin{verbatim}
+mm3d Im2XYZ PIMs-MicMac/Nuage-Depth-WIN_20170426_14_42_12_Pro.jpg.xml TestIm.xml TestTer.xml PtHom=[,WIN_20170426_14_42_12_Pro.jpg,IMG_0099.JPG]
+mm3d Im2XYZ PIMs-MicMac/Nuage-Depth-WIN_20170426_14_42_14_Pro.jpg.xml TestIm.xml TestTer.xml PtHom=[,WIN_20170426_14_42_14_Pro.jpg,IMG_0099.JPG]
+\end{verbatim}
 
 
