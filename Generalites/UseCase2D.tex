@@ -1158,6 +1158,7 @@ Named args :
   * [Name=Model] string :: {Model in [Homot,Simil,Affine,Homogr,Polyn]}
   * [Name=PdsM] REAL :: {Pds for master, def=1}
   * [Name=Out] string :: {file for result, def=PolOfTXY.xml}
+  * [Name=OriCmpRot] string :: {Orientation folder, to compense rotation}
 \end{verbatim}
 
 The meaning of the param are quite obvious except :
@@ -1173,6 +1174,8 @@ The meaning of the param are quite obvious except :
    \item the {\tt PdsM}  parameter, can impose a special weigthing for the master image
          ; knowing that for it, the Mapping is set  to identity (there is no need to  compute
           maps  between two identical images);
+   \item if the {\tt OriCmpRot}  parameter, then the $3D$ rotation that minimize the distance between
+         $P1$ and $P2$ is applied before any estimation, this $3D$ rotation require the calibration.
 \end{itemize}
 
 
