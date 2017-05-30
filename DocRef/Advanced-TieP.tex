@@ -908,22 +908,21 @@ The command {\tt ConvNewFH} in {\tt TestLib} make the conversion from a folder
 {\tt Homol/} to the new format :
 
 \begin{verbatim}
-mm3d TestLib ConvNewFH
 *****************************
 *  Help for Elise Arg main  *
 *****************************
 Mandatory unnamed args : 
   * string :: {Pattern of images}
-  * string :: {Output}
+  * string :: {Dest  =>  Homol${SH}/PMul${Dest}.txt/dat}
 Named args : 
+  * [Name=SH] string
+  * [Name=Bin] bool :: {Binary, def=true (postix dat/txt)}
   * [Name=DoNewOri] bool :: {Tuning}
 
 
-mm3d TestLib  ConvNewFH IMGP70.*JPG PMul.txt
+mm3d TestLib  ConvNewFH "IMGP70.*JPG" PMul Bin=false
 \end{verbatim}
 
-The {\tt Ouput} must finish by {\tt .txt} for texte file or {\tt .dat}
-for binary files.
 
 \subsubsection{Merging}
 
@@ -942,7 +941,7 @@ Named args :
   * [Name=Filter] string :: {Filter for selecting images}
 
 mm3d TestLib MergeFilterNewFH PMul-Hom/H.*txt Merg.txt
-mm3d TestLib  ConvNewFH IMGP70.*JPG PMul.txt "Filter=IMGP70.*[02468].JPG"
+mm3d TestLib  ConvNewFH "IMGP70.*JPG" PMul.txt "Filter=IMGP70.*[02468].JPG"
 \end{verbatim}
 
 It is possible to have file corresponding only to a subset of images with
