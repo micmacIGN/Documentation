@@ -226,6 +226,8 @@ presents the main results.
 
 
    % - - - - - - - -  -- -  - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - -
+   % - - - - - - - -  -- -  - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - -
+   % - - - - - - - -  -- -  - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - -
 
 \section{V.O.D.K.A.}
 \label{V.O.D.K.A.}
@@ -297,6 +299,27 @@ Vodka is to be used to compute a vignette calibration. The best results are obta
 
 
 The output files should then be placed in a folder with other images taken with the same camera and the same aperture/focal length combination. The images that will be created in the Tmp-MM-Dir (and therefor used by every other commands) when the proper VODKA output files are present will be corrected using those files. If you want to use the VODKA results on the images used to compute it, you should place the VODKA output files in the images' directory and delete the Tmp-MM-Dir folder.
+
+   % - - - - - - - -  -- -  - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - -
+   % - - - - - - - -  -- -  - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - -
+   % - - - - - - - -  -- -  - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - -
+
+\section{Vignetting correction}
+
+\subsection{How MicMac use vignetting ?}
+
+Each time MicMac encouter a Raw or Jpg image, it create a copy in tiff format, only tiff 
+copy are really used by MicMac. It can be 
+in $16$ bits or $8$ bits, in $1$ or $3$ channel, so several copy may exist in the {\tt Tmp-MM-Dir}
+folder. For creating the tiff image, if there exist a vignetting image it is used to divide
+the image.
+
+\subsection{Command {\tt StackFlatField}}
+\subsection{Command {\tt PolynOfImage}}
+
+   % - - - - - - - -  -- -  - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - -
+   % - - - - - - - -  -- -  - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - -
+   % - - - - - - - -  -- -  - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - -
 
 \section{A.R.S.E.N.I.C}
 \label{A.R.S.E.N.I.C.}
