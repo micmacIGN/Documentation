@@ -446,6 +446,19 @@ If the boolean optional value {\tt PPaEqPPs} is set to  {\tt true}, then the cen
 of distorsion will be constrained to be equal to principal point in all the bundle
 adjustment.
 
+
+\subsection{Inverse radial distorsion}
+
+In MicMac, the distorsion is coded in the direction \emph{Word -> Camera} which
+is the direction for projecting a point and consequently the natural way in photogrammetry.
+However, it may be sometime usefull to know the distorsion in the other direction,
+for example for creating images corrected from distorsion.
+
+For this possible use, MicMac know export the parameters of invert distorsion,
+in the tag {\tt CoeffDistInv}. They are computed empirically by least square,
+to have better accuracy they generally have one more degree than the direct one.
+
+
    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsection{Photogrammetric Standard Model}
