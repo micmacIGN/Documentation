@@ -77,6 +77,27 @@ The main option are :
     \item {\tt KeyCalculMasq} , sometime you may have many images and a few masq, each masq being applyable
           for a group of images; use this option with much be a computation key desrcibed in
           {\tt MicMac-LocalChantierDescripteur.xml}
+          If you want to apply a set of masks depending on the name of the pictures, you can add a computation key in
+          {\tt MicMac-LocalChantierDescripteur.xml}. Example :
+          \begin{verbatim}
+<Global>
+  <ChantierDescripteur>
+   [...]
+    <KeyedNamesAssociations>
+        <IsParametrized>  true </IsParametrized>
+        <Calcs>
+            <Arrite>  1 1 </Arrite>
+             <Direct>
+                <PatternTransform> [0-9]{4}_cam_([0-9]{3})\.tif   </PatternTransform>
+                <CalcName> masq_$1.tif  </CalcName>
+             </Direct>
+        </Calcs>
+        <Key>  MyKeyCalculMasq </Key>
+    </KeyedNamesAssociations>
+  </ChantierDescripteur>
+</Global>
+          \end{verbatim}
+          Then use KeyCalculMasq=MyKeyCalculMasq on HomolFilterMasq command line to automatically use the correct mask.
 
     \item {\tt Masq3D} , a file for 3D masq as seized by {\tt SaisieMasqQT}, the orientation {\tt OriMasq3D} 
           must be initialized;
@@ -893,22 +914,21 @@ The command {\tt ConvNewFH} in {\tt TestLib} make the conversion from a folder
 {\tt Homol/} to the new format :
 
 \begin{verbatim}
-mm3d TestLib ConvNewFH
 *****************************
 *  Help for Elise Arg main  *
 *****************************
 Mandatory unnamed args : 
   * string :: {Pattern of images}
-  * string :: {Output}
+  * string :: {Dest  =>  Homol${SH}/PMul${Dest}.txt/dat}
 Named args : 
+  * [Name=SH] string
+  * [Name=Bin] bool :: {Binary, def=true (postix dat/txt)}
   * [Name=DoNewOri] bool :: {Tuning}
 
 
-mm3d TestLib  ConvNewFH IMGP70.*JPG PMul.txt
+mm3d TestLib  ConvNewFH "IMGP70.*JPG" PMul Bin=false
 \end{verbatim}
 
-The {\tt Ouput} must finish by {\tt .txt} for texte file or {\tt .dat}
-for binary files.
 
 \subsubsection{Merging}
 
@@ -927,7 +947,7 @@ Named args :
   * [Name=Filter] string :: {Filter for selecting images}
 
 mm3d TestLib MergeFilterNewFH PMul-Hom/H.*txt Merg.txt
-mm3d TestLib  ConvNewFH IMGP70.*JPG PMul.txt "Filter=IMGP70.*[02468].JPG"
+mm3d TestLib  ConvNewFH "IMGP70.*JPG" PMul.txt "Filter=IMGP70.*[02468].JPG"
 \end{verbatim}
 
 It is possible to have file corresponding only to a subset of images with

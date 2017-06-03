@@ -36,3 +36,6 @@ DocMicMac.pdf : $(FTEX)
 	pdflatex DocMicMac
 DocMicMac.dvi : $(FTEX)
 	latex DocMicMac
+clean :
+	find . -iname "*.aux" -exec rm {} +
+	rm -f DocMicMac.pdf DocMicMac.dvi
