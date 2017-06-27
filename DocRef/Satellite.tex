@@ -11,21 +11,29 @@ The following chapter overviews the processing of satellite images data using \t
 %
 \section{With approximate sensor orientation -- RPC bundle adjustment (recommended)}\label{sec:rpcBundle}
 %{\tt MicMac}
+\begin{figure}[h!]
+\centering 
+\includegraphics[width=0.99\linewidth]{FIGS/Satellites/usingSatellites.pdf}
+\caption{ Satellite images processing workflow for DSM generation. The {\tt MMTestOrient} is a supplementary operation aiming at evaluating the goodness of the orientation parameters. The {\tt CreateEpip} is obligatory only in case the user wants to perform dense matching in this geometry. {\tt{SateLib RecalRPC}} recalculates the original RPCs to include the adjusted corrections.  {\tt{SateLib CropRPC}} does a crop of a set of satellite images and recalculates the new RPCs. For {\tt{Malt}} in multi-view reconstruction see Fig.~\ref{FIG:sat:fusion}. }\label{FIG:sat:func}
+\end{figure}
+%
+\begin{figure}[h]
+\centering 
+\includegraphics[width=0.88\linewidth]{FIGS/Satellites/satFusion.pdf}
+\caption{{\tt{Malt}} multi-view reconstruction pipeline. }\label{FIG:sat:fusion}
+\end{figure}
+%
 This section presents the processing chain on pushbroom sensor images when input orientation is provided in form of the RPCs. Figure~\ref{FIG:sat:func} depicts the DSM generation processing workflow. The input format of the RPCs should comply with the following: Dimap v2 (tested), DigitalGlobe (tested), IKONOS/ASCII (not fully tested). Bundle adjustment observations must include tie points and optionally may include GCP data.\par  
 %
 Having converted the RPC files to the {\tt MicMac}-format files (see Subsection~\ref{subsec:rpcConv}), the refinement of the orientation parameters is done within the {\tt Campari} tool (2a in Figure~\ref{FIG:sat:func}; see also Subsection~\ref{subsub:rpcCampari}). In order to validate the internal accuracy of the retrieved new orientation parameters, the user can conduct matching in the direction perpendicular to the epipolar curve with {\tt MMTestOrient}.\par 
 %
 If the image pair epipolar geometry is of interest, be it for external uses or to perform the matching on, the {\tt CreateEpip} tool will resample the images so that their corresponding image points are found in the same image rows.\par 
 %
-The dense matching is launched through the simplified {\tt Malt} tool. If matching in epipolar geometry shall be performed, use {\tt mm3d MICMAC} with a suitable XML file (see a template XML file in {\tt include/XML\_MicMac/MM-Epip.xml}).\par 
+The dense matching is launched through the simplified {\tt Malt} tool. The processing can follow a "classical" (i.e. dense matching in object space) or a multi-view (i.e. dense matching in image space) pipeline. In the multi-view pipeline (cf. Fig.~\ref{FIG:sat:fusion}), firstly the per-stereo or per-triplet 3D reconstructions are performed. Then, multiple reconstructions are transformed to a common reference frame (i.e. {\tt{NuageBascule}}), and merged (i.e. {\tt{SMDM}}) to produce a more precise and more complete digital surface model.\par
+%
+If matching in epipolar geometry shall be performed, use {\tt mm3d MICMAC} with a suitable XML file (see a template XML file in {\tt include/XML\_MicMac/MM-Epip.xml}).\par 
 %
 The reader is encouraged to follow a use case example included in Section~ \ref{sec:usecase:satel}. 
-
-\begin{figure}[h!]
-\centering 
-{\includegraphics[width=0.88\linewidth]{FIGS/Satellites/usingSatellites.pdf}\label{FIG:sat:func}}
-\caption{ Satellite images processing workflow for DSM generation. The {\tt MMTestOrient} is a supplementary operation aiming at evaluating the goodness of the orientation parameters. The {\tt CreateEpip} is obligatory only in case the user wants to perform dense matching in this geometry. {\tt{SateLib RecalRPC}} recalculates the original RPCs to include the adjusted corrections.}
-\end{figure}
 
 \subsection{ The RPC convertion to {\tt MicMac}-format files}\label{subsec:rpcConv}
 The RPC orientation parameters provided by different vendors have different file formats. Due do that, prior to the actual processing {\tt MicMac} requires executing a data conversion step -- {\tt Convert2GenBundle}. As {\tt MicMac} works in uniform units, the initial RPCs defined in geodetic coordinates are recomputed in a metric coordinate system specified by the user.
@@ -63,8 +71,7 @@ Below is an example of the coordinate system file. It uses the UTM coordinate sy
      </BSC>
 </SystemeCoord>
 \end{verbatim}
-
-
+ 
 \subsection{Useful tools}
 
 \paragraph*{Print the satellite images' footprints}
