@@ -848,6 +848,39 @@ TestCam TestOri-2.xml 0.1 0 1
  -4-ImFinale = [3220,1000]
 \end{verbatim}
 
+%=======================================================================================================
+
+\section{The tool {\tt TestDistortion}}
+
+The tool {\tt TestDistortion} is used to check the effect of distorsion on a 2D point.
+\begin{verbatim}
+$ mm3d testDistortion
+Mandatory unnamed args : 
+  * string :: {Calibration Name}
+  * Pt2dr :: {Point on picture coordinates}
+Named args : 
+\end{verbatim}
+
+{\tt Calibration name} is the xml file path of the calibration to test, and {\tt Point on picture coordinates}
+is a 2D point on the picture.
+
+Example :
+\begin{verbatim}
+$ mm3d testDistortion AutoCal.xml [1,2]
+//   R3 : "reel" coordonnee initiale
+//   L3 : "Locale", apres rotation
+//   C2 :  camera, avant distortion
+//   F2 : finale apres Distortion
+//
+//       Orientation      Projection      Distortion
+//   R3 -------------> L3------------>C2------------->F2
+//
+Focale 2844.66
+F2 [1,2] ---> C2 [-15.5373,-9.62173] ---> L3 [-1330.89,-955.502,2844.66]
+L3 [-1330.89,-955.502,2844.66] ---> C2 [-15.5373,-9.62173]
+L3 [-1330.89,-955.502,2844.66] ---> F2 [1,2]
+\end{verbatim}
+
 
 %===========================================================================
 
