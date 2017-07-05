@@ -29,7 +29,8 @@ FTEX=   DocMicMac.tex\
         DocUtil/DUMec.tex\
         DocUtil/DUMecaGen.tex\
         DocUtil/DUAutreSec.tex\
-        Annexes/Formats.tex
+        Annexes/Formats.tex\
+        Annexes/Vrac3.tex
 DocMicMac.pdf : $(FTEX) 
 	pdflatex DocMicMac
 	pdflatex DocMicMac
