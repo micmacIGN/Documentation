@@ -684,10 +684,12 @@ The algorithm used by  {\tt Ratafia}  is the following ;
 
 
 There is also a slight difference with {\tt OriRedTieP}, as there is no need for a global $3d$ geometry. Moreover, as the tool {\tt Martini} (that otherwise furnises the global geometry) is still in progress, the evaluation of the residual is
-not made on a global orientation, but on the relative orientation between the pair of images. This is
+not necessarily made on a global orientation, but can optionnaly be made on the relative 
+orientation between the pair of images. This is
 theoretically not as good, because intersection of all images $2$ by $2$ is not equivalent to a global
-intersection, but the difference is tiny. Nonetheless, when {\tt Martini} will be completely finished, there
-will be an option to use the $3d$ geometry.
+intersection, but the difference is tiny. 
+
+%Nonetheless, when {\tt Martini} will be completely finished, there will be an option to use the $3d$ geometry.
 
 
 \subsubsection{The command line}
@@ -755,6 +757,8 @@ The meaning of main parameters is:
           the geometric quality is sufficient (based on relative orientation); default value is false as it 
           seems not to improve any accuracy;
 \end{itemize}
+
+For  {\tt LevelOR} ....
 
 
 {\tt Ratafia} output some messages :

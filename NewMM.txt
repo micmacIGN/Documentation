@@ -11,16 +11,25 @@ BigTiff ?
 
    * Interface ? Pas en premier but, mais peut etre indirectement => facilite le de developpement d'une interface. Autre option le faire des le depart pour prendre en compte les contraites que cela impose.
 
-
 => Gestion des Identifiants pour tous les objets crees sur disque
-
 => Liste des volontaires
-
-=> Liste des outils a mettre
-
-==> Quel manpower :  1MPD + CR + ? 
-
+==> Quel manpower :  1MPD + CR + ?  + Volontaires ?
 => Quel langage de commande ? conserver l'interface shell ?  Python ou autre langage interprété ? Home made (clisp ?) .
-
 => extension à package existant (OpenCV ?)
+=> Liste des outils a mettre , quelle portees
+=> Sans doute assez "facile" pour avoir un package minimal TieP + Orientation. Mais pour le matching, soit
+  on se limite a C3DC, soit on refait qqchose d'aussi generique que MicMac mais difficile
+=> Changement de "paradigme" ? Plus de template  moins de virtuel pour la programmation generique ??
+=> se mettre  a jour sur les  evolution de C++ (C++ 14)
+=> Quelles librairies, 3 gdes option :
+
+     - rien ou presque, comme MicMac, clisp ...
+     - les standards , inline  : eigen, boost, etc ..
+     - tout : libtiff , open CV (mais si ce dernier, alors mieux vaut un addon a lui ?)
+
+
+
+
+
+
 
