@@ -13,6 +13,7 @@ FTEX=   DocMicMac.tex\
 	Generalites/NameFileSpec.tex\
 	Generalites/InteractiveTool.tex\
 	Generalites/UseCase2D.tex\
+	Generalites/ImageFilter.tex\
 	DocRef/ConvTool.tex\
 	DocRef/GeoLocalisation.tex\
 	DocRef/Advanced-TieP.tex\
