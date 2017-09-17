@@ -1,10 +1,13 @@
-\chapter{Sensibility Analysis}
+\chapter{Quality control in orientation}
+
+This chapter covers different aspect of quality control of orientation.
+
 
     % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-\section{Theoreticall consideration}
+\section{Sensibility Analysis : Theoreticall consideration}
 
 \subsection{some tricks}
 
@@ -466,7 +469,7 @@ optimisitic in \ref{Sens:Optim} and pessimistic in \ref{Pess}:
     % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-\section{Use in MicMac}
+\section{Sensibility Analysis : Use in MicMac}
 
 The computation of these different value can be done in {\tt Martini} command,
 by setting to true the optional parameter {\tt ExportSensib}. Different
@@ -557,6 +560,289 @@ Here is an example with an acquisition mixing GPS and photogrammetry. Probably t
      </SensibDateOneInc>
 ...
 \end{verbatim}
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+
+\section{Spatial repartition of residual}
+
+This option is avalaible with {\tt ExpImRes} option of {\tt Campari}.
+It generates images representing the spatial repartition of residual
+in the sensor plane \footnote{extension may come in the ground plane and in $3$d} . 
+These images are located in the subfolder
+{\tt ImResidu} of orientation folder. It can generate :
+
+\begin{itemize}
+   \item images  representing the module of residual 
+          (name of generated images will begin by {\tt ResAbs-});
+
+   \item images  representing the signed residual;
+          (name of generated images will begin by {\tt ResSign-});
+
+   \item images  representing the vector $X,Y$ of residual according to some
+         mathematical modelization that will be described later 
+         (name of generated images will begin by {\tt ResX-} and {\tt Res-Y});
+
+   \item images  representing the total weight accumulated in each pixel
+          (name of generated images will begin by {\tt RawWeight-});
+          this image can be helpfull to know were previous images are reliable;
+   
+
+\end{itemize}
+
+These images can be generated for  different configuration :
+
+\begin{itemize}
+   \item one image for each internal calibration, name of these image contains {\tt Cam-},
+         for example {\tt  RawWeight-Cam-\dots};
+
+   \item one image for each internal pose, name of these image contains {\tt Cam-},
+         for example {\tt  RawWeight-Pose-\dots};
+
+   \item one image for each internal pair of overlapping, name of these image contains {\tt Pair-},
+         for example {\tt  RawWeight-Pose-\dots};
+\end{itemize}
+
+For the pair, only the signed residual and weighting are generated (because others
+would have no meaning).
+
+The $X,Y$ residual is computed this way \dots 
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+
+\section{Detecting fault in GCP and  Robust "Bascule"  with {\tt BAR}}
+\label{Sec:BAR}
+
+     % - - - - - - - - - - - - - - - - - - - - - - - - -
+\subsection{When is it usefull}
+
+The command {\tt GCPBascule} and {\tt GCPCtrl} do the assumption that the 
+measures comming for {\tt GCP} contain no gross error (outlayers) .
+This is generally a reasonnable assumption as measurement comes from human seizing and they contain only
+gaussian error adapted to least square fitting. However in "real life", sooner or later, will occur case
+where this data may contain gross error :
+
+\begin{itemize}
+  \item error in GCP file like naming convention;
+  \item error in point seizing when associating a point to its image projection;
+  \item unvolonter move a point after seizing it;
+  \item  \dots
+\end{itemize}
+
+The command {\tt BAR} compute a "robust" bascule  that is expected to be resistant
+to (a reasonnable amount of) outlayers. More important, it provide a detailled
+diagnostic that may help to detect the oulayer both in GCP files and in images
+measurement.
+
+     % - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsection{Mathematicall modeling}
+
+The  parameter of the bascule (Hemert transform) is computed using Ransac. To generate
+a solution :
+
+\begin{itemize}
+   \item we select $3$ random GCP;
+   \item for each selected GCP we select $2$ random image where the point is measured;
+   \item then we compute by bundle intersection the coordinat of the point in the relative system;
+   \item finaly having a slightly  redundant system ($9$ observation for $7$ degrees of freedom), we
+         compute by least square a solution;
+\end{itemize}
+
+The score to select a solution $S$ is the sum of the \emph{modified} reprojection
+errors between all $S(G_k)$ in all the images where it is measured  . 
+This  \emph{modified} projection take to parameter $D_0$ and $\gamma$, let $D$ being the
+standard reprojection error, we use the formula :
+
+\begin{equation}
+    (\frac{D_0 D}{D_0 + D}) ^ \gamma \label{Eq:Reproj:Bar}
+\end{equation}
+
+Where :
+
+\begin{itemize}
+   \item $D_0$ limit the impact of gross errors;
+   \item the choice of the exponent $ \gamma$ is typycal of $L_1$ solution with  $ \gamma=1$,
+         least square with  $ \gamma=2$ \dots
+\end{itemize}
+
+
+     % - - - - - - - - - - - - - - - - - - - - - - - - -
+\subsection{Syntax}
+
+The syntax :
+
+\begin{verbatim}
+ mm3d BAR 
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Pattern of images}
+  * string :: {Orientation}
+  * string :: {Name of 3D Point}
+  * string :: {Name of 2D Points}
+Named args : 
+  * [Name=NbRan] INT :: {Number of random, Def=30000}
+  * [Name=SIFET] bool :: {Special export for SIFET benchmark}
+  * [Name=Expos] REAL :: {Exposure for dist, 1->L1, 2->L2 , def=1}
+  * [Name=Out] string :: {Export computed orientation, Def=BAR+${-Orientation}}
+  * [Name=RatioAlertB] REAL :: {Ratio of alert for bundle reproj (Def=3)}
+  * [Name=MaxEr] REAL :: {Typical max error image reprojecstion,Def=10}
+\end{verbatim}
+
+
+The four mandatory parameters are the same as {\tt GCPCtrl}. The {\tt Expos} parameter
+correspond to $\gamma$ in equation~\ref{Eq:Reproj:Bar}, the {\tt MaxEr}
+correspond to $D_0$ in equation ~\ref{Eq:Reproj:Bar}.
+
+     % - - - - - - - - - - - - - - - - - - - - - - - - -
+\subsection{Analyse of results in file {\tt ResulBar.txt}}
+
+The command {\tt BAR} generate new orientation, but probably the most interesting result 
+is the file {\tt ResulBar.txt} as  the objective of photogrammetry is not to get the "less bad" orientation 
+using robust method, but to get the best one by supressing the error.
+
+As the error can have two origin (GCP or image measurement), the file  {\tt ResulBar.txt} contains
+two kind of reprojection error :
+
+\begin{itemize}
+   \item the projection of GCP on image (named {\tt ReprojTer}) , this errors correspond to a mix of
+         GCP errors and  image errors;
+
+   \item the projection of a point computed from bundle intersection using Ransac method (named {\tt ReprojBundle}); 
+         this error is independant of any GCP measurement and correspond to "quality" of the work
+          of the operator seizing the points.
+\end{itemize}
+
+The file contains three parts :
+
+\begin{itemize}
+   \item One part for global statistic;
+
+   \item One part for statistic on each GCP;
+
+   \item One part contains for each GCP and each images where it is seized, the "terrain" and "bundle" 
+         reprojection error;
+\end{itemize}
+
+
+We illustrate with a "real" file  where several gross error have been artificially added.
+Here is an example of global parts :
+
+
+\begin{verbatim}
+================== Global Stat  ==========================
+================== Global Stat  ==========================
+   Aver Dif    Bundle/Ter (0.000744 0.001767 0.198431 )
+   Aver AbsDif Bundle/Ter (0.001341 0.002444 0.242504 )
+   Worst reproj Ter   1979.695852 for pt 621 on image IMG_1281.JPG
+   Worst reproj Bundle 1000.487300 for pt 111 on image IMG_1170.JPG
+\end{verbatim}
+
+The first two line are the average difference, and the average absolute difference between
+bundle point after bascule, and GCP point. Then follow the worst value of reprojection
+for terrain an bundle. The ide is  that if these two value are low, there is probably
+no gross error.
+
+The stat by points looks like :
+
+
+\begin{verbatim}
+   ----------------------------------------------
+[NamePt] :
+   Bundle D=Dist(GCP,Bundle) : GCP-Bundle
+   Worst ReprojTer ReprojBundle  ImWorsTer ImWorstBundle
+   Aver   ReprojTer ReprojBundle  on NbIma
+    ----------------------------------------------
+[111] :
+   Bundle, D=0.000845 : (-0.000624 -0.000561 -0.000100)
+   Worst 1000.538  1000.487  IMG_1170.JPG  IMG_1170.JPG
+   Aver  063.262  067.043 on 16
+[112] :
+   Bundle, D=0.000679 : (-0.000123 0.000177 0.000644)
+   Worst 000.817  000.566  IMG_1163.JPG  IMG_1163.JPG
+   Aver  000.521  000.286 on 19
+...
+[623] :
+   Bundle, D=1.899735 : (0.001914 0.005929 1.899725)
+   Worst 1370.917  000.700  IMG_1304.JPG  IMG_1153.JPG
+   Aver  1227.879  000.316 on 38
+\end{verbatim}
+
+
+On this data, it can expected that :
+
+\begin{itemize}
+   \item with point {\tt [111]}, the GCP is Ok (low distance betwen bundle intersection an GCP),
+         but there is error in image measuremnt : high value in bundle reprojection;
+
+   \item with point {\tt [112]}, GCP and imahe measurement are Ok;
+
+   \item with point {\tt [623]}, the image measurement is OK, but the GGP is not (or the orientation
+         has diverged on this part).
+\end{itemize}
+
+Here is an extract from the detailled part :
+
+\begin{verbatim}
+================== Detail per point & image ==========================
+ ================== Detail per point & image ==========================
+
+    ----------------------------------------------
+[NamePt]
+    | ReprojTer | ReprojBundle | Image
+    | ReprojTer | ReprojBundle | Image
+    ....
+    ----------------------------------------------
+[111]
+  #@+ | 1000.538 | 1000.487 | IMG_1170.JPG
+      | 001.243 | 000.542 | IMG_1171.JPG
+      | 001.085 | 000.362 | IMG_1173.JPG
+      | 001.205 | 000.877 | IMG_1175.JPG
+...
+[112]
+      | 000.444 | 000.363 | IMG_1170.JPG
+....
+  #@  | 000.817 | 000.566 | IMG_1163.JPG
+[511]
+  #   | 095.410 | 000.619 | IMG_1251.JPG
+....
+   @+ | 065.827 | 001.166 | IMG_1261.JPG
+    + | 061.008 | 001.114 | IMG_1262.JPG
+
+[623]
+...
+  #   | 1370.917 | 000.256 | IMG_1304.JPG
+...
+   @  | 1173.665 | 000.700 | IMG_1153.JPG
+...
+\end{verbatim}
+
+A few comment :
+
+\begin{itemize}
+   \item on point  {\tt [111]}, it can been seen that the error is located on image {\tt IMG\_1170.JPG}  
+         in the first column the {\tt \#@+ } means :
+    \begin{itemize}
+         \item {\bf \tt \#} : the images maximizes terrain reprojection for given point;
+         \item {\bf \tt @} : the images maximizes bundle reprojection for given point;
+         \item {\bf \tt +} : the bundle error is over $R$ time the median error of bundle error,
+              $R$ is set by {\tt RatioAlertB}  (def value$=3$);
+    \end{itemize}
+   \item on point  {\tt [112]}, no problem appears;
+   \item on point  {\tt [511]}, several point are marked  {\bf \tt +};
+   \item point  {\tt [623]}, the detailled results confirm that there is probably a problem between  {\tt GCP}
+         coordinates and bundle,  but that image seizing are coherents;
+\end{itemize}
+
+It is hoped that this tool is sufficient to detect the most probable errors. It does
+not aim to detect all the errors, the standard recommanded method being, detect
+the biggest error, suppress it and iterate as long as there exist gross error.
+
 
 
 
