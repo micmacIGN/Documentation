@@ -14,30 +14,44 @@ The {\tt C3CD} command is the command that compute automatically a point cloud f
 
 \begin{verbatim}
 mm3d C3DC -help
-Valid types for enum value:
+Valid types for enum value: 
    Ground
    Statue
+   Forest
    TestIGN
    QuickMac
+   MicMac
+   BigMac
+   MTDTmp
 *****************************
 *  Help for Elise Arg main  *
 *****************************
-Mandatory unnamed args :
+Mandatory unnamed args : 
   * string :: {Type in enumerated values}
   * string :: {Full Name (Dir+Pattern)}
   * string :: {Orientation}
-Named args :
+Named args : 
   * [Name=Masq3D] string :: {3D masq for point selection}
   * [Name=Out] string :: {final result (Def=C3DC.ply)}
-  * [Name=SzNorm] INT :: {Sz of param for normal evaluation (<=0 if none, Def=2 mean 5x5) }
-  * [Name=PlyCoul] bool :: {Colour in ply ? Def = true}
-  * [Name=Tuning] bool :: {Will disappear soon ...}
+  * [Name=SzNorm] INT :: {Sz of param for normal evaluation (<=0 if none, Def=2 means 5x5) }
+  * [Name=PlyCoul] bool :: {Colour in ply ? (Def = true)}
+  * [Name=Tuning] bool :: {Will disappear one day ...}
+  * [Name=Purge] bool :: {Purge result, (Def=true)}
+  * [Name=DownScale] REAL :: {DownScale of Final result, Def depends on mode}
+  * [Name=ZoomF] INT :: {Zoom final, Def depends on mode}
   * [Name=UseGpu] bool :: {Use cuda (Def=false)}
+  * [Name=DefCor] REAL :: {Def correlation, context depend}
+  * [Name=ZReg] REAL :: {Regularisation, context depend}
+  * [Name=ExpTxt] bool :: {Use txt tie points for determining image pairs}
+  * [Name=FilePair] string :: {Explicit pairs of images (as in Tapioca)}
+  * [Name=DebugMMByP] bool :: {Debug MMByPair ...}
+  * [Name=Bin] bool :: {Generate Binary or Ascii (Def=true, Binary)}
+  * [Name=ExpImSec] bool :: {Export Images Secondair, def=true}
+  * [Name=OffsetPly] Pt3dr :: {Ply offset to overcome 32 bits problem}
+  * [Name=SH] string :: {Set of Hom, Def=""}
+  * [Name=NormByC] bool :: {Def=False}
 \end{verbatim}
-
-
 The syntax is :
-
 \begin{itemize}
   \item type of matching in enumerated values,
 
@@ -49,8 +63,19 @@ The syntax is :
   \item if {\tt SzNorm} is specified, indicates the window size parameters for normal extraction in ply file
 	(usefull for meshing);
   \item if {\tt PlyCoul} is specified, indicates that coloring of points is required.
+  \item if {\tt ZoomF} is specified, indicates the Zoom Final (1 is full resolution, 2 is half...). Default value for each type of matching is:
+	\begin{itemize}
+		\item BigMac = 2
+       		\item MicMac = 4
+       		\item QuickMac = 8
+       		\item Statue = 2 (epipolair matching)
+       		\item Forest = 4 (epipolair matching)
+	\end{itemize}
+  \item if {\tt SH} is specified, suffix of Homol folder (default="" means "Homol").
+  \item if {\tt NormByC} is specified, in the output PLY file: replace vector normal for each point by optical center coordinate.
+  \item if {\tt ZReg} is specified in MM-Param2Im.xml, default value = 0.05
+  \item if {\tt DefCor} Default correlation score threshold, default value = 0.5 (in Epipolair Matching mode)
 \end{itemize}
-
 
 \subsection{Quickmac option}
 
