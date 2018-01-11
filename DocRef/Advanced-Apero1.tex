@@ -1298,7 +1298,56 @@ mm3d ConvertCalib Aerial.xml Fraser-Affine.xml  DRMax=1 DegGen=0
 
 The average accuracy will be $0.063$ pixel, it is measured as the average error re-projection of  synthetic $3d$ points.
 
+  % - - - - - - - - - - - - - - - - - - - - -
 
+\subsection{{\tt ConvertOriCalib} to Calibration conversion}
+
+Sometime it is usefull to convert orientations  using a new internal
+calibration. Suppose :
+
+\begin{itemize}
+   \item user  has computed orientation of $1000$ images with internal cabration $Cal_1$;
+
+   \item finally user woulr prefer to use   a different calibration  $Cal_2$ but do not want to
+         recompute all external orientation;
+
+   \item if user just replace  $Cal_1$ by $Cal_2$, the result can be very poor because of correlation
+         between internal and external parameters; 
+
+   \item for example, in aerial photogrammetry, if the 
+         focal lenght is significativelly different bewteen $Cal_1$ and $Cal_2$,
+         the height of position should be change to compensate as much as possible the
+         variation of focal;
+
+\end{itemize}
+
+The command {\tt ConvertOriCalib} offers this possibility :
+
+\begin{verbatim}
+mm3d ConvertOriCalib -help
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Pat or file}
+  * string :: {Input global orientation}
+  * string :: {Targeted   internal orientatin}
+  * string :: {Ouptut prientation folder}
+Named args : 
+\end{verbatim}
+
+An example with a data set :
+
+\begin{verbatim}
+mm3d ConvertOriCalib Stereo-MG_00.*CR2 Ori-BascF15/ Ori-Peturb/ ConverOC
+\end{verbatim}
+
+Here, the resulting orientation is saved under folder {\tt Ori-ConverOC/}.
+
+
+
+
+  % - - - - - - - - - - - - - - - - - - - - -
 
 \subsection{{\tt Genepi} to generate articficial perfect 2D-3D points}
 
