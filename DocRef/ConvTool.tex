@@ -697,10 +697,18 @@ Abbey-IMG_0342.jpg -3.849398 11.231276 137.533559 -6.707432 1.351133 0.224315
 Abbey-IMG_0343.jpg -3.921196 11.302498 137.899618 -7.334180 0.668316 0.362218
 \end{verbatim}
 
-Matrix R gives rotation terms to compute parameters in matrix encoding with respect to Omega-Phi-Kappa angles given by the tool {\tt OriExport}:
+Matrix R gives rotation terms to compute parameters in matrix encoding with respect to Omega-Phi-Kappa angles given by the tool {\tt OriExport}. The three angles $\omega$, $\phi$, $\kappa$ are computed for a traditionnal image coordinate system (X=colomns left to right and Y=lines bottom up) and not for a computer vision compliant geometry (X=colomns left to right and Y=lines top down) so:
 \newline
 
-
+$R = R_{\omega|X}.R_{\phi|Y}.R_{\kappa|Z}.\begin{bmatrix}1 & 0 & 0\\ 0 & -1 & 0\\ 0 & 0 & -1\end{bmatrix}$
+\newline
+$R =
+\begin{bmatrix}
+    cos(\phi)*cos(\kappa) &  -cos(\phi)*sin(\kappa) & sin(\phi)\\
+    cos(\omega)*sin(\kappa)+sin(\omega)*sin(\phi)*cos(\kappa) &  cos(\omega)*cos(\kappa)-sin(\omega)*sin(\phi)*sin(\kappa) & -sin(\omega)*cos(\phi)\\
+    sin(\omega)*sin(\kappa)-cos(\omega)*sin(\phi)*cos(\kappa)  & sin(\omega)*cos(\kappa)+cos(\omega)*sin(\phi)*sin(\kappa) & cos(\omega)*cos(\phi)
+\end{bmatrix}.\begin{bmatrix}1 & 0 & 0\\ 0 & -1 & 0\\ 0 & 0 & -1\end{bmatrix}$
+\newline
 $R =
 \begin{bmatrix}
     cos(\phi)*cos(\kappa) &  cos(\phi)*sin(\kappa) & -sin(\phi)\\
