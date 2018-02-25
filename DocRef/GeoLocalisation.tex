@@ -956,6 +956,7 @@ The enumerated possible values of a {\tt eTypeCoord} are :
    \item  {\tt eTC\_RTL}
    \item  {\tt eTC\_Polyn}
    \item  {\tt eTC\_Unknown}
+   \item  {\tt eTC\_Proj4}
 \end{itemize}
 
 Obviously, the set of possible values may grow in the future.
@@ -1003,6 +1004,22 @@ A locally tangent repair, specified by {\tt eTC\_RTL} must contain :
 If the first {\tt BasicSystemeCoord} of a {\tt SystemeCoord} is of type {\tt eTC\_RTL} ,
 it must contain a second {\tt BasicSystemeCoord} indicating the coordinate system
 in which the origin is given.
+
+              %   -   -   -   -   -   -   -   -   -
+
+\subsubsection{Cartographic system using Proj4}
+
+When the free open source {\tt Proj4} or {\tt Cs2Cs} is installed, any cartographic
+system can be specified :
+
+\begin{itemize}
+   \item Use {\tt eTC\_Proj4} as type
+   \item  Put the proj4 command as value in the {\tt <AuxStr>} field;
+\end{itemize}
+
+An example ins given in~\ref{Ex:Proj4:Sat}.
+
+
 
               %   -   -   -   -   -   -   -   -   -
 
