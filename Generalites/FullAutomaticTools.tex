@@ -119,6 +119,97 @@ The result are presented on figure~\ref{FIG:Angel:Result}. Computation time was 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 
+\section{Algorithm used in the {\tt "Mac"} options}
+
+This section describes the Mac \footnote{QuickMac,MicMac and BigMac}  options from
+the algorithmic point of view, and also give some hint to link with the existing code
+(for developers).
+
+   % - - - - - - - - - - - - - - - - - -
+\subsection{Formal definition}
+
+We give a rather formal definition of what is done in the {\tt "Mac"} options.  We have :
+
+\begin{itemize}
+   \item set of pixel $P^{ix}$, note $(x,y)$ elements of $P^{ix}$;
+   \item an interval of paralax $P^{ax}$, we note $z$ elements of $P^{ax}$;
+   \item set of voxels   $V^{ox}= P^{ix} \times P^{ax}$  ;
+   \item a cost function $\mathcal{C}$  on $V^{ox}$   :  $ \mathcal{C}, V^{ox}  \rightarrow  \mathbb{R} $,
+         typically this cost function comes from image similarity;
+   \item a symetric graph $G$ on  $V^{ox}$; let $U=(x,y,z) \in V^{ox}$ and $U'=(x',y',z') \in V^{ox}$
+         typically $U,V \in G \Leftrightarrow  |x-x'| < D_p ,  |y-y'| < D_p , |z-z'| < D_a  $ ,
+          where $D_p$ is a planimatric threshold, and $D_a$ is an altimetric threshold;
+  
+\end{itemize}
+
+Globally we want to compute the "relief", i.e a pair $(\mathcal{M},Z)$ where :
+
+\begin{itemize}
+   \item  $\mathcal{M}$ is a subset, or masq, of pixel $\mathcal{M} \subset P^{ix}$, 
+         representing the good pixel
+   \item $Z$ is a function computing the heigth of each selected pixel 
+         $ Z : \mathcal{M} \rightarrow P^{ax}$.
+   \item we note $Z(\mathcal{M}) \subset V^{ox}$ the set $\{(p,Z(p)) , p \in \mathcal{M} \}$
+\end{itemize}
+
+We dispose also from seeds $(m_0,z_0)$ , or initial relied, for begining the computation, 
+these seeds come from  tie points :
+
+\begin{itemize}
+   \item $m_0 \subset P^{ix}$
+   \item $z_0 : m_0 \rightarrow P^{ax}$.
+\end{itemize}
+
+%\begin{itemize}
+%  \item the  a-symetric graph $G^>$ , which is the subset of $G$, 
+%  $(U,V) \in G^>  \Leftrightarrow  (U,V) \in G \;  and  \;  \mathcal{C}(U) <  \mathcal{C}(V) $
+%\end{itemize}
+
+   % - - - - - - - - - - - - - - - - - -
+
+\subsection{Algorithmic implementation}
+
+Functiunnaly, here is what is computed :
+
+\begin{itemize}
+     \item  initalize $Z(p) = + \infty $ , $Z$ is the solution we want to compute;
+     \item  initalize $L = z_0(m_0)$ , 
+     \item  while  $L \neq  \emptyset $
+     
+     \begin{itemize}
+          \item   extract $p,z$ wich minimize $\mathcal{C}(p,z(p))$
+          \item if $Z(p) < z $:
+          \begin{itemize}
+               \item set $Z(p) = z $
+               \item for $p',z' \in G(p,z)$
+               \begin{itemize}
+                 \item then     $L = L + (p',z')$  \emph{(1)}
+               \end{itemize}
+          \end{itemize}
+     \end{itemize}
+\end{itemize}
+
+At the end :
+
+\begin{itemize}
+     \item $ \mathcal{M} = \{p  \in P^{ix} / Z(p) \neq  \infty \} $
+     \item $ Z $ is computed for each point in $Z$;
+\end{itemize}
+
+To run it fast, several modification/ optimization are done:
+
+\begin{itemize}
+   \item  $L$ is handled as a priority queue, to extract fastl the minimum point
+   \item  $L$ is an indexed priority queue, so in   \emph{(1)}, the $p',z'$
+          is added if $p'$ is not present or if the cost is better than current value;
+\end{itemize}
+
+   % - - - - - - - - - - - - - - - - - -
+\subsection{Software implementation}
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+
 \section{Post-processing tools - mesh generation and texturing}
 
 \subsection{Mesh generation}
