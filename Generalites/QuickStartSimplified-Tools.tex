@@ -2682,8 +2682,74 @@ See~\ref{Analog:Image} for an example of using the {\tt Spherik} option.
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 
+\subsection{One-Two-Pixel Matching with {\tt Malt}}
+%
+\textit{One-Two-Pixel Matching} (12Pix) is a variant of the SGM multi-directional dynamic programming that aims at enhanced precision 3D reconstruction. Launching the the \textit{12Pix} is possible within Malt, by turning on the parameter {\tt CorPonc}. The increased precision is accomplished by formulating:
+\begin{itemize}
+\item  {\tt{PdsAttPix}} : a robust one pixel multi-view photo-consistency measure, and
+\item  {\tt{PCCroise}} : an additional two-pixel term within the cost function.
+\end{itemize} 
 
 
+
+\noindent
+The meaning of the {\tt 12PixMP} parameter vector that controls the algorithms is as follows : 
+\begin{itemize}
+\item {\tt ZoomInit} : it is recommended to turn the \textit{12Pix} when having already a good surface approximation, i.e. at a higher pyramid level; {\tt ZoomInit} specifies the initial zoom for the \textit{12Pix} ({\tt Def=4} );
+\item {\tt{PdsAttPix}} : weight that controls the influence of  the one-pixel photo-consistency measure within the cost function ({\tt Def=1.0})
+\item {\tt{PCCroise}} : weight that controls the influence of  the two-pixel photo-consistency measure within the cost function ({\tt Def=1.0})
+\item {\tt{PCStd}} : if positive the one-pixel cost will be a combination of one-pixel score and the standard cross-correlation; {\tt{PCStd}} controls the influence of the cross-correlation within the cost function ({\tt Def=0.0})
+\item {\tt{tif}} : for each couple of images it is recommended to radiometrically "calibrate" the one-pixel term by their global or per-pixel ratio of intensities; if "xml" a global radiometric calibration value will be applied; if "tif" a per-pixel calibration is applied and for now it is rather for developers' use ({\tt{Def=xml}})
+\end{itemize} \par 
+%
+\noindent
+The one-pixel can be calibrated radiometrically. If  {\tt{DoOrtho=1}} appropriate orthophotomaps calibration files will be created. For each image there will be two files containing the calibration parameters, e.g. for an image image.tif there will be  image$\_$RadCal.xml  and  image$\_$RadCal.tif.
+
+%
+{\scriptsize
+\begin{verbatim}
+Malt -help
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Unnamed args :
+  * string :: {Mode of correlation (must be in allowed enumerated values)}
+  * string :: {Full Name (Dir+Pattern)}
+  * string :: {Orientation}
+Named args :
+  * [Name=Master] string :: { Master image must exist iff Mode=GeomImage, AUTO for Using result of AperoChImSecMM}
+  * [Name=SzW] INT :: {Correlation Window Size (1 means 3x3)}
+  * [Name=CorMS] bool :: {New Multi Scale correlation option, def=false, available in image geometry}
+  * [Name=CorPonc] bool :: {New One-Two Pixel Matching option, def=false, available in image geometry}
+  * [Name=12PixMP] vector<std::string> :: {One-Two Pixel Matching parameters [ZoomInit,PdsAttPix,PCCroise,?PCStd?,?"tif"?], 
+  "tif" or else "xml"}
+  * [Name=DoOrtho] bool :: {Do the Ortho (Def=mDoMEC)}
+\end{verbatim}
+}
+
+Some examples:
+\begin{itemize}
+\item 
+\begin{verbatim}  
+mm3d Malt GeomImage "Stereo-MG_00[0-9]{2}.CR2" Ori-Rel Master=Stereo-MG_0009.CR2 
+CorPonc=1 
+\end{verbatim}\\
+\textit{12Pix} is on, if for each image there exists an "xml" file containing the global radiometric calibration value, it will be exploited, otherwise new files will be created and initialised with $1.0$, all parameters in {\tt 12PixMP} are set to default
+\\
+\item 
+\begin{verbatim}   
+mm3d Malt GeomImage "Stereo-MG_00[0-9]{2}.CR2" Ori-Rel Master=Stereo-MG_0009.CR2 
+CorPonc=1 DoOrtho=1 
+\end{verbatim}\\
+\textit{12Pix} is on, {\tt DoOrtho=1} will calculate the low-resolution orthophotos and the radiometric calibrations accordingly (both a global value in xml and per-pixel values in a tif), all parameters in {\tt 12PixMP} are set to default
+\\
+\item 
+\begin{verbatim}  
+mm3d Malt GeomImage "Stereo-MG_00[0-9]{2}.CR2" Ori-Rel Master=Stereo-MG_0009.CR2 
+CorPonc=1 12PixMP=[4,1,1,0,xml] DoOrtho=1 }}
+\end{verbatim}\\
+as in the previous example except that all {\tt 12PixMP} parameters are set by the user.
+\end{itemize}
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
