@@ -2692,7 +2692,7 @@ See~\ref{Analog:Image} for an example of using the {\tt Spherik} option.
 
 
 
-\noindent
+\paragraph*{Parametrization}
 The meaning of the {\tt 12PixMP} parameter vector that controls the algorithms is as follows : 
 \begin{itemize}
 \item {\tt ZoomInit} : it is recommended to turn the \textit{12Pix} when having already a good surface approximation, i.e. at a higher pyramid level; {\tt ZoomInit} specifies the initial zoom for the \textit{12Pix} ({\tt Def=4} );
@@ -2702,32 +2702,14 @@ The meaning of the {\tt 12PixMP} parameter vector that controls the algorithms i
 \item {\tt{tif}} : for each couple of images it is recommended to radiometrically "calibrate" the one-pixel term by their global or per-pixel ratio of intensities; if "xml" a global radiometric calibration value will be applied; if "tif" a per-pixel calibration is applied and for now it is rather for developers' use ({\tt{Def=xml}})
 \end{itemize} \par 
 %
-\noindent
-The one-pixel can be calibrated radiometrically. If  {\tt{DoOrtho=1}} appropriate orthophotomaps calibration files will be created. For each image there will be two files containing the calibration parameters, e.g. for an image image.tif there will be  image$\_$RadCal.xml  and  image$\_$RadCal.tif.
-
+\paragraph*{Radiometric calibration}
+The one-pixel can be (should be?) calibrated radiometrically. If  {\tt{DoOrtho=1}} appropriate orthophotomaps calibration files will be created. For each image there will be two files containing the calibration parameters, e.g. for an image image.tif there will be  image$\_$RadCal.xml  and  image$\_$RadCal.tif. Once the files are generated there is no need to re-generate them each time you launch  \textit{12Pix}, Malt will read the files that had been create previously.\\
 %
-{\scriptsize
-\begin{verbatim}
-Malt -help
-*****************************
-*  Help for Elise Arg main  *
-*****************************
-Unnamed args :
-  * string :: {Mode of correlation (must be in allowed enumerated values)}
-  * string :: {Full Name (Dir+Pattern)}
-  * string :: {Orientation}
-Named args :
-  * [Name=Master] string :: { Master image must exist iff Mode=GeomImage, AUTO for Using result of AperoChImSecMM}
-  * [Name=SzW] INT :: {Correlation Window Size (1 means 3x3)}
-  * [Name=CorMS] bool :: {New Multi Scale correlation option, def=false, available in image geometry}
-  * [Name=CorPonc] bool :: {New One-Two Pixel Matching option, def=false, available in image geometry}
-  * [Name=12PixMP] vector<std::string> :: {One-Two Pixel Matching parameters [ZoomInit,PdsAttPix,PCCroise,?PCStd?,?"tif"?], 
-  "tif" or else "xml"; Def=[4,1,1,0,xml]}
-  * [Name=DoOrtho] bool :: {Do the Ortho (Def=mDoMEC)}
-\end{verbatim}
-}
+\paragraph*{Regularization}
+You may also want to change the regularization on the transition term (i.e. the penalty). The default value for the {\tt GeomImage} mode (the only possible for \textit{12Pix}) is 0.01 but if you turn both the one-pixel and two-pixel on, it is advised to lower the value to ca. 0.1. If only the two-pixel term is on (no one-pixel), keep the regularization small (e.g. the default value).
 
-Some examples:
+\paragraph*{Examples}
+%
 \begin{itemize}
 \item 
 \begin{verbatim}  
@@ -2750,6 +2732,32 @@ CorPonc=1 12PixMP=[4,1,1,0,xml] DoOrtho=1 }}
 \end{verbatim}\\
 as in the previous example except that all {\tt 12PixMP} parameters are set by the user.
 \end{itemize}
+
+{
+%\scriptsize
+\begin{verbatim}
+Malt -help
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Unnamed args :
+  * string :: {Mode of correlation (must be in allowed enumerated values)}
+  * string :: {Full Name (Dir+Pattern)}
+  * string :: {Orientation}
+Named args :
+  * [Name=Master] string :: { Master image must exist iff Mode=GeomImage, AUTO for Using result of AperoChImSecMM}
+  * [Name=SzW] INT :: {Correlation Window Size (1 means 3x3)}
+  * [Name=CorMS] bool :: {New Multi Scale correlation option, def=false, available in image geometry}
+  * [Name=CorPonc] bool :: {New One-Two Pixel Matching option, def=false, available in image geometry}
+  * [Name=12PixMP] vector<std::string> :: {One-Two Pixel Matching parameters [ZoomInit,PdsAttPix,PCCroise,?PCStd?,?"tif"?], 
+  "tif" or else "xml"; Def=[4,1,1,0,xml]}
+  * [Name=Regul] REAL :: {Regularization factor}
+  * [Name=DoOrtho] bool :: {Do the Ortho (Def=mDoMEC)}
+\end{verbatim}
+}
+
+ 
+
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
