@@ -1,0 +1,77 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerouterthemeign}[2018/03/29 IGN France color theme]
+
+\RequirePackage{graphicx}
+
+
+\usecolortheme{ign}
+
+\mode<presentation>
+
+\defbeamertemplate*{frametitle}{ign}[1][]
+{
+    \vskip .5cm
+    \begin{beamercolorbox}[wd=\paperwidth,ht=1.2cm]{frametitle}
+        \begin{tikzpicture}
+        \useasboundingbox[fill=white](0,0) rectangle(\the\paperwidth,1.2);
+        \fill[IGNGreen] (.5, 0) rectangle(\the\paperwidth,1.2);
+        \ifx\insertframesubtitle\@empty{
+            \node[anchor=west,font=\large] at (1,0.61){\insertframetitle};
+        }
+        \else{
+            \node[anchor= west,font=\large] at (1,0.81){\insertframetitle};%
+            \node[anchor= west,font=\small] at (1,0.41){\insertframesubtitle};
+        }
+        \fi
+        \end{tikzpicture}
+    \end{beamercolorbox}
+}
+
+\newsavebox \framenumberbox
+\savebox \framenumberbox{
+    \begin{tikzpicture}
+        \fill[top color=IGNDarkGreen, bottom color = IGNGreen]
+        (0, .15)
+        -- (.25, .12)
+        -- (.3, -.09)
+        -- (-.05, -.15);
+    \end{tikzpicture}
+}
+\defbeamertemplate*{footline}{}
+{
+    \leavevmode
+    \begin{tikzpicture}
+        \path (0, 0) node (origin) {};
+        \path (origin.east) + (.5, 0) node (logo) {\includegraphics[height=0.25cm]{images/logos/ign_logo_bottom}};
+        \path (logo.east) + (4, 0) node (title) {
+            \begin{beamercolorbox}[
+                wd=6cm,
+                sep=8pt
+            ]{shorttitle footer}
+                \usebeamerfont{shorttitle}\insertshorttitle\par
+            \end{beamercolorbox}
+        };
+        \path (title.east) + (1, 0) node (date) {
+            \begin{beamercolorbox}[
+                wd=2cm,
+                sep=8pt
+            ]{shortdate footer}
+                \usebeamerfont{shortdate}\insertshortdate\par
+            \end{beamercolorbox}
+        };
+        \path (date.east) + (2, 0) node (framenumber_box) {\usebox \framenumberbox};
+        \path (framenumber_box) + (0, 0) node {
+            \begin{beamercolorbox}[
+                wd=2cm,
+                sep=8pt
+            ]{framenumber footer}
+                \usebeamerfont{framenumber}
+                \begin{center}
+                    \insertframenumber\par
+                \end{center}
+            \end{beamercolorbox}
+        };
+        \draw[thick, color=IGNGrey!50] (.28, .25) -- (12.25, .25);
+    \end{tikzpicture}
+}
+\mode<all>

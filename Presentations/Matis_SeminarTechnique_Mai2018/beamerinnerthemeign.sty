@@ -1,0 +1,228 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerinnerthemeign}[2018/03/29 IGN France color theme]
+
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+\RequirePackage{graphicx}
+\RequirePackage{adjustbox}
+\RequirePackage{transparent}
+
+\usetikzlibrary{backgrounds, positioning}
+\pgfplotsset{compat=1.13}
+
+
+\usecolortheme{ign}
+
+\mode<presentation>
+
+\setbeamertemplate{background}{
+    \begin{tikzpicture}
+        \useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+        \ifnum\thepage>1\relax%
+            \fill[white,opacity=1] (0,0) rectangle(\the\paperwidth,\the\paperheight);
+        \fi
+    \end{tikzpicture}
+}
+
+\newsavebox \tramebox
+\savebox \tramebox{
+    \begin{tikzpicture}
+        \begin{axis}[axis lines=none, width=8cm, height=4.7cm, at={(0cm, 0cm)}]
+            \foreach \line in {1,2,...,30}{
+                \addplot[
+                    only marks,
+                    color=IGNGrey,
+                    mark=*,
+                    mark size=.05pt,
+                    samples=35
+                ] {\line};
+            }
+        \end{axis}
+    \end{tikzpicture}
+}
+
+\newsavebox \titlebox
+\savebox \titlebox{
+    \begin{tikzpicture}
+        \fill[top color=IGNDarkGreen, bottom color = IGNGreen]
+        (-2.8, 2.5)
+        -- (2.5, 2)
+        -- (2.8, -1)
+        -- (-1.5, -1.5)
+        -- (-3.2, 0);
+    \end{tikzpicture}
+}
+\defbeamertemplate*{title page}{ign}[1][]
+{
+    \begin{tikzpicture}
+        \path (0, 0) + (-10, 4) node (logo) {
+            \includegraphics[width=2cm]{images/logos/ign_logo}
+        };
+        \path (logo.west) + (6, -.5) node (trame) {\usebox \tramebox};
+        \path (logo.south east) + (3.125, -3.5) node (amiens) {
+            {
+                \transparent{.6}\adjincludegraphics[
+                    width=10cm,
+                    trim={0 0 0 {10cm}},
+                    clip
+                ]{images/logos/huez-echine-de-praouat}
+            }
+        };
+        \path (trame.east) + (-2, -1) node (title_box) {\usebox \titlebox};
+        \path (title_box) + (0, .75) node (title) {
+            \begin{beamercolorbox}[
+                wd=5.4cm,
+                sep=8pt,
+                #1
+            ]{title page header}
+              \usebeamerfont{title}{\bf \inserttitle\par}
+            \end{beamercolorbox}
+        };
+        \path (title.south) + (0, -.1) node (subtitle) {
+            \begin{beamercolorbox}[
+                wd=6cm,
+                sep=8pt,
+                #1
+            ]{subtitle page header}
+                \usebeamerfont{subtitle}
+                \begin{center}
+                    \insertsubtitle\par
+                \end{center}
+            \end{beamercolorbox}
+        };
+        \path (trame.south) + (-.5, -2) node (author) {
+            \begin{beamercolorbox}[
+                wd=4cm,
+                sep=8pt,
+                #1
+            ]{author}
+                \usebeamerfont{author}
+                \begin{center}
+                    \insertauthor\par
+                \end{center}
+            \end{beamercolorbox}
+        };
+        \path (author.south) + (0, -.15) node (institute) {
+            \begin{beamercolorbox}[
+                wd=2cm,
+                sep=8pt,
+                #1
+            ]{institute}
+                \usebeamerfont{institute}
+                \begin{center}
+                    \insertinstitute\par
+                \end{center}
+            \end{beamercolorbox}
+        };
+        \path (institute.south) + (0, -.1) node (date) {
+            \begin{beamercolorbox}[
+                wd=6cm,
+                sep=8pt,
+                #1
+            ]{date}
+                \usebeamerfont{date}
+                \begin{center}
+                    \insertdate\par
+                \end{center}
+            \end{beamercolorbox}
+        };
+    \end{tikzpicture}
+    \addtocounter{framenumber}{-1}
+}
+
+
+\setbeamertemplate{beginsection}{
+    \begin{tikzpicture}
+        \path (0, -2) node (trame) {\usebox \tramesectionbox};
+        \path (trame) + (1, 1) node (section_number_box) {\usebox \sectionnumberbox};
+        \path (section_number_box) + (0.2, .5) node (section_number) {
+            \begin{beamercolorbox}[
+                wd=2cm,
+                sep=8pt
+            ]{sectionnumber}
+                \usebeamerfont{sectionnumber} {\bf \insertsectionnumber\par}
+            \end{beamercolorbox}
+        };
+        \path (trame.east) + (1, -1) node (sectiontitle) {
+            \begin{beamercolorbox}[
+                wd=7cm,
+                sep=8pt
+            ]{sectiontitle}
+                \usebeamerfont{sectiontitle} \insertsection\par
+            \end{beamercolorbox}
+        };
+    \end{tikzpicture}
+}
+
+\setbeamertemplate{beginsubsection}{
+    \begin{tikzpicture}
+        \path (0, -2) node (trame) {\usebox \tramesectionbox};
+        \path (trame) + (1, 1) node (section_number_box) {\usebox \sectionnumberbox};
+        \path (section_number_box) + (0.2, .5) node (section_number) {
+            \begin{beamercolorbox}[
+                wd=2cm,
+                sep=8pt
+            ]{sectionnumber}
+                \usebeamerfont{sectionnumber} {\bf \insertsectionnumber\par}
+            \end{beamercolorbox}
+        };
+        \path (trame.east) + (1, -1) node (sectiontitle) {
+            \begin{beamercolorbox}[
+                wd=7cm,
+                sep=8pt
+            ]{sectiontitle}
+                \usebeamerfont{sectiontitle} \insertsection\par
+            \end{beamercolorbox}
+        };
+        \path (sectiontitle.south) + (2, -.2) node (sectionsubtitle) {
+            \begin{beamercolorbox}[
+                wd=7cm,
+                sep=8pt
+            ]{sectionsubtitle}
+                \usebeamerfont{sectionsubtitle} \insertsubsection\par
+            \end{beamercolorbox}
+        };
+    \end{tikzpicture}
+}
+
+
+\setbeamertemplate{endpage}{
+    \begin{tikzpicture}
+        \path (0, 0) + (-10, 4) node (logo) {
+            \includegraphics[width=2cm]{images/logos/ign_logo}
+        };
+        \path (logo.west) + (6, -.5) node (trame) {\usebox \tramebox};
+        \path (logo.south east) + (3.125, -3.5) node (amiens) {
+            {
+                \transparent{.6}\adjincludegraphics[
+                    width=10cm,
+                    trim={0 0 0 {10cm}},
+                    clip
+                ]{images/logos/huez-echine-de-praouat}
+            }
+        };
+        \path (trame.east) + (-2, -1) node (title_box) {\usebox \titlebox};
+        \path (title_box) + (0, .75) node (title) {
+            \begin{beamercolorbox}[
+                wd=4cm,
+                sep=8pt
+            ]{title page header}
+                \usebeamerfont{title}
+                \begin{center}
+                    Thank you for your attention!
+                \end{center}
+            \end{beamercolorbox}
+        };
+        \path (trame.south) + (-.5, -2) node (author) {
+            \begin{beamercolorbox}[
+                wd=4cm,
+                sep=8pt
+            ]{author}
+                \usebeamerfont{author}
+                \begin{center}
+                    \insertauthor\par
+                \end{center}
+            \end{beamercolorbox}
+        };
+    \end{tikzpicture}
+}
