@@ -1,0 +1,66 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeign}[2018/03/29 IGN France color theme]
+
+\mode<presentation>
+
+
+\RequirePackage{tikz}
+
+\useinnertheme{ign}
+\useoutertheme{ign}
+\usecolortheme{ign}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+\setbeamerfont{sectionnumber}{size=\fontsize{60}{60}\selectfont}
+\setbeamerfont{sectiontitle}{size=\fontsize{30}{30}\selectfont}
+
+\newsavebox \tramesectionbox
+\savebox \tramesectionbox{
+    \begin{tikzpicture}
+        \begin{axis}[axis lines=none, width=8.5cm, height=11.5cm, at={(0cm, 0cm)}]
+            \foreach \line in {1,2,...,40}{
+                \addplot[
+                    only marks,
+                    color=IGNGrey,
+                    mark=*,
+                    mark size=.05pt,
+                    samples=40
+                ] {\line};
+            }
+        \end{axis}
+    \end{tikzpicture}
+}
+\newsavebox \sectionnumberbox
+\savebox \sectionnumberbox{
+    \begin{tikzpicture}
+        \fill[top color=IGNDarkGreen, bottom color = IGNGreen]
+        (0, 1.5)
+        -- (2.5, 1.2)
+        -- (3, -.9)
+        -- (-.5, -1.5);
+    \end{tikzpicture}
+}
+
+
+\AtBeginSection[]{
+    \begin{frame}[plain]
+        \usebeamertemplate{beginsection}
+    \end{frame}
+}
+
+\AtBeginSubsection[]
+{
+    \begin{frame}[plain]
+        \usebeamertemplate{beginsubsection}
+    \end{frame}
+}
+
+\AtEndDocument{
+    \begin{frame}[plain]
+        \usebeamertemplate{endpage}
+    \end{frame}
+}
+
+\mode<all>
