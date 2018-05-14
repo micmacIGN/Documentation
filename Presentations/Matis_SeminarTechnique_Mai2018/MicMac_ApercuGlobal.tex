@@ -3,12 +3,13 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
-\title{MicMac -- un aperçu global}
+\title{MicMac -- a global overview}
 %\subtitle{Beamer demonstration: longer subtitle}
 \institute{IGN}
-\date[25 May 2018]{Seminar technique}
-\author[E Rupnik]{E Rupnik, J-M Mueller, M Pierrot Deseilligny} 
+\date[25 May 2018]{Technical seminar}
+\author[E Rupnik]{E Rupnik, J-M Muller, M Pierrot Deseilligny} 
 
+\newcommand{\todo}[1]{\textcolor{red}{#1}}
 
 \usetheme{ign}
 
@@ -43,7 +44,8 @@
                 \includegraphics[width=10cm]{images/architecture_prntscr.png}
                 
 %change the graphic:
-% remove A
+% remove A (and fix Patis->Pastis)
+% make depth map on the right of Malt&co
 % add more descriptive names (or maybe in items below Tapas=corresp)                
 % introduce tool by tool on diff slides
                 
@@ -51,40 +53,69 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Tie-points
-		\section{Tie points extraction}
-			\subsection{No {a priori} about the geometry }        
-				\begin{frame}{Tie points extraction }
-					\framesubtitle{No \textit{a priori} about the geometry}
-			
-				\begin{block}{Extraction algorithms}
-			
-				
-					\begin{itemize}
-					\item SIFT, \\different modes of SIFT (Line, MulScale), i.e. when topology of the acquisition is known (e.g. linear in drone acquisitions or Stereopolosh acquistion)
-					\item AIME (presented by MPD during spotlight), under developpment; generally faster than SIFT
-					\end{itemize}
- 				\end{block}	
-					
+\section{Tie points extraction}
+\subsection{Without a priori geometry}
+        \begin{frame}{Tie points extraction }
+                \framesubtitle{Without \textit{a priori} geometry}
 
-			
-				\end{frame}
-
-			\subsection{With {a priori} about the geometry }        
-				\begin{frame}{Tie points extraction }
-					\framesubtitle{With \textit{a priori} about the geometry}
-					\begin{itemize}
-					\item TiePTri
-					\end{itemize}
-				\end{frame}
+                \begin{block}{Tie points detection}
+                        \begin{itemize}
+                        \item SIFT : default
+                        \item Digeo : slightly faster, possibility to use only max or min
+                        \item AIME (presented by MPD during spotlight), under developpment; generally faster than SIFT
+                        \end{itemize}
+                \end{block}
+                
+                \begin{block}{Tie points Matching}
+                \begin{itemize}
+                        \item ANN (Approximate Nearest Neighbor)
+                        \item for a point in pic A, find best and second best points in pic B.
+                        The best point is accepted if his score is high and second best score is low.
+                        \end{itemize}
+                \end{block}
+                
+        \end{frame}
         
-        	\subsection{Reduction algorithms}
-        		\begin{frame}{Tie points reduction algorithms}
-        			\begin{itemize}
-					\item bla bla
-					\end{itemize}
-        		\end{frame} 
-					
-				 
+        \begin{frame}{Tie points extraction }
+                \framesubtitle{Without \textit{a priori} the geometry}   
+                \begin{block}{Extraction organization : lists of pictures pairs}
+                \begin{itemize}
+                        \item All, MulScale, Line...
+                        \item from an orientation (GPS, approximate orientation)
+                \end{itemize}
+                \end{block}
+                \textbf{Tapioca} command. See §3.3 and §16 of documentation.
+                
+                \begin{block}{Tie points files format (binary and ASCII)}
+                \begin{itemize}
+                        \item Default : 1 file per pair, simple and universal
+                        \item New format : 1 file with points multiplicity, faster but only usable with few commands
+                \end{itemize}
+                \end{block}
+                \textbf{mm3d TestLib ConvNewFH} command. See §16.8 of documentation.
+        \end{frame}
+
+\subsection{With a priori geometry}        
+        \begin{frame}{Tie points extraction}
+                \framesubtitle{With \textit{a priori} geometry}
+                \begin{itemize}
+                        \item ``Second iteration'': using camera orientations and a 3d mesh
+                        \item finds tie points with good repartition on pictures and 3d mesh
+                        \item use orientations for perspective corrections before correlation
+                \end{itemize}
+                \textbf{mm3d TiePTri} command. See §16.9 of documentation.
+                
+                \centering{\includegraphics[width=7cm]{images/imgselect_brief}}
+        \end{frame}
+
+\subsection{Reduction algorithms}
+        \begin{frame}{Tie points reduction algorithms}
+                \begin{itemize}
+                        \item bla bla
+                        \end{itemize}
+        \end{frame} 
+                        
+                 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Pose estimation
 \section{Image orientation}       
 		\begin{frame}{Image orientation}
