@@ -1,7 +1,11 @@
 #Introduction
 ###Introduction
 
-MicMac is a free open-source (Cecill-B licence) photogrammetric suite that can be used in a variety of 3D reconstruction scenarios. In aims mainly at professionnal or academic users but constant efforts are made to make it more accessible to the general public.
+MicMac is a free open-source (Cecill-B licence) photogrammetric suite that can be used in a variety of 3D reconstruction scenarios.
+
+In aims mainly at professionnal or academic users but constant efforts are made to make it more accessible to the general public.
+
+###Introduction
 
 Its main strengths are :
 
@@ -50,9 +54,10 @@ Orientation, calibration and dense matching
 \begin{figure}
   \includegraphics[height=6cm]{images/usage3}
 \end{figure}
-###Outsides
+###Deformations
 \begin{figure}
-  \includegraphics[height=6cm]{images/usage4}
+  \includegraphics[width=8cm]{images/usage4a}\\
+  \includegraphics[width=8cm]{images/usage4b}
 \end{figure}
 ###Architecture
 \begin{figure}
