@@ -136,36 +136,152 @@
 			\end{enumerate}
 		\end{frame}
 
-	\subsection{SfM}	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SfM
+	\subsection{SfM and structureless BBA}	 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% 			 sfm0		
+%		\begin{frame}{SfM}
+%			\begin{columns}
+%			\column{0.5\textwidth}
+%			\setlength{\unitlength}{1cm}
+%			\hspace{1cm}
+%%
+%		Pipeline:
+%		\begin{itemize} 
+%			\item \footnotesize \textcolor{red}{\textbf{iterative}} creation of global poses
+%			\item \footnotesize all poses in the coordinate system attached to a selected camera 
+%		\end{itemize}
+%%  
+%
+%		\column{0.65\textwidth}
+%		\setlength{\unitlength}{1cm}
+%		\includegraphics[width=7.5cm]{images/sfm0.pdf} 
+%
+%		\end{columns}
+%		\end{frame}	
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%% 			 sfm1		
 		\begin{frame}{SfM}
-		
+			\begin{columns}
+			\column{0.5\textwidth}
+			\setlength{\unitlength}{1cm}
+			\hspace{1cm}
+%
+		Pipeline:
+		\begin{itemize} 
+			\item \footnotesize \textcolor{red}{\textbf{iterative}} creation of global poses
+			\item \footnotesize all poses in the coordinate system attached to a selected camera
+			\item \footnotesize direct algorithms \\(e.g. essential matrix, resection) 
+			\item \footnotesize bundle block adjustment \\ every $n$ images
+		\end{itemize}
+%  
+
+		\column{0.65\textwidth}
+		\setlength{\unitlength}{1cm}
+		\includegraphics[width=7.5cm]{images/sfm1.pdf} 
+
+		\end{columns}
 		\end{frame}			
 
-	\subsection{Collinearity-based BBA}	
-		\begin{frame}{Collinearity-based BBA}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Structureless
+		%\subsection{Structureless BBA}
+		\begin{frame}{Structureless BBA}
+	    
+		\begin{columns}
+			\column{0.5\textwidth}
+			\setlength{\unitlength}{1cm}
+			\hspace{1cm}
+%
+		Pipeline:
+		\begin{itemize} 
+			\item \footnotesize relative poses between all possible pairs \textcolor{red}{\textbf{simultaneously}}\\ (i.e. epipolar graph) 
+			\item \footnotesize composition of triplets
+			%\item \footnotesize robust tests and triplet-based BA
+			\item \footnotesize initialisation of global poses and error averaging
+		\end{itemize}
+%  
+
+		\column{0.65\textwidth}
+		\setlength{\unitlength}{1cm}
+		\includegraphics[width=7.5cm]{images/graph.pdf} 
+
+		\end{columns}
+		 
+		\end{frame}	
+		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SfM In MicMac		
+		\begin{frame}{SfM and structureless BBA}
+		
+		\begin{itemize}
+			\item in \texttt{MicMac}
+		\end{itemize}
+		
+		\centering
+		\includegraphics[width=3.5cm]{images/micmac_relative_pose.pdf}
+		
+		\end{frame}			
+		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BBA
+	\subsection{Bundle block adjustement}	
+		\begin{frame}{Bundle block adjustement (BBA)}
+		
+		\begin{itemize}
+		%\item applied in relative SfM or as stand-alone
+		\item collinearity equations
+		\item non-linear $\rightarrow$ \textcolor{red}{initial poses necessary}
+		\item heterogenous observations/parameters possible:
+			\begin{itemize}		
+		 		\item Ground Control Points (GCP), 
+		 		\item GNSS, 
+		 		\item lever-arm,
+		 		\item rigid bloc
+		 	\end{itemize}		
+		\end{itemize}		
 		
 		\end{frame}	
 
-	\subsection{Structureless BBA}	
-		\begin{frame}{Structureless BBA}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Initial poses
+%\section{Georeferencing, initialisation}
+	\begin{frame}{BBA initial poses}
+	
+	BBA adopted in
+	\begin{enumerate}
+		\item SfM, always the same relative system initialisation not an issue
+		\item absolute positioning
+		\begin{itemize}
+			\item input1: poses known in relative coordinates (SfM output)
+			\item input2: GCP, GNSS are given in absolute coordinates
+			\item \textcolor{red}{Transform from relative to absolute coordinates}
+					\begin{itemize}
+		\item rigid spatial similarity transformation (SST) (i.e. 7-param)
+		\item "non-rigid" SST (i.e. 7-param + a polynomial)
+		\end{itemize}
+		\end{itemize}		
+	\end{enumerate}		
+	
+ 	
+		 
+
+		
+		
+	\end{frame}
+	
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BBA In MicMac		
+		\begin{frame}{Bundle block adjustement (BBA)}
+
+		\begin{itemize}
+			\item in \texttt{MicMac}
+		\end{itemize}
+				
+		\centering 
+		\includegraphics[width=8cm]{images/MicMac_pose_estim_architecture.pdf}	
 		
 		\end{frame}	
-		
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Geo-referencing - maybe put it as a digression next BBA with initial values
-\section{Georeferencing}
-	\begin{frame}{Georeferencing}
-		Mathematical model
-		\begin{itemize}
-		\item rigid spatial similarity transformation (SST) \\(i.e. 7-param trafo)
-		\item "non-rigid" SST (i.e. 7-param and a polynomial)
-		\end{itemize}
-		
-		\onslide<2->Possible input data 
-		\begin{enumerate}
-			\item<2-> ground control points
-			\item<2-> GNSS perspective centers
-		\end{enumerate}
-	\end{frame}
+
+
+
 
 
 			
