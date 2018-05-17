@@ -10,37 +10,34 @@ In aims mainly at professionnal or academic users but constant efforts are made 
 Its main strengths are :
 
   * high degree of versatility
-  * metrological aspect of the reconstruction
+  * metrological aspect of reconstruction
   * adapted for big datasets
   * simplified tools
-  * open for education
-  * users community
+  * education-oriented
+  * many users
   * free and open source
 
 
 
-#Photogrammetry
-
-##Principle
+#Principle
 
 ###Principle
-Tie points determination
 \begin{figure}
-  \includegraphics[height=2.5cm]{images/col1} \quad \pause
-  \includegraphics[height=2.5cm]{images/col2} \quad \pause
-  \includegraphics[height=2.5cm]{images/col3} \quad \pause
+  \includegraphics[height=2.3cm]{images/col1} \quad \pause
+  \includegraphics[height=2.3cm]{images/col2} \quad \pause
+  \includegraphics[height=2.3cm]{images/col3} \quad \pause
 $\Rightarrow$
-  \includegraphics[height=2.5cm]{images/col_tie} \pause
+  \includegraphics[height=2.3cm]{images/col_tie} \pause
 \end{figure}
 \centering{$\Downarrow$}
 \begin{figure}
-  \includegraphics[height=3.2cm]{images/col_cloud} \pause
+  \includegraphics[height=2.8cm]{images/col_cloud} \pause
 \ $\Rightarrow$
-  \includegraphics[height=3.2cm]{images/col_dense}
+  \includegraphics[height=2.8cm]{images/col_dense}
 \end{figure}
-Orientation, calibration and dense matching
 
-##Usages
+
+#Usages
 
 ###Cartography
 \begin{figure}
@@ -50,24 +47,24 @@ Orientation, calibration and dense matching
 \begin{figure}
   \includegraphics[height=6cm]{images/usage1}
 \end{figure}
+###Architecture
+\begin{figure}
+  \includegraphics[width=8cm]{images/usage5a}\\
+  \includegraphics[width=8cm]{images/usage5b}
+\end{figure}
 ###Insides
 \begin{figure}
   \includegraphics[height=6cm]{images/usage3}
 \end{figure}
 ###Deformations
 \begin{figure}
-  \includegraphics[width=8cm]{images/usage4a}\\
-  \includegraphics[width=8cm]{images/usage4b}
-\end{figure}
-###Architecture
-\begin{figure}
-  \includegraphics[width=8cm]{images/usage5a}\\
-  \includegraphics[width=8cm]{images/usage5b}
+  \includegraphics[width=5.2cm]{images/usage4a} \ 
+  \includegraphics[width=5.2cm]{images/usage4b}
 \end{figure}
 ###Macro
 \begin{figure}
-  \includegraphics[width=5.3cm]{images/usage6a} \ 
-  \includegraphics[width=5.3cm]{images/usage6b}
+  \includegraphics[width=5.2cm]{images/usage6a} \ 
+  \includegraphics[width=5.2cm]{images/usage6b}
 \end{figure}
 ###Anything !
 \begin{figure}
@@ -79,10 +76,11 @@ Orientation, calibration and dense matching
 ###At IGN
 At IGN, MicMac is used for production and innovation:
 
-  * Aerial images correlation for France height model
-  * 3D modelization for special works
+  * Aerial images correlation for France digital terrain model
+  * 3D modelization for metrology
   * mobile mapping trajectories
-  * research (many collaborations and PhD)
+  * research
+  * education
 
 
 #Community
@@ -95,7 +93,7 @@ It is open source since 2007 (Cecill-B licence).
 The main repository is \url{https://github.com/micmacIGN/micmac} since 
 2016.
 
-It is developped in C++, with optional interfaces in Qt.
+It is developped in C++, with optional graphical user interfaces in Qt.
 
 
 ###Documentation
@@ -112,7 +110,7 @@ version for non-expert users.
 
 Many tutorials are made by users.
 
-As an example, in GNU/Linux Magazine 191:
+Example : GNU/Linux Magazine 191
 \begin{figure}
   \includegraphics[height=4cm]{images/gnulinux-magazine-191}
   \qquad
