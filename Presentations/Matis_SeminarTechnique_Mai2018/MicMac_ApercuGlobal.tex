@@ -58,7 +58,7 @@
 \subsection{Without a priori geometry}
         \begin{frame}{Tie points extraction }
                 \framesubtitle{Without \textit{a priori} geometry}
-
+\pause
                 \begin{block}{Tie points detection}
                         \begin{itemize}
                         \item SIFT : default
@@ -66,7 +66,7 @@
                         \item AIME (presented by MPD during spotlight), under developpment; generally faster than SIFT
                         \end{itemize}
                 \end{block}
-                
+\pause
                 \begin{block}{Tie points Matching}
                 \begin{itemize}
                         \item ANN (Approximate Nearest Neighbor)
@@ -79,6 +79,7 @@
         
         \begin{frame}{Tie points extraction }
                 \framesubtitle{Without \textit{a priori} the geometry}   
+\pause
                 \begin{block}{Extraction organization : lists of pictures pairs}
                 \begin{itemize}
                         \item All, MulScale, Line...
@@ -86,7 +87,7 @@
                 \end{itemize}
                 \end{block}
                 \textbf{Tapioca} command. See §3.3 and §16 of documentation.
-                
+\pause
                 \begin{block}{Tie points files format (binary and ASCII)}
                 \begin{itemize}
                         \item Default : 1 file per pair, simple and universal
@@ -96,8 +97,9 @@
                 \textbf{mm3d TestLib ConvNewFH} command. See §16.8 of documentation.
         \end{frame}
 
-\subsection{With a priori geometry}        
+\subsection{With a priori geometry}   
         \begin{frame}{Tie points extraction}
+\pause
                 \framesubtitle{With \textit{a priori} geometry}
                 \begin{itemize}
                         \item ``Second iteration'': using camera orientations and a 3d mesh
@@ -111,10 +113,12 @@
 
 \subsection{Reduction algorithms}
         \begin{frame}{Tie points reduction algorithms}
+\pause
                 Four tools are dedicated to Tie points reduction: 
                 \begin{itemize}
-                        \item \textbf{RedTieP} / \textbf{Schnaps} (generic case): only one point per picutre part, favor manifold
-                        \item \textbf{OriRedTieP} / \textbf{Ratafia} (quasi-vertical case) : favor scene repartition
+                        \item \textbf{RedTieP} / \textbf{Schnaps} (generic case): only one point per picture part, favor manifold
+                        \item \textbf{OriRedTieP} (quasi-vertical case) : favor scene repartition and minimize reprojection errors
+                        \item \textbf{Ratafia} : use local orientations, works with any geometry
                 \end{itemize}
                 
                 \centering{
