@@ -36,8 +36,75 @@
 %4/ er: georef                                              ~1-2      ~1mins
 	
 	
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Introduction        
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Introduction     
       \section{Introduction}  
+      	\subsection*{Applications of MicMac}
+		\begin{frame}{Applications}
+			% Cartography
+		 
+			\begin{figure}
+			  \includegraphics[height=6cm]{../MicmacQuickMay2018/images/usage2}
+			\end{figure}
+		\end{frame}	
+		\begin{frame}{Applications}
+			% Forestery
+			 
+			\begin{figure}
+			  \includegraphics[height=6cm]{../MicmacQuickMay2018/images/usage1}
+			\end{figure}
+		\end{frame}	
+		\begin{frame}{Applications}
+			% Architecture
+			 
+			\begin{figure}
+			  \includegraphics[width=8cm]{../MicmacQuickMay2018/images/usage5a}\\
+			  \includegraphics[width=8cm]{../MicmacQuickMay2018/images/usage5b}
+			\end{figure}
+		\end{frame}	
+		\begin{frame}{Applications}
+			% Insides
+			 
+			\begin{figure}
+			  \includegraphics[height=6cm]{../MicmacQuickMay2018/images/usage3}
+			\end{figure}
+		\end{frame}	
+		\begin{frame}{Applications}
+			% Deformations
+			 
+			\begin{figure}
+			  \includegraphics[width=5.2cm]{../MicmacQuickMay2018/images/usage4a} \ 
+			  \includegraphics[width=5.2cm]{../MicmacQuickMay2018/images/usage4b}
+			\end{figure}
+		\end{frame}	
+		\begin{frame}{Applications}
+			% Macro
+			 
+			\begin{figure}
+			  \includegraphics[width=5.2cm]{../MicmacQuickMay2018/images/usage6a} \ 
+			  \includegraphics[width=5.2cm]{../MicmacQuickMay2018/images/usage6b}
+			\end{figure}
+		\end{frame}	
+		\begin{frame}{Applications}
+			% Anything !
+			 
+			\begin{figure}
+			  \includegraphics[height=6cm]{../MicmacQuickMay2018/images/usage7}
+			\end{figure}
+
+		\end{frame}		      	
+
+		\begin{frame}{At IGN}
+		At IGN, MicMac is used for production and innovation:
+		\begin{itemize}
+			\item  Aerial images correlation for France digital terrain model
+  			\item  3D modelization for metrology
+  			\item  mobile mapping trajectories
+  			\item  research
+  			\item  education 
+		\end{itemize}
+		\end{frame}
+		
+		   
         \subsection*{The processing pipeline}
             \begin{frame}{Overview of the processing pipeline}
                 %\framesubtitle{The proof uses \textit{reductio ad absurdum}.}
@@ -217,7 +284,7 @@
     	\footnotesize 
 		\begin{itemize}
 			\item<2-> \textcolor{red}{only camera poses are estimated !}
-			\item<2-> followed by the BBA
+			\item<2-> followed by the BBA  to refine camera calibrations
 		\end{itemize}
 
 		\column{0.65\textwidth}
@@ -267,11 +334,14 @@
 	
 	BBA adopted in
 	\begin{enumerate}
-		\item<1-> SfM, always the same relative system initialisation not an issue
+		\item<1-> SfM, alternates with direct methods\\ always the same relative system initialisation not an issue
 		\item<2-> absolute positioning
 		\begin{itemize}
 			\item<2-> input1: poses known in relative coordinates (SfM output)
-			\item<2-> input2: GCP, GNSS are given in absolute coordinates
+			\item<2-> input2: GCP, GNSS are given in absolute coordinates 
+			\item<3-> \textcolor{red}{Spatial similarity transformation \\from input1 to input2 coordinates}
+	 		\item<4-> {followed by BBA}
+	 		
 			%\item<3-> \textcolor{red}{Spatial similarity transformation \\from input1 to input2 coordinates}
 					%\begin{itemize}
 					%\item<3-> rigid spatial similarity transformation (SST) (i.e. 7-param)
@@ -279,19 +349,13 @@
 					%\end{itemize}
 		\end{itemize}							
 	\end{enumerate}		
-	
- 	\footnotesize
-	\begin{itemize}
-		\item<3-> \textcolor{red}{Spatial similarity transformation from input1 to input2 coordinates}
-	\end{itemize}		 
-
-		
-		
+			 
+ 	
 	\end{frame}
 	
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BBA In MicMac		
-		\begin{frame}{Bundle block adjustement (BBA)}
+		\begin{frame}{Image orientation}
 
 		\begin{itemize}
 			\item in \texttt{MicMac}
@@ -303,6 +367,31 @@
 		\end{frame}	
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Why MicMac
+	\section{Misc}
+	\subsection*{MicMac vs other software}
+		\begin{frame}{MicMac vs other software tools}
+		
+		Some unique MicMac features 
+		\begin{itemize}
+		\item access to intermediary results, no black box
+		\item MicMac as a library
+		\item qualitative evaluation of the results
+		\item a wide range of camera calibration models
+		\item processing of frame camera and pushbroom images
+		\item ...
+		\end{itemize}
+		
+		
+		\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Community
+
+		\subsection*{Community}
+		\begin{frame}{Community}
+			?
+		\end{frame}		 
 
 
 
