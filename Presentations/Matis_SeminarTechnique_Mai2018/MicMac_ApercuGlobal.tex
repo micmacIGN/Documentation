@@ -41,7 +41,8 @@
         \subsection*{The processing pipeline}
             \begin{frame}{Overview of the processing pipeline}
                 %\framesubtitle{The proof uses \textit{reductio ad absurdum}.}
-                \includegraphics[width=10cm]{images/architecture_prntscr.png}
+                \centering
+                \includegraphics[width=11.5cm]{images/MicMac_architecture.pdf}
                 
 %change the graphic:
 % remove A (and fix Patis->Pastis)
@@ -129,16 +130,17 @@
 		\begin{frame}{Image orientation}
 			\framesubtitle{Approaches}
 			\begin{enumerate}
-			\item no a priori, iterative (i.e. SfM)
-			\item with a priori, collinearity-based bundle block adjustment (BBA) when initial orientations are known 
-			\item structureless BBA
+			\item no \textit{a priori}, \textcolor{red}{iterative} (i.e. SfM)
+			\item no \textit{a priori}, \textcolor{red}{structureless} method (aka \textit{global motion first})
+			\item initial orientations are known, \\\textcolor{red}{collinearity-based bundle block adjustment} (BBA)
+			
 			
 			\end{enumerate}
 		\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SfM
-	\subsection{SfM and structureless BBA}	 
+	\subsection{SfM and structureless method}	 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% 			 sfm0		
 %		\begin{frame}{SfM}
@@ -176,6 +178,12 @@
 			\item \footnotesize bundle block adjustment \\ every $n$ images
 		\end{itemize}
 %  
+%  
+		\vspace{0.5cm}
+    	\footnotesize 
+		\begin{itemize}
+			\item<2-> \textcolor{red}{camera poses and calibrations \\are estimated}
+		\end{itemize}
 
 		\column{0.65\textwidth}
 		\setlength{\unitlength}{1cm}
@@ -186,7 +194,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Structureless
 		%\subsection{Structureless BBA}
-		\begin{frame}{Structureless BBA}
+		\begin{frame}{Structureless method}
 	    
 		\begin{columns}
 			\column{0.5\textwidth}
@@ -201,6 +209,12 @@
 			\item \footnotesize initialisation of global poses and error averaging
 		\end{itemize}
 %  
+		\vspace{0.5cm}
+    	\footnotesize 
+		\begin{itemize}
+			\item<2-> \textcolor{red}{only camera poses are estimated !}
+			\item<2-> followed by the BBA
+		\end{itemize}
 
 		\column{0.65\textwidth}
 		\setlength{\unitlength}{1cm}
@@ -211,7 +225,7 @@
 		\end{frame}	
 		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SfM In MicMac		
-		\begin{frame}{SfM and structureless BBA}
+		\begin{frame}{SfM and structureless method}
 		
 		\begin{itemize}
 			\item in \texttt{MicMac}
@@ -226,17 +240,19 @@
 	\subsection{Bundle block adjustement}	
 		\begin{frame}{Bundle block adjustement (BBA)}
 		
+		Generalities:
 		\begin{itemize}
 		%\item applied in relative SfM or as stand-alone
 		\item collinearity equations
-		\item non-linear $\rightarrow$ \textcolor{red}{initial poses necessary}
-		\item heterogenous observations/parameters possible:
+		\item heterogenous observations/parameters possible, e.g.:
 			\begin{itemize}		
 		 		\item Ground Control Points (GCP), 
 		 		\item GNSS, 
 		 		\item lever-arm,
 		 		\item rigid bloc
 		 	\end{itemize}		
+		 	
+		\item non-linear $\rightarrow$ \textcolor{red}{initial poses necessary}
 		\end{itemize}		
 		
 		\end{frame}	
@@ -247,21 +263,23 @@
 	
 	BBA adopted in
 	\begin{enumerate}
-		\item SfM, always the same relative system initialisation not an issue
-		\item absolute positioning
+		\item<1-> SfM, always the same relative system initialisation not an issue
+		\item<2-> absolute positioning
 		\begin{itemize}
-			\item input1: poses known in relative coordinates (SfM output)
-			\item input2: GCP, GNSS are given in absolute coordinates
-			\item \textcolor{red}{Transform from relative to absolute coordinates}
-					\begin{itemize}
-		\item rigid spatial similarity transformation (SST) (i.e. 7-param)
-		\item "non-rigid" SST (i.e. 7-param + a polynomial)
-		\end{itemize}
-		\end{itemize}		
+			\item<2-> input1: poses known in relative coordinates (SfM output)
+			\item<2-> input2: GCP, GNSS are given in absolute coordinates
+			%\item<3-> \textcolor{red}{Spatial similarity transformation \\from input1 to input2 coordinates}
+					%\begin{itemize}
+					%\item<3-> rigid spatial similarity transformation (SST) (i.e. 7-param)
+					%\item<3-> "non-rigid" SST (i.e. 7-param + a polynomial)
+					%\end{itemize}
+		\end{itemize}							
 	\end{enumerate}		
 	
- 	
-		 
+ 	\footnotesize
+	\begin{itemize}
+		\item<3-> \textcolor{red}{Spatial similarity transformation from input1 to input2 coordinates}
+	\end{itemize}		 
 
 		
 		
