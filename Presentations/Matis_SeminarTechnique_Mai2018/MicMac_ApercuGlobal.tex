@@ -38,8 +38,8 @@
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Introduction     
       \section{Introduction}  
-      	\subsection{Applications of MicMac}
-		\begin{frame}{Cartography}
+      	\subsection*{Applications of MicMac}
+		\begin{frame}{Applications}
 			% Cartography
 		 
 			\begin{figure}
@@ -47,21 +47,21 @@
 			\end{figure}
 		\end{frame}	
 		
-		\begin{frame}{Mobile mapping system}
+		\begin{frame}{Applications}
 			% Mobile mapping system
 			\begin{figure}
 			  \includegraphics[width=11cm]{images/trajectory.png}
 			\end{figure}
 		\end{frame}	
 		
-		\begin{frame}{Forestery}
+		\begin{frame}{Applications}
 			% Forestery
 			 
 			\begin{figure}
 			  \includegraphics[height=6cm]{../MicmacQuickMay2018/images/usage1}
 			\end{figure}
 		\end{frame}	
-		\begin{frame}{Architecture}
+		\begin{frame}{Applications}
 			% Architecture
 			 
 			\begin{figure}
@@ -69,14 +69,14 @@
 			  \includegraphics[width=8cm]{../MicmacQuickMay2018/images/usage5b}
 			\end{figure}
 		\end{frame}	
-		\begin{frame}{Insides}
+		\begin{frame}{Applications}
 			% Insides
 			 
 			\begin{figure}
 			  \includegraphics[height=6cm]{../MicmacQuickMay2018/images/usage3}
 			\end{figure}
 		\end{frame}	
-		\begin{frame}{Deformations}
+		\begin{frame}{Applications}
 			% Deformations
 			 
 			\begin{figure}
@@ -84,7 +84,7 @@
 			  \includegraphics[width=5.2cm]{../MicmacQuickMay2018/images/usage4b}
 			\end{figure}
 		\end{frame}	
-		\begin{frame}{Macro}
+		\begin{frame}{Applications}
 			% Macro
 			 
 			\begin{figure}
@@ -92,7 +92,7 @@
 			  \includegraphics[width=5.2cm]{../MicmacQuickMay2018/images/usage6b}
 			\end{figure}
 		\end{frame}	
-		\begin{frame}{Anything !}
+		\begin{frame}{Applications}
 			% Anything !
 			 
 			\begin{figure}
@@ -133,6 +133,7 @@
 \subsection{Without a priori geometry}
         \begin{frame}{Tie points extraction }
                 \framesubtitle{Without \textit{a priori} geometry}
+\pause
                 \begin{block}{Tie points detection}
                         \begin{itemize}
                         \item SIFT : default
@@ -153,6 +154,7 @@
         
         \begin{frame}{Tie points extraction }
                 \framesubtitle{Without \textit{a priori} the geometry}   
+\pause
                 \begin{block}{Extraction organization : lists of pictures pairs}
                 \begin{itemize}
                         \item All, MulScale, Line...
@@ -172,6 +174,7 @@
 
 \subsection{With a priori geometry}   
         \begin{frame}{Tie points extraction}
+\pause
                 \framesubtitle{With \textit{a priori} geometry}
                 \begin{itemize}
                         \item ``Second iteration'': using camera orientations and a 3d mesh
@@ -185,11 +188,12 @@
 
 \subsection{Reduction algorithms}
         \begin{frame}{Tie points reduction algorithms}
+\pause
                 Four tools are dedicated to Tie points reduction: 
                 \begin{itemize}
                         \item \textbf{RedTieP} / \textbf{Schnaps} (generic case): only one point per picture part, favor manifold
                         \item \textbf{OriRedTieP} (quasi-vertical case) : favor scene repartition and minimize reprojection errors
-                        \item \textbf{Ratafia} : can use local orientations, works with any geometry
+                        \item \textbf{Ratafia} : use local orientations, works with any geometry
                 \end{itemize}
                 
                 \centering{
@@ -394,11 +398,12 @@
 
 		\begin{frame}{Documentation and community}
 		\begin{itemize}
-		\item \footnotesize full doc: \texttt{https://github.com/micmacIGN/Documentation/raw/master/DocMicMac.pdf}
-		\item \footnotesize wiki : \texttt{https://micmac.ensg.eu/index.php/Accueil}
-		\item \footnotesize forum : \texttt{http://forum-micmac.forumprod.com/}
+		\item \footnotesize full doc: \url{https://github.com/micmacIGN/Documentation/raw/master/DocMicMac.pdf}
+		\item \footnotesize wiki :  \url{https://micmac.ensg.eu/index.php/Accueil}
+		\item \footnotesize forum : \url{http://forum-micmac.forumprod.com/}
 		\end{itemize}
 		\end{frame}
+
 			
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ex slide        
 %      \section{Ex Slide}  

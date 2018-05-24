@@ -1,0 +1,10 @@
+\beamer@endinputifotherversion {3.36pt}
+\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
+\beamer@sectionintoc {2}{Tie points extraction}{14}{0}{2}
+\beamer@subsectionintoc {2}{1}{Without a priori geometry}{15}{0}{2}
+\beamer@subsectionintoc {2}{2}{With a priori geometry}{22}{0}{2}
+\beamer@subsectionintoc {2}{3}{Reduction algorithms}{25}{0}{2}
+\beamer@sectionintoc {3}{Image orientation}{28}{0}{3}
+\beamer@subsectionintoc {3}{1}{SfM and structureless method}{30}{0}{3}
+\beamer@subsectionintoc {3}{2}{Bundle block adjustement}{36}{0}{3}
+\beamer@sectionintoc {4}{Misc}{43}{0}{4}
