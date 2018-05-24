@@ -38,8 +38,8 @@
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Introduction     
       \section{Introduction}  
-      	\subsection*{Applications of MicMac}
-		\begin{frame}{Applications}
+      	\subsection{Applications of MicMac}
+		\begin{frame}{Cartography}
 			% Cartography
 		 
 			\begin{figure}
@@ -47,21 +47,21 @@
 			\end{figure}
 		\end{frame}	
 		
-		\begin{frame}{Applications}
+		\begin{frame}{Mobile mapping system}
 			% Mobile mapping system
 			\begin{figure}
 			  \includegraphics[width=11cm]{images/trajectory.png}
 			\end{figure}
 		\end{frame}	
 		
-		\begin{frame}{Applications}
+		\begin{frame}{Forestery}
 			% Forestery
 			 
 			\begin{figure}
 			  \includegraphics[height=6cm]{../MicmacQuickMay2018/images/usage1}
 			\end{figure}
 		\end{frame}	
-		\begin{frame}{Applications}
+		\begin{frame}{Architecture}
 			% Architecture
 			 
 			\begin{figure}
@@ -69,14 +69,14 @@
 			  \includegraphics[width=8cm]{../MicmacQuickMay2018/images/usage5b}
 			\end{figure}
 		\end{frame}	
-		\begin{frame}{Applications}
+		\begin{frame}{Insides}
 			% Insides
 			 
 			\begin{figure}
 			  \includegraphics[height=6cm]{../MicmacQuickMay2018/images/usage3}
 			\end{figure}
 		\end{frame}	
-		\begin{frame}{Applications}
+		\begin{frame}{Deformations}
 			% Deformations
 			 
 			\begin{figure}
@@ -84,7 +84,7 @@
 			  \includegraphics[width=5.2cm]{../MicmacQuickMay2018/images/usage4b}
 			\end{figure}
 		\end{frame}	
-		\begin{frame}{Applications}
+		\begin{frame}{Macro}
 			% Macro
 			 
 			\begin{figure}
@@ -92,7 +92,7 @@
 			  \includegraphics[width=5.2cm]{../MicmacQuickMay2018/images/usage6b}
 			\end{figure}
 		\end{frame}	
-		\begin{frame}{Applications}
+		\begin{frame}{Anything !}
 			% Anything !
 			 
 			\begin{figure}
@@ -133,7 +133,6 @@
 \subsection{Without a priori geometry}
         \begin{frame}{Tie points extraction }
                 \framesubtitle{Without \textit{a priori} geometry}
-\pause
                 \begin{block}{Tie points detection}
                         \begin{itemize}
                         \item SIFT : default
@@ -154,7 +153,6 @@
         
         \begin{frame}{Tie points extraction }
                 \framesubtitle{Without \textit{a priori} the geometry}   
-\pause
                 \begin{block}{Extraction organization : lists of pictures pairs}
                 \begin{itemize}
                         \item All, MulScale, Line...
@@ -174,7 +172,6 @@
 
 \subsection{With a priori geometry}   
         \begin{frame}{Tie points extraction}
-\pause
                 \framesubtitle{With \textit{a priori} geometry}
                 \begin{itemize}
                         \item ``Second iteration'': using camera orientations and a 3d mesh
@@ -188,12 +185,11 @@
 
 \subsection{Reduction algorithms}
         \begin{frame}{Tie points reduction algorithms}
-\pause
                 Four tools are dedicated to Tie points reduction: 
                 \begin{itemize}
                         \item \textbf{RedTieP} / \textbf{Schnaps} (generic case): only one point per picture part, favor manifold
                         \item \textbf{OriRedTieP} (quasi-vertical case) : favor scene repartition and minimize reprojection errors
-                        \item \textbf{Ratafia} : use local orientations, works with any geometry
+                        \item \textbf{Ratafia} : can use local orientations, works with any geometry
                 \end{itemize}
                 
                 \centering{
@@ -396,9 +392,36 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Community
 
-		\subsection*{Community}
-		\begin{frame}{Community}
-			?
+		\subsection{Community}
+		\begin{frame}{Sources}
+
+			MicMac is developped by Marc Pierrot Deseilligny since 2003.
+
+			It is open source since 2007 (Cecill-B licence).
+
+			The main repository is \url{https://github.com/micmacIGN/micmac} since
+			2016.
+
+			It is developped in C++, with optional graphical user interfaces in Qt.
+
+		\end{frame}
+
+		\begin{frame}{Documentation}
+
+			MicMac is mainly used via command-line tools. Some of them are very
+			complex and versatile, but they have a simplified version for non-expert
+			users.
+
+			\begin{itemize}
+			\item
+			  Full documentation:
+			  \url{https://github.com/micmacIGN/Documentation/raw/master/DocMicMac.pdf}
+			\item
+			  Wiki: \url{https://micmac.ensg.eu/index.php/Accueil}
+			\item
+			  Forum: \url{http://forum-micmac.forumprod.com/}
+			\end{itemize}
+
 		\end{frame}		 
 
 
