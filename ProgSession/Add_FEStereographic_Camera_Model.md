@@ -1,6 +1,6 @@
 # Adding a new camera model = stereographic fisheye
 
-** The mapping function : 2 * TAN (theta/2) ** 
+**The mapping function : 2 * TAN (theta/2)** 
 
 1. Definition of the _preconditioner_ i.e. the mapping from the angle to image position
 
@@ -20,13 +20,13 @@
 
 2. Defiinition of the derivative functions after _Prec_ 
 
-    ..1. double `Der_PrecStereographique(double x)`     
-    ..2. double `Der_Std_PrecStereographique(double x)` 
-    ..3. double `Der_Dl_PrecStereographique(double x)`
+    1. double `Der_PrecStereographique(double x)`     
+    2. double `Der_Std_PrecStereographique(double x)` 
+    3. double `Der_Dl_PrecStereographique(double x)`
 
 3. Definition of functions that will work on operators
 
-    ..1. 
+    1. 
     `Fonc_Num PrecStereographique  (Fonc_Num f)
     {
      return Op_Un_Math::New
@@ -40,7 +40,7 @@
             );
     }`
 
-    ..2. The same for :
+    2. The same for :
 
     `double Der_PrecStereographique(double x);
      double SqM2CRx_StereoG(double x);
@@ -56,7 +56,7 @@
 
 5. Defintion of the class that will gather the above and launch the automated derivative generation for the entire projectin function
 
-    ** class cFESterepGraphique ** 
+    **class cFESterepGraphique** 
 
-    ..1. Linking of M2CRxSRx with PresStereographique
-    ..2.            C2MRxSRx with Inv_PrecStereographique
+    1. Linking of M2CRxSRx with PresStereographique
+    2.            C2MRxSRx with Inv_PrecStereographique
