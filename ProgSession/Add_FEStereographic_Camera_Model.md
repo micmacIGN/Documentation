@@ -59,4 +59,4 @@
     **class cFESterepGraphique** 
 
     1. Linking of `M2CRxSRx` with `PresStereographique`
-    2.            `C2MRxSRx` with `Inv_PrecStereographique`
+    2. Linking of `C2MRxSRx` with `Inv_PrecStereographique`
