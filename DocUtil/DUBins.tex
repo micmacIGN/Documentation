@@ -270,6 +270,49 @@ pour des simulation "physique".
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 
+\section{L'utilitaire lumi\`ere rasante {\tt LumRas}}
+
+\subsection{G\'en\'eralit\'es}
+Cet utilitaire permet de fusionner une image ma\^itresse en \'eclairage diffus avec des images esclaves en \'eclairage rasant. Le traitement permet de faire ressortir le micro-relief de certaines surfaces\footnote{Voir la th\`ese de Maryam Saaman : \url{https://tel.archives-ouvertes.fr/tel-01547923}}. L'outil {\tt LumRas} doit \^etre utilis\'e apr\`es {\tt Tapioca} pour qu'il puisse aligner correctement les images entre elles.
+
+\subsection{Liste des arguments}
+Cette commande attend deux arguments obligatoires :
+\begin{itemize}
+\item le nom de l'image ma\^itresse,
+\item et l'expression r\'eguli\`ere des images esclaves.
+\end{itemize}
+Un argument optionnel ({\tt Masq=}) permet d'indiquer le suffixe du masque de la zone \`a calculer saisi sur l'image ma\^itresse (par d\'efaut {\tt Masq} suite \`a l'utilisation de {\tt SaisieMasq}).
+
+\begin{verbatim}
+LumRas
+
+Unamed args :
+  * string :: {Master image}
+  * string :: {Raking light images pattern}
+Named args :
+  * [Name=Masq] string :: {Master image mask postfix (Def=_Masq)}
+
+\end{verbatim}
+
+\subsection{Exemple}
+Dans cet exemple, une pi\`ece de monnaie a \'et\'e photographi\'ee en condition d'\'eclairage naturel, puis cinq photographies en lumi\`ere rasante ont \'et\'e acquises.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{FIGS/LumRas/LumRasPanel.png}
+\caption{L'image ma\^itresse et les images esclaves}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{FIGS/LumRas/LumRasExample.png}
+\caption{D\'etail de l'image d'origine et de l'image calcul\'ee}
+\end{figure}
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+
 \section{L'utilitaire de d\'equantification  {\tt Dequant}}
 
 %-------------------------------------------------------------------
