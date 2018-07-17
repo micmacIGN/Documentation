@@ -363,6 +363,7 @@ Named args :
   * [Name=MoveBadImgs] bool :: {Move bad images to a trash folder called Poubelle, Def=false}
   * [Name=OutTrash] string :: {Output name of trash folder if moving bad images, Def=Poubelle}
   * [Name=MiniMulti] INT :: {Minimal Multiplicity of selected points, Def=1}
+  * [Name=NetworkExport] bool :: {Export Network (in js), Def=false}
 \end{verbatim}
 
 You can choose the Homol directory suffix for input and output. By default it uses ``Homol'' and creates a ``Homol\_mini'' directory for output.
@@ -376,6 +377,10 @@ Schnaps can be used to automatically remove picture without a sufficient number 
 Use {\tt minPercentCoverage} to choose the minimum coverage of image, and the list of 
 The list of image having a coverage below {\tt minPercentCoverage} is written in a file named as you choosed with {\tt PoubelleName}.
 With {\tt MoveBadImgs} those pictures can be moved to an other folder having a name chosen with {\tt OutTrash}.
+
+You can choose to keep only the points with a high multiplicity with {\tt MiniMulti}.
+The graph of image links is exportable with {\tt MNetworkExport}. Use {\tt micmac\_Documentation/NEW-DATA/schnaps\_disp\_graph/disp\_graph.html} to display it on
+a web browser.
 
 \subsection{Algorithm}
 {\tt Schnaps} computes a collection of Homol points, each recording its coordinates in every picture it appears.
