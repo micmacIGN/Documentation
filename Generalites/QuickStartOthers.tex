@@ -522,6 +522,11 @@ Named args :
 
 The difference is computed with reference to the first MAF file. If the measurement of one GCP is measured on the same image for both files, the difference between two measurements is calculated. If not, the value of the first MAF file is conserved.
 
+Example :
+\begin{verbatim}
+mm3d CompMAF ./ img_029.*.tif MAF1.xml MAF2.xml Out=Comp_MAF1_MAF2.xml
+\end{verbatim}
+
 %------------------%
 \subsection{CmpTieP}
 
@@ -987,4 +992,50 @@ Named args :
 \end{verbatim}
 
 It is useful to avoid correlation in burned areas.
+
+\section{Simulation tools}
+\subsection{GenerateTP}
+The {\tt TestLib GenerateTP} command generates perfectly intersected simulated tie points from a given tie point file (.dat of new format) and a given orientation folder. For now, it is possible to add a gaussian noise.
+
+\begin{verbatim}
+mm3d TestLib GenerateTP
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Directory}
+  * string :: {PMul File}
+  * string :: {Ori}
+Named args : 
+  * [Name=Out] string :: {Output name of generated tie points, Def=Homol_Gen}
+  * [Name=NoiseGaussian] vector<double> :: {[meanX,stdX,meanY,stdY]}
+\end{verbatim}
+
+Example :
+\begin{verbatim}
+mm3d TestLib GenerateTP ./ Homol/PMulAll.dat Ori-Cmp/ Out=test NoiseGaussian=[10,5,10,5]
+\end{verbatim}
+
+\subsection{GenerateMAF}
+The {\tt TestLib GenerateMAF} command generates perfect image measurements from a given GCP file and a given orientation folder. 
+
+\begin{verbatim}
+mm3d TestLib GenerateMAF
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Directory}
+  * string :: {Image pattern}
+  * string :: {Ori}
+  * string :: {File containning GCP coordinates}
+Named args : 
+  * [Name=Out] string :: {Output name of the generated MAF file, Def=Gen_MAF_Ori.xml}
+\end{verbatim}
+
+Example :
+\begin{verbatim}
+mm3d TestLib GenerateMAF ./ img.*.tif Ori-Cmp/ Gcps_L93h.xml
+\end{verbatim}
+
 
