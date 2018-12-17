@@ -995,7 +995,7 @@ It is useful to avoid correlation in burned areas.
 
 \section{Simulation tools}
 \subsection{GenerateTP}
-The {\tt TestLib GenerateTP} command generates perfectly intersected simulated tie points from a given tie point file (.dat of new format) and a given orientation folder. For now, it is possible to add a gaussian noise.
+The {\tt TestLib GenerateTP} command generates perfectly intersected simulated tie points from a given tie point file (.dat of new format) and a given orientation folder. For now, it is possible to add a gaussian noise or bias from image files.
 
 \begin{verbatim}
 mm3d TestLib GenerateTP
@@ -1003,21 +1003,29 @@ mm3d TestLib GenerateTP
 *  Help for Elise Arg main  *
 *****************************
 Mandatory unnamed args : 
-  * string :: {Directory}
+  * string :: {Image Pattern}
   * string :: {PMul File}
   * string :: {Ori}
 Named args : 
-  * [Name=Out] string :: {Output name of generated tie points, Def=Homol_Gen}
+  * [Name=Out] string :: {Output name of generated tie points, Def=simulated}
+  * [Name=Seed] INT :: {Seed for generating random noise}
   * [Name=NoiseGaussian] vector<double> :: {[meanX,stdX,meanY,stdY]}
+  * [Name=ImNX] string :: {image containing noise on X-axis}
+  * [Name=ImNY] string :: {image containing noise on Y-axis}
+  * [Name=TP3D] string :: {Output 3D positions of tie points without distortion.}
+
 \end{verbatim}
 
 Example :
 \begin{verbatim}
-mm3d TestLib GenerateTP ./ Homol/PMulAll.dat Ori-Cmp/ Out=test NoiseGaussian=[10,5,10,5]
+mm3d TestLib GenerateTP im.*.tif Homol/PMulAll.dat Ori-Cmp/ Out=test NoiseGaussian=[10,5,10,5]
+mm3d TestLib GenerateTP im.*.tif Homol/PMulAll.dat Ori-Cmp/ Out=test ImNX=biasX.tif ImNY=biasY.tif
 \end{verbatim}
+C++ takes a seed for generating a random noise, the seed is saved in file Seed.txt. If one wants to regenerate a certain random noise, the seed should be given.
+
 
 \subsection{GenerateMAF}
-The {\tt TestLib GenerateMAF} command generates perfect image measurements from a given GCP file and a given orientation folder. 
+The {\tt TestLib GenerateMAF} command generates perfect image measurements from a given GCP file and a given orientation folder. It is possible to add bias from images files.
 
 \begin{verbatim}
 mm3d TestLib GenerateMAF
@@ -1025,12 +1033,13 @@ mm3d TestLib GenerateMAF
 *  Help for Elise Arg main  *
 *****************************
 Mandatory unnamed args : 
-  * string :: {Directory}
   * string :: {Image pattern}
   * string :: {Ori}
   * string :: {File containning GCP coordinates}
 Named args : 
   * [Name=Out] string :: {Output name of the generated MAF file, Def=Gen_MAF_Ori.xml}
+  * [Name=ImNX] string :: {image containing noise on X-axis}
+  * [Name=ImNY] string :: {image containing noise on Y-axis}
 \end{verbatim}
 
 Example :
