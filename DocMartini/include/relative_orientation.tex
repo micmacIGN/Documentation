@@ -1,0 +1,188 @@
+\section{Relative orientations \er{NO\_AllOri2Im}}
+%
+The code launches \er{ TestLib NO\_AllOri2Im} (cf. Alg.~\ref{alg:AllOri2Im}) for a pattern of images. Inside the program, it iterates over all images and launches \er{TestLib NO\_Ori2Im} for all connected images (cf. Alg.~\ref{alg:Ori2Im} and Fig.~\ref{fig:workf1Rel}). The main method that calculates the relative orientation between an image pair is detailed in Alg.~\ref{alg:OrInit2Im}.
+
+\vspace{1cm}
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture} 
+\node (startImAll) at (0,0) [call] {TestLib NO\_AllOri2Im};
+\node (startIm2) at (0,-2)  [call] {TestLib NO\_Ori2Im};
+\node (startIm2a) at (-1.5,-1.65) {};
+\node (startIm2b) at (-0.75,-1.65) {};
+\node (startIm2c) at (0.75,-1.65) {};
+\node (startIm2d) at (1.5,-1.65) {};
+
+ 
+\node (CpleIm) at (5.5,-2) [process] {cNO\_AppliOneCple::CpleIm()};
+\node (newNO) at (12.5,-2) [process] {new cNewO\_OrInit2Im(); see Alg.~\ref{alg:OrInit2Im}}; 
+
+\draw [arrow,red] (startImAll) -- node[anchor=west,xshift=-0.5cm] {1} (startIm2a);
+\draw [arrow] (startImAll) -- node[anchor=east,xshift=-0.0cm] {2} (startIm2b);
+\draw [arrow,blue] (startImAll) -- node[anchor=west,xshift=-0.5cm] {3} (startIm2);
+\draw [arrow,green] (startImAll) -- node[anchor=east,xshift=0.5cm] {..} (startIm2c);
+\draw [arrow,dashed] (startImAll) -- node[anchor=east,xshift=0.65cm] {N} (startIm2d);
+
+\draw [arrow]  (startIm2) -- (CpleIm) ;
+\draw [arrow]  (CpleIm)   -- (newNO)  ;  
+\end{tikzpicture}
+\caption{The relative orientation workflow. $1$--$N$ signify nodes (i.e. images) in the connectivity graph. Computation is done in parallel.}
+\end{figure}\label{fig:workf1Rel}
+
+\subsection{Main classes} 
+%
+\begin{itemize}
+\item cNO\_AppliOneCple -- manager, prepares data for cNewO\_OrInit2Im, contains  the image pair and their names, multiple tie-pts structure, a directory/file manager ...
+\item cNewO\_OrInit2Im -- class managing the calculation of a relative orientation 
+\item cXml\_O2IComputed -- saves the relative orientation result 
+\end{itemize}
+ 
+ 
+\subsection{Algorithms}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NO\_AllOri2Im
+\begin{algorithm}
+\caption{\er{ TestLib NO\_AllOri2Im} def in TestAllNewOriImage\_main }
+\begin{algorithmic}
+\State  $aVIm$ -- vector of images in pattern
+\State  $aHom$ -- homologous points\\
+\\
+\Comment \cmt{Launch rel ori caculation for each image pair}
+
+\For {$aK=0; aK<aVIm \rightarrow size(); aK++$}
+ 
+\State $aVH$ -- vector of overlapping images (with common tie-pts)
+\For {$aKH=0$; $aKH<  aVH\rightarrow size(); aKH++$ } 
+
+\State aIm1 = aVIm[aK]
+\State aIm2 = aVH[aKH] 
+
+\State \er{TestLib NO\_Ori2Im aIm1 aIm2}
+ 
+\EndFor   
+\EndFor  
+\end{algorithmic}\label{alg:AllOri2Im}
+\end{algorithm}
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NO\_Ori2Im
+\begin{algorithm}
+\caption{\er{ TestLib NO\_Ori2Im} def in TestNewOriImage\_main }
+\begin{algorithmic}
+
+%\Comment {fff }
+\State  $BenchNewFoncRot()$ 
+\\
+\\
+\Comment \cmt{Preparation of data, i.e. create multiple tie-pts structures, read orientations if InOri }
+\State $cNO\_AppliOneCple$ $anAppli(argc,argv)$
+
+\Comment \cmt{Calculate relative orientation }
+\State $\textbf{\er{cNewO\_OrInit2Im * aCple = anAppli.CpleIm()}};$
+
+\Comment \cmt{Save result to xml}
+\State $cXml\_Ori2Im \&  aXml = {aCple->XmlRes()}$
+\State $MakeFileXML(aXml,anAppli.NameXmlOri2Im(true))$
+\State $MakeFileXML(aXml,anAppli.NameXmlOri2Im(false));$
+
+\end{algorithmic}\label{alg:Ori2Im}
+\end{algorithm}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% cNewO_OrInit2Im
+\begin{algorithm}
+\caption{\er{anAppli.CpleIm()} def in NewOri/cNewO\_CpleIm.cpp }
+\begin{algorithmic}
+\State 
+\Comment \cmt{Initialise an object of class $cNewO\_OrInit2Im$}
+
+\State  return new $cNewO_OrInit2Im(mGenOri,mQuick,mIm1,mIm2,\&mMergeStr,mTestSol,mRotInOri,mShow,mHPP,mSelAllCple,*this);  $
+ 
+\end{algorithmic}\label{alg:Ori2ImCont}
+\end{algorithm}
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% cNewO_OrInit2Im
+\begin{algorithm}
+\caption{\er{cNewO\_OrInit2Im} Initial orientation of an image pair}
+\begin{algorithmic}
+\\
+%\Comment {Initialise an object of class $cNewO\_OrInit2Im$}
+\State  Creates $PackReduit$ which is a subset of 500 tie-pts chosen heuristically
+\State  Save photogrammetric points for the image pair, i.e. HomFloatSym.dat
+\State  Initialise the cXml\_Ori2Im for the image pair
+\\
+\If {$GpsIsInit$}
+\State Do something
+\EndIf
+\\
+\State Calculate a homography between 2d points with $cElHomographie::RobustInit$
+\State Save results (including residuals, overlap hom, 2d ellipses) to $cXml\_O2IComputed$ class, object $aXCmp$
+\\
+\\
+\Comment \cmt{Test if the scene is not locally planar}
+\State ElRotation3D  * aRP = TestOriPlanePatch()
+\If {aRP}
+\State AmelioreSolLinear(*aRP,)
+\EndIf
+\\
+\Comment \cmt{Test the essential matrix with minimum pts and RANSAC (8pts algo)}
+\State ElRotation3D aMRR = TestcRanscMinimMatEss()
+\State AmelioreSolLinear(aMRR,);
+\\
+\\
+\Comment \cmt{Test the essential matrix with more pts and RANSAC (8pts algo)}
+\State ElRotation3D aRR = RansacMatriceEssentielle()
+\\
+\\
+\Comment \cmt{Test the essential matric - classical test, L1+L2, no RANSAC}
+\State ElRotation3D aR =  (aL2 ? mPackPStd.MepRelPhysStd(1.0,true)  : mPackStdRed.MepRelPhysStd(1.0,false)) ;
+\\
+\\
+\Comment \cmt{Test global homography, robust estimation}
+\State cResMepRelCoplan aRMC =  ElPackHomologue::MepRelCoplan( .... \\ ...
+\State Save the new homography in aXCmp.HomWithR()
+\\
+\Comment \cmt{Test pure rotation of the camera}
+\State cResMepCoc aRCoc= MEPCoCentrik(... \\ ... 
+\State Save the rotation in aXCmp.RPure().Ori()
+\\
+\\
+\Comment \cmt{Adjust the solution in a few iterations (until now direct linear solution)}
+\State ElRotation3D aSol = aBundle$\rightarrow$OneIterEq(...
+\\
+\\
+\Comment \cmt{Triangulate tie-pts, calculate 3D ellipses, and save}
+\State ... aXCmp.Elips() = anElips3D
+
+\\
+\State Keep track of computational time with $cXml\_O2ITiming$ \& $aTiming$
+
+\end{algorithmic}\label{alg:OrInit2Im}
+\end{algorithm}
+%
+
+\begin{algorithm}
+\caption{\er{cElRotation3D * TestOriPlanePatch} def in $photogram\/phgr\_mep\_patch\_plane.cpp$}
+\begin{algorithmic}
+\State to do
+\end{algorithmic}\label{alg:TestPlanePatch}
+\end{algorithm}
+%
+\begin{algorithm}
+\caption{\er{cElRotation3D * TestcRanscMinimMatEss} def in $photogram\/phgr\_mep\_patch\_plane.cpp$}
+\begin{algorithmic}
+\State to do
+\end{algorithmic}\label{alg:TestMinEss}
+\end{algorithm}
+%
+\begin{algorithm}
+\caption{\er{cElRotation3D * RansacMatriceEssentielle} def in $photogram\/phgr\_mep\_patch\_plane.cpp$}
+\begin{algorithmic}
+\State to do
+\end{algorithmic}\label{alg:TestEss}
+\end{algorithm}
+%
+\begin{algorithm}
+\caption{\er{cElRotation3D * MEPCoCentrik} def in $photogram\/phgr\_mep\_patch\_plane.cpp$}
+\begin{algorithmic}
+\State to do
+\end{algorithmic}\label{alg:TestRot}
+\end{algorithm}
