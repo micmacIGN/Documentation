@@ -1,0 +1,252 @@
+\section{\textit{Optimisation I} \er{NO\_AllImOptTrip }}
+
+The goal of this program is to optimise the calculated triplet orientations by (i) filtering tie-pts, (ii) testing with $TestOPA()$ algorithm based on resection and $TestTomasiKanade()$ algorithm suited for long focal lengths. Finally, bundle adjustement $SolveBundle3Image$ is called for each triplet. Schematic workflow of the algorithms is presented in Fig.~\ref{fig:workfOptim1}.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture} 
+\node (start) at (0,0) [call] {TestLib NO\_AllImOptTrip}; 
+\node (main) at (0,-2) [process] {CPP\_AllOptimTriplet\_main};
+  
+\node (startMul) at (0,-4) [call, text width=6cm] {TestLib NO\_OneImOptTrip};
+\node (startMula) at (-3,-3.6) {};
+\node (startMulb) at (-2,-3.6) {};
+\node (startMulc) at (-1,-3.6) {};
+\node (startMuld) at (1,-3.6) {};
+\node (startMule) at (2,-3.6) {};
+\node (startMulf) at (3,-3.6) {};
+
+
+\node (mainMul) at (0,-6) [process] {CPP\_OptimTriplet\_main};
+
+\node (Exe) at (0,-8) [process, text width=6cm] {Execute()};
+\node (Exea) at (-3,-7.6) {};
+\node (Exeb) at (-2,-7.6) {};
+\node (Exec) at (-1,-7.6) {};
+\node (Exed) at (1,-7.6) {};
+\node (Exee) at (2,-7.6) {};
+\node (Exef) at (3,-7.6) {};
+
+\draw [arrow] (start) --  (main); 
+\draw [arrow] (main) --  (startMul);   
+\draw [arrow] (main) -- node[anchor=west,xshift=-1.5cm] {pairs}  (startMula);   
+\draw [arrow] (main) --   (startMulb);   
+\draw [arrow] (main) --  (startMulc);   
+\draw [arrow] (main) --  (startMuld);   
+\draw [arrow] (main) --  (startMule);   
+\draw [arrow,dashed] (main) --  (startMulf);   
+
+\draw [arrow] (startMul) --  (mainMul); 
+
+\draw [arrow] (mainMul) --  (Exe); 
+\draw [arrow] (mainMul) -- node[anchor=west,xshift=-5.5cm] {all "third" images or triplets}  (Exea);  
+\draw [arrow] (mainMul) --   (Exeb); 
+\draw [arrow] (mainMul) --   (Exec); 
+\draw [arrow] (mainMul) --   (Exed);
+\draw [arrow] (mainMul) --   (Exee); 
+\draw [arrow,dashed] (mainMul) --   (Exef);  
+
+\end{tikzpicture}
+\caption{Triplet optimisation I workflow.}\label{fig:workfOptim1}
+\end{figure}
+
+\subsection{Main classes, some typedefs and variables}
+
+\begin{itemize}
+\item $cAppliOptimTriplet$ -- manager
+%\item $cPairOfTriplet$ -- 
+\end{itemize}
+
+\subsection{Algorithms}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CPP\_AllOptimTriplet\_main
+\begin{algorithm}
+\caption{\er{$CPP\_AllOptimTriplet\_main$} constructor def in cNewO\_OptimTriplet.cpp  }
+\begin{algorithmic}
+\State 
+\\
+\Comment \cmt{Iterate over all couples in $ListeCpleOfTriplets.xml$ (must be coherent with pattern too!) and launch the $TestLib NO\_OneImOptTrip$ programme for each.}
+ 
+\end{algorithmic}\label{alg:Optim1Main}
+\end{algorithm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CPP\_OptimTriplet\_main
+\begin{algorithm}
+\caption{\er{$CPP\_OptimTriplet\_main$} constructor def in cNewO\_OptimTriplet.cpp  }
+\begin{algorithmic}
+\State 
+\\
+\Comment \cmt{Call the object of the "managing" class}
+ \State cAppliOptimTriplet anAppli(argc,argv,true);
+
+\end{algorithmic}\label{alg:Optim1OneIm}
+\end{algorithm}
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% cAppliOptimTriplet
+\begin{algorithm}
+\caption{\er{$cAppliOptimTriplet::cAppliOptimTriplet$} constructor def in cNewO\_OptimTriplet.cpp  }
+\begin{algorithmic}
+\State 
+\\
+\Comment \cmt{Check whether testing with Tomas-Kanade algo shall be done (specific to long focal lengths)}
+ \State  $mModeTTK$,  $mWithTTK$
+ \\
+ \\
+\Comment \cmt{For a pair of images, get a list of its "third" images forming a triplet with that couple. Launch:}
+\State $Execute()$
+\\
+\end{algorithmic}\label{alg:Optim1AppliOneIm}
+\end{algorithm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  cAppliOptimTriplet::Execute()
+\begin{algorithm}
+\caption{\er{$cAppliOptimTriplet::Execute()$} constructor def in cNewO\_OptimTriplet.cpp  }
+\begin{algorithmic}
+\State 
+\\
+\Comment \cmt{Define the number of selected points. If Quick mode is on (true by default) 200 points are used, otherwise its 500 points.}
+\State QuickDefNbMaxSel=200, StdDefNbMaxSel=500;
+ \State    mNbMaxSel = mQuick ? QuickDefNbMaxSel : StdDefNbMaxSel;
+ \\ 
+\\
+\State mNbMaxInit = mQuick ? QuickNbMaxInit   : StdNbMaxInit ;
+\\
+\\
+\Comment\cmt{Calculate a mean focal length $mFoc$}\\
+\Comment \cmt{Load images to the vector mIms. Create variables mIm1, mIm2, mIm3 for each image of the triplet.}\cmt{Load pairs of images to vector mPairs. Create variables mP12, mP13, mP23 for each couple of the triplet.}\\
+\Comment \cmt{Load tie-pts with the $VFullPtOf3()$ method.}
+\\
+\Comment \cmt{"Attenuate" the number of selections with $ \frac{a \cdot b}{a + b}$ as shown below: }
+\State int aNbFull3 = $mIm2->VFullPtOf3().size()$ ;
+\State    int aNb3 = round\_up(CoutAttenueTetaMax(aNbFull3,mNbMaxSel));
+\State    mNbMaxSel = aNb3;
+\\
+\\
+\Comment \cmt{Filter tie-pts according to set parameters}
+\State $mSel3 = IndPackReduit(mIm2->VFullPtOf3(),mNbMaxInit,mNbMaxSel);$
+\\
+\Comment \cmt{Filter tie-pts for Tomas-Kanade tests}
+\State $mTKNbMaxSel = ElMin(mTKNbMaxSel,aNbFull3);$
+\State   $mTKSel3 = IndPackReduit(mIm2->VFullPtOf3(),ElMin(aNbFull3,5*mTKNbMaxSel),ElMin(aNbFull3,mTKNbMaxSel));$
+\\
+\\
+\Comment \cmt{Update some variables for all triplet images}
+\State $mIms[aK]->SetReduce(mSel3,mTKSel3);$
+\State  $mFullH123.push\_back(\&(mIms[aK]->VFullPtOf3()));$
+\State  $mRedH123.push\_back(\&(mIms[aK]->VRedPtOf3()));$
+\State  $mTK\_H123.push\_back(\&(mIms[aK]->VTK\_PtOf3()));$
+\\
+\\
+\Comment \cmt{Calculate a global residual which is the mean residual of residuals calculated on pairs 12, 13 and 23}
+\State mBestResidu =  ResiduGlob();
+\\
+\\
+\Comment \cmt{TestOPA}
+\For {(int aKP=0 ; aKP<int(mPairs.size()) ; aKP++)}
+\State TestOPA(*(mPairs[aKP])); \cmt{see Alg.~\ref{alg:Optim1TestOPA}}
+\EndFor
+\\
+\\
+\Comment \cmt{TestTomasiKanade}
+\State TestTomasiKanade(); \cmt{see Alg.~\ref{alg:Optim1TestTK}}
+\\
+\\
+\Comment \cmt{Perform bundle adjustemnt on the result}
+\State 
+   $SolveBundle3Image
+   (
+        mFoc,
+        aR21, // mIm2->Ori(),
+        aR31, // mIm3->Ori(),
+        aPMed,
+        aBOnH,
+        mRedH123,
+        mP12->RedHoms(),
+        mP13->RedHoms(),
+        mP23->RedHoms(),
+        mPds3,
+        aParamSB3I
+   );$
+\\
+\\
+\Comment \cmt{Calculate and save the "ellipse"}
+\State $cXml\_Elips3D$ $anElips3D;$
+\State $aXml.Elips() = anElips3D;$
+\State $MakeFileXML(aXml,aNameSauveXml);$
+
+\end{algorithmic}\label{alg:Optim1Execute}
+\end{algorithm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   cAppliOptimTriplet::TestOPA(cPairOfTriplet & aPair)
+\begin{algorithm}
+\caption{\er{$ cAppliOptimTriplet::TestOPA(cPairOfTriplet \& aPair)$} constructor def in cNewO\_OptimTriplet.cpp  }
+\begin{algorithmic}
+\State 
+\Comment \cmt{Load filtered tie-pts mRedH123 into aVP and images to aI.}
+\\
+\\ 
+\For {All tie-pts in aVP}
+\State Get direction of the point in aI1 and aI2 and store in aVA,aVB  \\
+\Comment \cmt{Intersect the two directions}
+\State  $Pt3dr anInter = InterSeg(aVA,aVB,OkI);$
+\\
+\\
+\Comment \cmt{Store in aL32 the correspondence 3D - 2D for the "third" images aI3. Note that the 2D position is not a projection of the anInter.}
+\State $aL32.push\_back(Appar23(Pt2dr(aP3.x,aP3.y),anInter));$
+\EndFor
+\\
+\Comment \cmt{Estimate orientation of aI3 from RANSAC-based resection}
+\State $ElRotation3D aR3 = aCSI.RansacOFPA(true,aNbRansac,aL32,\&anEcart);$
+\\
+\\
+\Comment \cmt{Normalise the orientations so that the base between image1 and image2 is equal to 1 and the rotation matrix of image1 is identity (same as in Alg.~\ref{alg:AddTriplet})}
+\\
+\\
+\Comment \cmt{Test the solution by comparing residuals of the new solution with the former residuals.}
+\State  TestSol(aVR); \cmt{see Alg.~\ref{alg:Optim1TestSol}}
+\end{algorithmic}\label{alg:Optim1TestOPA}
+\end{algorithm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   cAppliOptimTriplet::TestSol(const  std::vector<ElRotation3D> & aVR)
+\begin{algorithm}
+\caption{\er{$cAppliOptimTriplet::TestSol(const  std::vector<ElRotation3D> \& aVR)$}; def in cNewO\_OptimTriplet.cpp  }
+\begin{algorithmic}
+\State 
+\Comment \cmt{Compute the residuals based on the aVR solution}
+\State $aResidu = ResiduGlob(aVR[0],aVR[1],aVR[2]);$
+\\
+\\
+\Comment \cmt{If the current residual is smaller than the former best residual, update the orientations and the best residual}
+\If $aResidu < mBestResidu$
+\State  $     mBestResidu = aResidu;$
+\For       $int aK=0 ; aK<3 ; aK++$
+\State           $mIms[aK]->SetOri(aVR[aK]);$
+\EndFor
+\EndIf
+
+\end{algorithmic}\label{alg:Optim1TestSol}
+\end{algorithm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   cAppliOptimTriplet::TestTomasiKanade()
+\begin{algorithm}
+\caption{\er{$cAppliOptimTriplet::TestTomasiKanade()$}; def in cNewO\_OptimTriplet.cpp  }
+\begin{algorithmic}
+\State 
+\\
+\Comment \cmt{Orientate with Tomasi-Kanade algorithm}
+
+\State $std::vector<ElRotation3D> aVR = OrientTomasiKanade $ \\
+                                    $(aPrec,mTK\_H123,3,50,1e-5,(std::vector<ElRotation3D> *)NULL);$
+\\
+\\
+\Comment \cmt{Test the new solution and accept if smaller residual}
+\State TestSol(aVR);
+
+
+\end{algorithmic}\label{alg:Optim1TestTK}
+\end{algorithm}

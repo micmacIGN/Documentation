@@ -392,7 +392,6 @@ This part concerns all the tools to compare files or results of calculations com
 The {\tt CmpOri} command computes average norme differences of all external parametrs of images from 2 Ori-XXX/ folders.
 
 \begin{verbatim}
-mm3d CmpOri -help
 *****************************
 *  Help for Elise Arg main  *
 *****************************
@@ -403,6 +402,15 @@ Mandatory unnamed args :
 Named args : 
   * [Name=DirOri2] string :: {Orientation 2}
   * [Name=XmlG] string :: {Generate Xml}
+  * [Name=CSV] string :: {Generate detail CSV (excel compatible) for each image}
+  * [Name=Ply] string :: {Generate .ply File}
+  * [Name=ColXY] Pt3di :: {color for XY component of .ply}
+  * [Name=ColZ] Pt3di :: {color for Z component of .ply}
+  * [Name=ColOri] Pt3di :: {color for orientation component of .ply}
+  * [Name=ScaleC] REAL :: {Scale for camera center difference, the center diff is displayed when this option is activated}
+  * [Name=ScaleO] REAL :: {Scale for camera orientation difference, the ori diff is displayed when this option is activated}
+  * [Name=F] REAL :: {approximate value of focal length in (m), Def=0.03875m for Camlight}
+
 \end{verbatim}
 
 Example :
@@ -493,6 +501,32 @@ Named args :
   * [Name=XmlG] string :: {Generate Xml}
 
 \end{verbatim}
+%------------------%
+\subsection{CompMAF}
+The {\tt TestLib CompMAF} command computes differences between 2 image measurement files without the specification on image order.
+
+\begin{verbatim}
+mm3d TestLib CompMAF
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Directory}
+  * string :: {Image pattern}
+  * string :: {MAF File 1}
+  * string :: {MAF File 2}
+Named args : 
+  * [Name=Out] string :: {Output name of the generated CmpMAF file, Def=CmpMAF.xml}
+
+\end{verbatim}
+
+The difference is computed with reference to the first MAF file. If the measurement of one GCP is measured on the same image for both files, the difference between two measurements is calculated. If not, the value of the first MAF file is conserved.
+
+Example :
+\begin{verbatim}
+mm3d CompMAF ./ img_029.*.tif MAF1.xml MAF2.xml Out=Comp_MAF1_MAF2.xml
+\end{verbatim}
+
 %------------------%
 \subsection{CmpTieP}
 
@@ -958,4 +992,59 @@ Named args :
 \end{verbatim}
 
 It is useful to avoid correlation in burned areas.
+
+\section{Simulation tools}
+\subsection{GenerateTP}
+The {\tt TestLib GenerateTP} command generates perfectly intersected simulated tie points from a given tie point file (.dat of new format) and a given orientation folder. For now, it is possible to add a gaussian noise or bias from image files.
+
+\begin{verbatim}
+mm3d TestLib GenerateTP
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Image Pattern}
+  * string :: {PMul File}
+  * string :: {Ori}
+Named args : 
+  * [Name=Out] string :: {Output name of generated tie points, Def=simulated}
+  * [Name=Seed] INT :: {Seed for generating random noise}
+  * [Name=NoiseGaussian] vector<double> :: {[meanX,stdX,meanY,stdY]}
+  * [Name=ImNX] string :: {image containing noise on X-axis}
+  * [Name=ImNY] string :: {image containing noise on Y-axis}
+  * [Name=TP3D] string :: {Output 3D positions of tie points without distortion.}
+
+\end{verbatim}
+
+Example :
+\begin{verbatim}
+mm3d TestLib GenerateTP im.*.tif Homol/PMulAll.dat Ori-Cmp/ Out=test NoiseGaussian=[10,5,10,5]
+mm3d TestLib GenerateTP im.*.tif Homol/PMulAll.dat Ori-Cmp/ Out=test ImNX=biasX.tif ImNY=biasY.tif
+\end{verbatim}
+C++ takes a seed for generating a random noise, the seed is saved in file Seed.txt. If one wants to regenerate a certain random noise, the seed should be given.
+
+
+\subsection{GenerateMAF}
+The {\tt TestLib GenerateMAF} command generates perfect image measurements from a given GCP file and a given orientation folder. It is possible to add bias from images files.
+
+\begin{verbatim}
+mm3d TestLib GenerateMAF
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Image pattern}
+  * string :: {Ori}
+  * string :: {File containning GCP coordinates}
+Named args : 
+  * [Name=Out] string :: {Output name of the generated MAF file, Def=Gen_MAF_Ori.xml}
+  * [Name=ImNX] string :: {image containing noise on X-axis}
+  * [Name=ImNY] string :: {image containing noise on Y-axis}
+\end{verbatim}
+
+Example :
+\begin{verbatim}
+mm3d TestLib GenerateMAF ./ img.*.tif Ori-Cmp/ Gcps_L93h.xml
+\end{verbatim}
+
 

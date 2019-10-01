@@ -360,6 +360,10 @@ Unamed args :
 Named args :
   * [Name=Out] string :: {Output folder (end with /) and/or prefix (end with another char)}
   * [Name=Talk] bool :: {Turn on-off commentaries}
+  * [Name=RGB] bool :: {Output file with RGB channels,Def=true,set to 0 for grayscale}
+  * [Name=Crop] Box2di :: {Rectangular crop in input image geometry; Def=[-1,-1,-1,-1]=full}
+  * [Name=MaxSz] REAL :: {Maximal output image size (factor for input image); Def=1}
+
 \end{verbatim}
 
 The two mandatory arguments are:
@@ -369,11 +373,16 @@ The two mandatory arguments are:
 \end{itemize}
 
 \vspace{\baselineskip}
-The two optional arguments are:
+The four optional arguments are:
 \begin{itemize}
-    \item first arg, is understood as the output folder name, if it ends with \textbackslash, or as a prefix which will be followed by the orientation name, if it ends with another char;
-    \item second arg, a boolean to allow or avoid commentaries
+    \item Out, is understood as the output folder name, if it ends with \textbackslash, or as a prefix which will be followed by the orientation name, if it ends with another char;
+    \item Talk, a boolean to allow or avoid commentaries
+    \item RGB, to choose if the output image is RGB or grayscale
+    \item Crop, to export only a part of the picture (the crop is given in the input image geometry)
+    \item MaxSz, to choose the maximum size of the output image (as a factor of input image size)
 \end{itemize}
+
+Drunk creates an orientation folder for the new images, with real orientations without distortion.
 
 \subsection{Apero2NVM}
 

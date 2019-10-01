@@ -1,0 +1,11 @@
+\beamer@endinputifotherversion {3.36pt}
+\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{Applications of MicMac}{4}{0}{1}
+\beamer@sectionintoc {2}{Tie points extraction}{15}{0}{2}
+\beamer@subsectionintoc {2}{1}{Without a priori geometry}{16}{0}{2}
+\beamer@subsectionintoc {2}{2}{With a priori geometry}{21}{0}{2}
+\beamer@subsectionintoc {2}{3}{Reduction algorithms}{23}{0}{2}
+\beamer@sectionintoc {3}{Image orientation}{25}{0}{3}
+\beamer@subsectionintoc {3}{1}{SfM and structureless method}{27}{0}{3}
+\beamer@subsectionintoc {3}{2}{Bundle block adjustement}{33}{0}{3}
+\beamer@sectionintoc {4}{Misc}{40}{0}{4}
