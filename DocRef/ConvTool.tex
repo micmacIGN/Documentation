@@ -754,6 +754,41 @@ The corresponding matrix encoding using $R$ is:
 
 %==============================================================
 
+\subsection{MM2Bundler, Bundler2MM, SfmI2MM}
+$[$UNDER DEVELOPPMENT$]$. These tools convert MicMac orientations to Bundler/SfmInit format, and the other way around. For the moment being the export and import supposes that images are without distortions. \par
+
+\subsubsection*{Bundler}
+Here's an example of the conversion from MicMac to Bundler:
+\begin{verbatim}
+mm3d TestLib MM2bundler ./ b=bundler.txt l=list.txt Ori=Strecha-castle-P10
+\end{verbatim}
+%
+where the $l$ is the input and contains a list of images that will be exported to bundler, $Ori$ is the input orientation in MicMac format, and $b$ is the output orientation.\par
+
+In the following example we will perform the inverse operation, ie. import bundler orientations to MicMac:
+\begin{verbatim}
+mm3d TestLib Bundler2MM ./ b=bundler_test.txt  l=list-test.txt c=coords-test.txt Ori=Ori-BundlerTest/
+\end{verbatim}
+where all three parameters $b$, $l$ and $c$ are input parameters and the $Ori$ is the directory of the output. The $b$ and $l$ follow the Snavely format~\footnote{https://www.cs.cornell.edu/~snavely/bundler/} , whereas the $c$ file follows the SfmInit convention~\footnote{\label{note:sfmi}https://github.com/wilsonkl/SfM\_Init}.
+%
+\subsubsection*{SfmInit}
+If you have computed your relative motions (pairs), you may also want to export them (along with tie-points) to SfmInit, here's the method to do it:
+%
+\begin{verbatim}
+mm3d TestLib SfmI2MM ./ cc.txt list.txt coords.txt tracks.txt EG=EGs.txt OriCalib=Ori-Calib/ 
+Ori=Strecha-castle-P10/ Pat=.*png SH=-Ratafia
+\end{verbatim}
+where $OriCalib$, $Ori$,$Pat$ and $SH$ are input parameters, and the rest is the ouput following the known convention~\footnote{https://github.com/wilsonkl/SfM\_Init}.\\\\ 
+%
+To go from SfmInit to MicMac:
+\begin{verbatim}
+mm3d TestLib SfmI2MM ./ cc.txt list.txt coords.txt tracks.txt EG=EGs.txt  OriCalib=CalSfmInit 
+Ori=SfmInit  SH=-SfmInit  Rot=rot_solution.txt Tr=trans_problem_solution.txt
+\end{verbatim}
+where the outputs are $Ori$, $OriCalib$, $SH$ and the rest are the inputs.
+
+%==============================================================
+
 \section{Miscellaneous internal conversion}
 
 These section describe several tools that can be used when exporting MicMac data to
