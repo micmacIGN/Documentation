@@ -464,6 +464,151 @@ optimisitic in \ref{Sens:Optim} and pessimistic in \ref{Pess}:
   \label{Sens:Pess}
 \end{equation}
 
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\section{Structureless merging by covariance propagation}
+
+\subsection{Motivation and notation}
+
+The aim this section is to describe a methodology for integrating
+result of relative orientation into a global orientation.
+
+We note  $I_k, k \in [1,N] $ the images.
+We note  $P_k = (R_k C_k) $ the pose of image $I_k$ we want to estimate.
+With $R_k$ the rotation and $C_k$ the centre.
+
+By some language abuse we identify the $P_k$ and the $\mathbb{R}^3 \to  \mathbb{R}^3$ maping
+that transformate camera coorinates into word coordinates :
+
+\begin{equation}
+   P_k(q) = C_k + R_k q
+\end{equation}
+
+
+\begin{center}
+\begin{tikzcd}
+   W_k \arrow[r, "P_k"] &  \omega
+\end{tikzcd}
+\end{center}
+
+Suppose we have computed relative orientation for a number of subset
+of images. Theses subset can be pair, triplet, $N$-uplet, this does
+not matter in the formalism.  In many approach authors restrict to
+pairs, in our approach we use pair and triplets, but there is
+no theoreticall restriction to use quadruplet, quintuplet ...  This is
+practicle aspect of how to select a manageable number of subset  who lead in
+general to select only pair, or pair and triplet.
+
+
+In structureless we have a set of  $M$ subsets  $E^i, \; i \in [1,M]$, 
+we note   $E^i =  \{I_{k^j}\}$ with $j \in [1,n_i]$  .  For each $E_i$
+we have computed a relative orientation of each subset.  We note $p^i_{k^j}$ the pose
+estimated for image $I_{k^j}$  in subset $E^i$. 
+
+If the computation of $P_k$ and $p^i_{k^j}$  were errorless, there would
+exist a $3d$ similitude $S^i = (R^i C^i) $ for each subset such as :
+
+
+\begin{center}
+\begin{tikzcd}
+     W_{k^j} \arrow[rd,"p^i_{k^j}"]\arrow[r, "P_{k^j}"] & \omega   \arrow[d, "S_i" ]   \\
+                                  & \omega_i
+     \end
+{tikzcd}
+\end{center}
+
+
+\begin{equation}
+    S^i  P_{k^j}  =  p^i_{k^j}  ,\,  \forall i \in [1,M] , \, j \in [1,n_i] \label{Eq:Cov:Sim}
+\end{equation}
+
+
+Structurelless bunble adjustment can be formulated as the problem of computing,
+up to a global similitude, the $P_k$ from the $p^i_{k^j}$ using equation~\ref{Eq:Cov:Sim}.
+Most of the existing approach use a  metric $||\;||$ on poses, an try to compute  solution
+minimizing some function like :
+
+\begin{equation}
+    \sum\limits_{\substack{i=1 }}^{M} \sum \limits_{\substack{j=1 }}^{n_i}  || d(S^i  P_{k^j} , p^i_{k^j} ) ||  \label{Eq:Cov:MinDist}
+\end{equation}
+
+Also this approach may be suitable to compute an initial solution, it can
+be sometime very unacurate.  Because, using a unique metrics, it doesnt take
+into account that, depending on the configuration, there exist parameters
+than can be estimate very unacurately in the $E^i$. 
+
+This is illustrated, on figures~\ref{Fig:Cov:Overlap} and~\ref{Fig:Cov:TwoSol}, 
+with the realistic example which would be typicall from 
+an aerial acquisition  :
+
+\begin{itemize}
+    \item  lelft figure~\ref{Fig:Cov:Overlap} represents a typical overlap of
+          a so called $60\% \times 20\%$ flight acquisition;
+    \item  right figure~\ref{Fig:Cov:Overlap} zoom on image $I_{11}$ and $I_{21}$
+          overlap.
+\end{itemize}
+
+
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{||c|c||}
+   \hline \hline
+\includegraphics[width=70mm]{FIGS/Cov/Global.jpeg} &
+\includegraphics[width=50mm]{FIGS/Cov/TwoIm.jpeg} \\
+  \\ \hline  \hline
+\end{tabular}
+\label{Fig:Cov:Overlap}
+\caption{A global view of overlapping image and a zoom on $I_{11}$ and $I_21$}
+\end{center}
+\end{figure}
+
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{||c|c||}
+   \hline \hline
+\includegraphics[width=50mm]{FIGS/Cov/Sol1.jpeg} &
+\includegraphics[width=50mm]{FIGS/Cov/Sol2.jpeg} \\
+  \\ \hline  \hline
+\end{tabular}
+\label{Fig:Cov:TwoSol}
+\caption{Two likely solution to relative orientation of $I_{11}$ and $I_21$}
+\end{center}
+\end{figure}
+
+
+
+It is well known that in such configuration,  there is a high correlation between
+translation in $Oy$ and rotation arround $Ox$. This correlation is specially high
+with long focal and flat terrain. In such configuration the two solution of figure
+\ref{Fig:Cov:TwoSol} are likely two occurs when computing relative orientation of $I_{11}$ and $I_{21}$.
+
+
+Suppose for exemple that left configuration is the real one, but that computation return the
+right one.  So if we inject this solution in  minimization of formula \ref{Eq:Cov:MinDist} we 
+will force  orientation to a false value. Maybe it will be partially eliminated by some 
+robust criterion in implementation of \ref{Eq:Cov:MinDist}, but obviously there is a risk
+to have some bias if the inlier in relative solutions are not dominating.
+
+However, we are not obliged to create this false information and to treat equally variable
+that are accurately estimated and variable that are unaccurately estimated. If we have
+the variance/covariance matrix resulting from relative orientation, we can use it to
+to inject exactly what we know, and no more, in equation~\ref{Eq:Cov:MinDist}.
+
+In fact, when soluton $p^i_{k^j}$  result from a local bundle adjsutment on $E^i$,
+we have computed this covariance and can use it.
+This is the purpose of the method we desribe now.
+
+
+
+
+
+
+
+
 
     % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
