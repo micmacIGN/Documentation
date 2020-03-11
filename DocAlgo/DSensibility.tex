@@ -477,61 +477,69 @@ result of relative orientation into a global orientation.
 
 We note  $I_k, k \in [1,N] $ the images.
 We note  $P_k = (R_k C_k) $ the pose of image $I_k$ we want to estimate.
-With $R_k$ the rotation and $C_k$ the centre.
+With $R_k$ the rotation and $C_k$ the center.
 
 By some language abuse we identify the $P_k$ and the $\mathbb{R}^3 \to  \mathbb{R}^3$ maping
-that transformate camera coorinates into word coordinates :
+that transformate camera coordinates into word coordinates :
 
 \begin{equation}
    P_k(q) = C_k + R_k q
 \end{equation}
 
 
-\begin{center}
+\begin{equation}
 \begin{tikzcd}
    W_k \arrow[r, "P_k"] &  \omega
 \end{tikzcd}
-\end{center}
+\end{equation}
 
-Suppose we have computed relative orientation for a number of subset
+With this assimilation, we have the standard composition law :
+
+\begin{equation}
+   P_1 P_2 = (C_1 + R_1 C_2, R_1 R_2)
+\end{equation}
+
+We suppose we have computed relative orientation for a number of subset
 of images. Theses subset can be pair, triplet, $N$-uplet, this does
 not matter in the formalism.  In many approach authors restrict to
 pairs, in our approach we use pair and triplets, but there is
 no theoreticall restriction to use quadruplet, quintuplet ...  This is
-practicle aspect of how to select a manageable number of subset  who lead in
-general to select only pair, or pair and triplet.
+a practicle aspect of how to select a manageable number of subset,  who leads in
+general to select only pairs, or pairs and triplets.
 
 
 In structureless we have a set of  $M$ subsets  $E^i, \; i \in [1,M]$, 
-we note   $E^i =  \{I_{k^j}\}$ with $j \in [1,n_i]$  .  For each $E_i$
-we have computed a relative orientation of each subset.  We note $p^i_{k^j}$ the pose
-estimated for image $I_{k^j}$  in subset $E^i$. 
+we note   $E^i =  \{I_{k^i_j}\}$ with $j \in [1,n_i]$  .  For each $E_i$
+we have computed a relative orientation of each subset.  We note $p^i_j = (c^i_j,r^i_j)$ the pose
+estimated for image $I_{k^i_j}$     in subset $E^i$. 
 
-If the computation of $P_k$ and $p^i_{k^j}$  were errorless, there would
-exist a $3d$ similitude $S^i = (R^i C^i) $ for each subset such as :
-
-
-\begin{center}
-\begin{tikzcd}
-     W_{k^j} \arrow[rd,"p^i_{k^j}"]\arrow[r, "P_{k^j}"] & \omega   \arrow[d, "S_i" ]   \\
-                                  & \omega_i
-     \end
-{tikzcd}
-\end{center}
+If the computation of $P_k$ and $p^i_j$  were errorless, there would
+exist a $3d$ similitude $\mathcal{S}^i = (\lambda^i ,\mathcal {R}^i ,\mathcal{C}^i) $ for each subset such as :
 
 
 \begin{equation}
-    S^i  P_{k^j}  =  p^i_{k^j}  ,\,  \forall i \in [1,M] , \, j \in [1,n_i] \label{Eq:Cov:Sim}
+\begin{tikzcd}
+     W_{k^j} \arrow[rd,"p^i_j"]\arrow[r, "P_{k^i_j}"] & \omega   \arrow[d, "S_i" ]   \\
+                                  & \omega_i
+\end{tikzcd}
+\end{equation}
+
+\begin{equation}
+    \mathcal{S}^i  P_k   =   (\mathcal{C}^i + \lambda^i C_k, \mathcal{R}^i  R_k ) \label{Eq:Def:Sim}
+\end{equation}
+
+\begin{equation}
+    \mathcal{S}^i  P_{k^i_j}  =  p^i_j  ,\,  \forall i \in [1,M] , \, j \in [1,n_i] \label{Eq:Cov:Sim}
 \end{equation}
 
 
 Structurelless bunble adjustment can be formulated as the problem of computing,
-up to a global similitude, the $P_k$ from the $p^i_{k^j}$ using equation~\ref{Eq:Cov:Sim}.
-Most of the existing approach use a  metric $||\;||$ on poses, an try to compute  solution
+up to a global similitude, the $P_k$ from the $p^i_j$ using equation~\ref{Eq:Cov:Sim}.
+Most of the existing approach use a fixed  metric $||\;||$ on poses, an try to compute  solution
 minimizing some function like :
 
 \begin{equation}
-    \sum\limits_{\substack{i=1 }}^{M} \sum \limits_{\substack{j=1 }}^{n_i}  || d(S^i  P_{k^j} , p^i_{k^j} ) ||  \label{Eq:Cov:MinDist}
+    \sum\limits_{\substack{i=1 }}^{M} \sum \limits_{\substack{j=1 }}^{n_i}  || \mathcal{S}^i  P_{k^i_j} , p^i_j  ||  \label{Eq:Cov:MinDist}
 \end{equation}
 
 Also this approach may be suitable to compute an initial solution, it can
@@ -598,15 +606,280 @@ that are accurately estimated and variable that are unaccurately estimated. If w
 the variance/covariance matrix resulting from relative orientation, we can use it to
 to inject exactly what we know, and no more, in equation~\ref{Eq:Cov:MinDist}.
 
-In fact, when soluton $p^i_{k^j}$  result from a local bundle adjsutment on $E^i$,
+In fact, when soluton $p^i_j$  result from a local bundle adjsutment on $E^i$,
 we have computed this covariance and can use it.
 This is the purpose of the method we desribe now.
 
 
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsection{Hypothesis and aims}
+
+In this part of the description, the proposed method make the following assumption :
+
+\begin{itemize}
+   \item $H1$ we have already computed the \emph{precise} relative orientation $p^i_j$  for all $E^i$;
+   \item $H2$ we have already computed an \emph{approximate} solution to gobal orientation $P'_k$.
+\end{itemize}
+
+The aim of the method is to compute a more precise $P_k$ using  $p^i_j$  and $P'_k$, with
+fast computation not requiring to use all tie-points in a global bundle.
+
+Obviously, hypothesis $H2$ may seems too restrictive as having a not too bad global solution 
+is a hard point.  It could  even be argued that we propose a complex method for solving
+the easy part supposing the most complicated stuff has already been resolved \dots   In fact,
+this is not the case :
+
+\begin{itemize}
+   \item robust methods for computing  global solution, are generally iterative or hierarchical;
+   \item in both case they begin with small subset, for which the global solution is easy to compute;
+   \item they use iteration during wich  they make grow the subsets , 
+   \item at each iteration, they compute a initial solution for the additional pose and need to
+         do some work to reduce propagation error;
+\end{itemize}
+
+So in fact, the method proposed must rather be thought as an element of a global initialization
+where it is used at the step of refinement of current solutions. By the way, to keep it simple,
+we will adopt $H1$ and $H2$.
 
 
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsection{Structureless covariance , case known similitude}
+
+We begin by an approximate but simpler process. The process is $5$ steps :
+
+\begin{enumerate}
+    \item compute the  $p^i_j$ in each $E^i$  (it is $H1$);
+    \item compute the  covariance matrix $a^i$ and  vector $b^i$  in each $E^i$;
+    \item estimate similitude $\mathcal{S}^i$  ;
+    \item use $\mathcal{S}^i$ to transfer local $a^i,b^i$ to global $A_i,B_i$ and accumulate  
+          $A_i$ and $B_i$ in a global system $A$ and $B$
+    \item use $A$ and $B$ to refine the global solution.
+\end{enumerate}
+
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsubsection{compute accurate  $p^i_j$ }
+
+We can use the approach use in {\tt Martini} :
+
+\begin{itemize}
+    \item use some  initialization methods, generally to be robust we will use
+          several method with some Ransac approach for each ; typical methods can be 
+          essential matrix, space resection, tomasi kanade, planar methods ...
+
+    \item make some bundle adjustment to have a solution as accurate as possible;
+\end{itemize}
+
+During the bundle adjusment process we will have to take into account the fact that the
+relative orientation are computed up to a global similitude. Several approach can be used :
+
+\begin{itemize}
+    \item use specific formulation of the equation for the first image (not unknown), and the first base,
+          with has the advantage of reducing the number of unknown;
+          
+    \item add some constraint on specific variable (for example, fix firts pose) ;
+
+    \item add some smooth "very small" constraint on all variable of the system ...
+\end{itemize}
+
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsubsection{compute  covariance  in each $E^i$}
+
+\label{StrucLess:Comp:Cov}
+There is here an important trick : to compute the matrix that we will
+reuse in the global structureless bundle adjustment, we \emph{must} and we \emph{can} 
+"forget" the special treatment that we have made  before to  take into account the fact
+that the orientation is computed up to a global similitude.
+
+We \emph{must} forget it, because each of these constraint are relative to  a local 
+system of $E^i$, but it would be a nonsense to transmit in the global bundle the sum
+of each of all these constraint.
+
+We \emph{can} forget it, because the role of these constraints is to assure that we have a
+unique solution in each $E^i$, or in other worlds assure that $a^i$ is invertible and
+acceptably well conditionned. But we will not invert $a^i$. We are \emph{not} it the loop :
+linearise, compute $a^i, b^i$, invert and iterate if no convergence. We just make one iteration
+linaerisation and compute $a^i$ and $b^i$.
+
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsubsection{estimate  similitude $S^i$}
+
+We must estimate $\mathcal{S}^i$, from $P_{k^{i,j}}$  and $p^i_j$ using equation~\ref{Eq:Cov:Sim} and~\ref{Eq:Def:Sim}.
+Basically there is two approaches, straigthforward and global.
+
+For straigthforward, we consider that equation \ref{Eq:Cov:Sim} is almost exact and simply set :
+
+\begin{equation}
+  \mathcal{C}^i + \lambda^i C_{k^{i,1}}   = c^i_1 , \;\;
+  \mathcal{C}^i + \lambda^i C_{k^{i,2}}   = c^i_2 , \;\;
+  \mathcal{R}^i R_{k^{i,1}} = r^i_1
+\end{equation}
+
+Then :
+
+\begin{equation}
+    \lambda^i = \frac{||c^i_1-c^i_2||}{||C_{k^{i,1}} - C_{k^{i,2}}||} , \;\;
+     \mathcal{C}^i = c^i_1 -\lambda^i C_{k^{i,1}} , \;\;
+     \mathcal{R}^i  = r^i_1   \,  ^t R_{k^{i,1}}
+\end{equation}
+
+Global approach would be to solve directly by least square :
+
+\begin{equation}
+   \mathcal{C}^i + \lambda^i C_{k^{i,j}}   = c^i_j 
+\end{equation}
+
+And for rotation :
+
+\begin{equation}
+    R^i  = \Theta(   \frac{\sum \limits_{\substack{j=1 }}^{n_i}  r^i_j   \;  ^t R_{k^{i,j}}}{n_i})
+\end{equation}
+
+Where $\Theta$ is the operator computing the nearest rotation.
+
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsubsection{Use $ \mathcal{S}^i$ to accumulate}
+
+Lets  consider now a given set $E^i$ and note $x^i $ and $X_i$ the vector of parameter, 
+for relative and global orientation, for this subset  :
+
+\begin{equation}
+    x^i = \{p^i_1 \; p^i_2  \dots\} = \{c^i_1 \;  r^i_1 \; c^i_2  \dots \}
+\end{equation}
+
+\begin{equation}
+    X_i = \{P_{k^i_1} \; P_{k^i_2}  \dots\} = \{C_{k^i_1} \;  R_{k^i_1} \; C_{k^i_2}  \dots \}
+\end{equation}
+
+The result of bundle adjustment  leads to minimize an energetic function 
+which is semi-definite positive quadratic form :
+
+\begin{equation}
+    \mathcal{E}^i (x^i) =    \Transss {x^i}   a^i x^i  +   \Transs {b^i}   x^i   + d^i
+\end{equation}
+
+Where $a_i$, $b_i$, $d_i$  have been computed in~\ref{StrucLess:Comp:Cov}.
+But the relation of equation ~\ref{Eq:Cov:Sim} is a pure affinity between $p^i_j$
+and $P_{k^i_j}$, so the relation between $x^i$ and $X_i$  can be wrotten on matricial way :
+
+\begin{equation}
+    x^i =    \alpha^i X_i + \beta^i
+\end{equation}
+
+    % $S^i  P_{k^j}  =  p^i_{k^j}  ,\,  \forall i \in [1,M] , \, j \in [1,n_i] \label{Eq:Cov:Sim}$
+Where $\alpha^i$ is $6n_i$ square matric and $\beta^i$ a $6n_i$ vector.
+Of course they have a special structure, $\alpha^i$ is blos diagonal periodic for example.
+But excpet maybe for optimization we don't use this structure.
+Now we can write equation :
+
+\begin{equation}
+    \mathcal{E}^i (x^i) =    \mathcal{E} (\alpha^i X_i + \beta^i)
+\end{equation}
+
+\begin{equation}
+    \mathcal{E}^i (x^i) =     \Transss (\alpha^i X_i + \beta^i) a^i (\alpha^i X_i + \beta^i) +  \Trans {b^i}   (\alpha^i X_i + \beta^i)  + d^i
+\end{equation}
+
+Then setting :
+
+\begin{equation}
+     A_i =     \Transss \alpha^i  a^i \alpha^i
+\end{equation}
+
+\begin{equation}
+     B_i =       2*  \Transss \alpha^i  a^i  \beta^i     + b^i
+\end{equation}
+
+\begin{equation}
+     D_i =        \Transss \beta^i  a^i  \beta^i  +        d^i
+\end{equation}
+
+We have :
+
+\begin{equation}
+    \mathcal{E}^i (X_i) =    \Transss {X_i}   A_i X_i  +   \Transs {B_i}   X_i   + D_i
+\end{equation}
+
+We can now directly accumulate the $A_i$, $B_i$, $D_i$ into a global $A,B,D$ 
+to take into account the contribution of $E_i$ to the global error.
+
+\begin{equation}
+    \mathcal{E}(X) =      \Transss {X}    (\sum\limits_{\substack{i=1 }}^{M} A_i) X  
+                     +   (\sum\limits_{\substack{i=1 }}^{M} \, \Transs {B_i})   X_i   
+                     +  \sum\limits_{\substack{i=1 }}^{M}  D_i
+\end{equation}
+
+\begin{center}
+    \emph {Q. E. D.}
+\end{center}
+
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsection{Case known similitude}
+
+In fact there is no much to say, this is more or less a stantard way :
+
+\begin{itemize}
+   \item we set $\mathcal{S}^i = \mathcal{S}^i_0 + \partial s^i $
+   \item the term $\partial s^i $ add $7$ unknown to each system;
+   \item we use this formula in previous equations and linearie it when required;
+   \item finally, to suppress the $7$ we use the schurr complement (\ref{UnkAux:Algeb} and~\ref{UnkAux:Var}).
+\end{itemize}
+
+The "only" problem that we identify is that schurr complement technique may 
+create unacurrate result when the $\Lambda$ matrix is close to non invertible 
+(i.e. badly conditionnate).  This problem occur in photogrammetry in the
+colinearity equation, but it is possible to detect it by analyzing the geometry
+of bundle intesection (and then take a decision : not use the equation or 
+re-parametrize it with point at $\infty$).
+
+In this case, it is possible to analyse the matrix conditionning with
+standard method $||\Lambda|| * ||\Lambda ^{-1}||$ . The possible problem
+is that it may be difficult to threshold as it mix different kind of measurement ?
 
 
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsection{Discussion : pro and cons}
+
+The method is still to be implemented, so the discussion will be a bit theoreticall.
+
+
+\subsubsection{Pro}
+
+Elegant.  We make structurelless but use information as close as possible to the initial structure.
+This "elegance" make that, possibly, it can be extendedto the case where we also want to
+optimize the internal parameters .
+
+Probably fast.
+
+\subsubsection{Cons}
+
+Complicated to implement ?
+
+Not so cheap in memory. If we compare it to \cite{StrLessPoint}, and take the example a a triplet :
+
+\begin{itemize}
+   \item with covariance matrix : we have $6*3=18$ unknown, so the size of triangular
+        superior  matrix plus vector is is $\frac{18*19}{2} +18 = 189$ ,
+         
+   \item with point approach, if we take the minimalist approach we have $5$ point, $3$ images,
+         and $2$ coordinates by points, so $30$, by the way if we take the $3*3*3$ approach,
+         the size is $162$.
+\end{itemize}
 
 
 
