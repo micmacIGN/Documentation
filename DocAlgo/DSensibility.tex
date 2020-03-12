@@ -476,7 +476,7 @@ The aim this section is to describe a methodology for integrating
 result of relative orientation into a global orientation.
 
 We note  $I_k, k \in [1,N] $ the images.
-We note  $P_k = (R_k C_k) $ the pose of image $I_k$ we want to estimate.
+We note  $P_k = (R_k , C_k) $ the pose of image $I_k$ we want to estimate.
 With $R_k$ the rotation and $C_k$ the center.
 
 By some language abuse we identify the $P_k$ and the $\mathbb{R}^3 \to  \mathbb{R}^3$ maping
@@ -712,35 +712,38 @@ linaerisation and compute $a^i$ and $b^i$.
 
 \subsubsection{estimate  similitude $S^i$}
 
-We must estimate $\mathcal{S}^i$, from $P_{k^{i,j}}$  and $p^i_j$ using equation~\ref{Eq:Cov:Sim} and~\ref{Eq:Def:Sim}.
+We must estimate $\mathcal{S}^i$, from $P_{k^i_j}$  and $p^i_j$ using equation~\ref{Eq:Cov:Sim} and~\ref{Eq:Def:Sim}.
 Basically there is two approaches, straigthforward and global.
 
 For straigthforward, we consider that equation \ref{Eq:Cov:Sim} is almost exact and simply set :
 
 \begin{equation}
-  \mathcal{C}^i + \lambda^i C_{k^{i,1}}   = c^i_1 , \;\;
-  \mathcal{C}^i + \lambda^i C_{k^{i,2}}   = c^i_2 , \;\;
-  \mathcal{R}^i R_{k^{i,1}} = r^i_1
+  \mathcal{C}^i + \lambda^i C_{k^i_1}   = c^i_1 , \;\;
+  \mathcal{C}^i + \lambda^i C_{k^i_2}   = c^i_2 , \;\;
+  \mathcal{R}^i R_{k^i_1} = r^i_1
 \end{equation}
 
 Then :
 
 \begin{equation}
-    \lambda^i = \frac{||c^i_1-c^i_2||}{||C_{k^{i,1}} - C_{k^{i,2}}||} , \;\;
-     \mathcal{C}^i = c^i_1 -\lambda^i C_{k^{i,1}} , \;\;
-     \mathcal{R}^i  = r^i_1   \,  ^t R_{k^{i,1}}
+    \lambda^i = \frac{||c^i_1-c^i_2||}{||C_{k^i_1} - C_{k^i_2}||} , \;\;
+     \mathcal{C}^i = c^i_1 -\lambda^i C_{k^i_1} , \;\;
+     \mathcal{R}^i  = r^i_1   \,  ^t R_{k^i_1}
+     \label{StrLess:Simple:EstimSim}
 \end{equation}
 
 Global approach would be to solve directly by least square :
 
 \begin{equation}
-   \mathcal{C}^i + \lambda^i C_{k^{i,j}}   = c^i_j 
+   \mathcal{C}^i + \lambda^i C_{k^i_j}   = c^i_j 
+    \label{StrLess:Global:EstimLine}
 \end{equation}
 
 And for rotation :
 
 \begin{equation}
-    R^i  = \Theta(   \frac{\sum \limits_{\substack{j=1 }}^{n_i}  r^i_j   \;  ^t R_{k^{i,j}}}{n_i})
+    R^i  = \Theta(   \frac{\sum \limits_{\substack{j=1 }}^{n_i}  r^i_j   \;  ^t R_{k^i_j}}{n_i})
+    \label{StrLess:Global:EstimRot}
 \end{equation}
 
 Where $\Theta$ is the operator computing the nearest rotation.
@@ -829,12 +832,15 @@ to take into account the contribution of $E_i$ to the global error.
 
 \subsection{Case known similitude}
 
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsubsection{Method schur complement}
 In fact there is no much to say, this is more or less a stantard way :
 
 \begin{itemize}
    \item we set $\mathcal{S}^i = \mathcal{S}^i_0 + \partial s^i $
    \item the term $\partial s^i $ add $7$ unknown to each system;
-   \item we use this formula in previous equations and linearie it when required;
+   \item we use this formula in previous equations and linearise it when required;
    \item finally, to suppress the $7$ we use the schurr complement (\ref{UnkAux:Algeb} and~\ref{UnkAux:Var}).
 \end{itemize}
 
@@ -848,6 +854,24 @@ re-parametrize it with point at $\infty$).
 In this case, it is possible to analyse the matrix conditionning with
 standard method $||\Lambda|| * ||\Lambda ^{-1}||$ . The possible problem
 is that it may be difficult to threshold as it mix different kind of measurement ?
+
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsubsection{Method variable function}
+
+Another method, to have a non fix value of $\mathcal{S}^i$  is 
+to use, instead of a fix value, a function that is linearized.
+
+Such approach would be easy to use with straightforward estimation 
+like~\ref{StrLess:Simple:EstimSim}.
+
+On the other hand, with global method, formulas like~\ref{StrLess:Global:EstimLine}
+and~\ref{StrLess:Global:EstimRot} maybe more complicated to linearize and probably
+a specific formulation should be created.
+
+Maybe this a way to think deeper in, as if a linearized formulation of "good" global
+estimator can be found, it would avoid the inconvenient of fix method (unacurate similitude)
+and of schurr complement (instability when bad conditionning).
 
 
     % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -875,11 +899,14 @@ Not so cheap in memory. If we compare it to \cite{StrLessPoint}, and take the ex
 
 \begin{itemize}
    \item with covariance matrix : we have $6*3=18$ unknown, so the size of triangular
-        superior  matrix plus vector is is $\frac{18*19}{2} +18 = 189$ ,
+        superior  matrix plus vector \footnote{= number of coordinate to transmit} is
+         $\frac{18*19}{2} +18 = 189$ ;
          
-   \item with point approach, if we take the minimalist approach we have $5$ point, $3$ images,
-         and $2$ coordinates by points, so $30$, by the way if we take the $3*3*3$ approach,
-         the size is $162$.
+   \item with articial point approach as~\cite{StrLessPoint}, if we take the minimalist 
+         approach we have $5$ point, $3$ images,
+         and $2$ coordinates by points, the number of coordinates necessary is $30$. 
+         By the way if we take the $3*3*3$ approach,
+         the size is $162$, and with $5*5*5$ the size if $750$. 
 \end{itemize}
 
 
