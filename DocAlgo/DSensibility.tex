@@ -777,12 +777,12 @@ and $P_{k^i_j}$, so the relation between $x^i$ and $X_i$  can be wrotten on matr
 
     % $S^i  P_{k^j}  =  p^i_{k^j}  ,\,  \forall i \in [1,M] , \, j \in [1,n_i] \label{Eq:Cov:Sim}$
 Where $\alpha^i$ is $6n_i$ square matric and $\beta^i$ a $6n_i$ vector.
-Of course they have a special structure, $\alpha^i$ is blos diagonal periodic for example.
-But excpet maybe for optimization we don't use this structure.
+Of course they have a special structure, $\alpha^i$ is bloc diagonal periodic for example.
+But except maybe for optimization we don't use this structure.
 Now we can write equation :
 
 \begin{equation}
-    \mathcal{E}^i (x^i) =    \mathcal{E} (\alpha^i X_i + \beta^i)
+    \mathcal{E}^i (x^i) =    \mathcal{E}^i (\alpha^i X_i + \beta^i)
 \end{equation}
 
 \begin{equation}
@@ -796,17 +796,17 @@ Then setting :
 \end{equation}
 
 \begin{equation}
-     B_i =       2*  \Transss \alpha^i  a^i  \beta^i     + b^i
+     B_i =       2*  \Transss \alpha^i  a^i  \beta^i     + \alpha^i b^i
 \end{equation}
 
 \begin{equation}
-     D_i =        \Transss \beta^i  a^i  \beta^i  +        d^i
+     D_i =        \Transss \beta^i  a^i  \beta^i  +  \Trans{b^i} \beta^i +        d^i
 \end{equation}
 
 We have :
 
 \begin{equation}
-    \mathcal{E}^i (X_i) =    \Transss {X_i}   A_i X_i  +   \Transs {B_i}   X_i   + D_i
+    \mathcal{E}^i (x_i) =    \Transss {X_i}   A_i X_i  +   \Transs {B_i}   X_i   + D_i
 \end{equation}
 
 We can now directly accumulate the $A_i$, $B_i$, $D_i$ into a global $A,B,D$ 
@@ -814,8 +814,9 @@ to take into account the contribution of $E_i$ to the global error.
 
 \begin{equation}
     \mathcal{E}(X) =      \Transss {X}    (\sum\limits_{\substack{i=1 }}^{M} A_i) X  
-                     +   (\sum\limits_{\substack{i=1 }}^{M} \, \Transs {B_i})   X_i   
+                     +   (\sum\limits_{\substack{i=1 }}^{M} \, \Transs {B_i})   X   
                      +  \sum\limits_{\substack{i=1 }}^{M}  D_i
+                   = \Transss {X} A X  +  \Transs {B}   X + D
 \end{equation}
 
 \begin{center}
