@@ -925,3 +925,121 @@ mm3d TestLib ExoMCI ".*jpg" Abbey-IMG_0279.jpg RTL-Init Show=1
 \textbf{\textcolor{red}{Achtung !}} Note that you need to compute an orientation before. Here it's name is $\textbf{RTL-Init}$ and the master image is $\textbf{Abbey-IMG\_0279.jpg}$.
 \COM {
 }
+
+
+\newpage
+\subsection{Additional constraints in heterogeneous adjustment}
+
+\vspace{0.5cm}
+
+In this section we describe how to add specific constraints in a Campari compensation along with other traditional heterogeneous observations (tie points, ground control points, GPS, INS...). \newline
+
+\noindent As an example, we consider a (relatively) simple case where one wants to add line constraints in a set of images. Formally: \newline
+
+\noindent Given $N$ lines $L_1,L_2,...L_N$ (defined in 3D space), and  $M$ images $I_1, I_2,... I_M$, we note $L_{ij}$ the 2D (image coordinates) representation of $L_i$ in $I_j$. For each pair line-image, $L_{ij}$ is parameterized by two \textit{end points} $P_{ij}^1$ and $P_{ij}^2$. Note that, in general, even for a common 3D line $L_i$, the 2D representations $L_{ij}$ and $L_{ik}$ on two different images $I_j$ and $I_k$ do not need to rely on homologous end points. This means that in general the couples $(P_{ij}^1, P_{ik}^1)$ on one hand, and $(P_{ij}^2, P_{ik}^2)$ on the other hand, do not necessarily form a well-defined 3D point.   \newline
+
+\noindent Furhermore, we note $B_{ij}^k$ any bundle line from an image $I_j$ passing through any point $p_k \in [P_{ij}^1;P_{ij}^2]$, where $k$ is an integer index denoting the discretization of $L_{ij}$. For example, we can state that :  \newline
+
+$$\mathbf{p_k} = \mathbf{OP_{ij}^1} + \frac{k}{D_{ij}} \frac{\mathbf{P_{ij}^1P_{ij}^2}}{||\mathbf{P_{ij}^1P_{ij}^2}||}$$ \newline
+
+\noindent where $D_{ij}$ denotes the number of samples taken on the line $L_{ij}$. \newline
+
+\noindent Therefore, an additional constraint may be defined for each bundle $B_{ij}^k$ : \newline
+
+\begin{equation}
+\min ~ \sum_{i=1}^{N} \sum_{j=1}^{M} \sum_{k=1}^{D_{ij}} \delta(B_{ij}^k,L_i)^2 \label{EQU:LINE:CAMPARI}
+\end{equation}
+\vspace{0.2cm}
+
+\noindent where $\delta(L_1, L_2)$ denotes the shortest distance between two 3D lines $L_1$ and $L_2$. \newline
+
+\noindent Note that the constraint \ref{EQU:LINE:CAMPARI} should not be confused with the application case \ref{Adjustment with lines} where 3d coordinates of points belonging to segments are at least known beforehand. \newline
+
+\subsubsection{Input data format}
+
+We use a specific xml datafile for storing input lines. Three main C++ objects are considered here: \newline
+
+\begin{itemize}
+	\item \textbf{cOneMeasure3DLineInIm} is used to store a line in one image. It contains 3 member values: its name (NameLine3D) and two end points (P1 and P2). \newline
+	\item \textbf{cSetMeasure3DLineInOneIm} contains a list of cOneMeasure3DLineInIm object, and represents a set of lines in a given image. The list is contained in a member variable Measures. \newline
+	\item \textbf{cSetMeasureGlob3DLine} contains the global dataset for this application, namely a set of lines in multiple images, stored as a list of cSetMeasure3DLineInOneIm objects in a member variable AllMeasures. \newline
+\end{itemize}
+
+\noindent In fine, we believe that the input xml datafile may be generated automatically (\textit{e.g.} by Hough transform or LSD algorithms). For now, we have to create it manually, by digitizing points on images. To do so, it is possible to use \texttt{SaisieAppuisInit} or \texttt{SaisieAppuisInitQT} tools (see section \ref{SaisieAppuisInit} for further information on these tools) and convert the output with \texttt{GCP2MeasuresL3D}. \newline
+
+\noindent As an example, we use \textit{Saint-Michel de Cuxa} dataset. We start by selecting line end points on the first four images. Digitized points must have the following name convention: \texttt{<LineName>\_1} and \texttt{<LineName>\_2} define the first and second end points, respectively, of the line LineName. In the following example, we digitize 4 lines \texttt{D1} (on 4 images), \texttt{D2} (3 images), \texttt{D3} (4 images) and \texttt{D4} (2 images), hence a total of $2 \times 13 = 26$ points. Note that, for example, \texttt{D1\_1} in top left image is significantly different than \texttt{D1\_1} in bottom left, but it invariably describes the same line (\texttt{D1}) in all four images. \newline
+
+\begin{verbatim}
+mm3d SaisieAppuisInit "Abbey-IMG_01(73|9[1-3]).jpg" NONE toto mesures.xml
+\end{verbatim}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=120mm]{FIGS/Cuxa/linesSaisieAppuisInit1.pdf}
+	\end{center}
+	\caption{2D points acquisition with SaisieAppuisInit tool.}
+\end{figure}
+
+\noindent Hereafter, we will only be interested in the output file \texttt{mesures-S2D.xml} which contains pixel coordinates of $P_{ij}^1$ and $P_{ij}^2$ end points. Note that \texttt{mesures-S3D.xml} is either empty (when NONE argument has been provided as input orientation) or otherwise, does not contain any valuable information (since 3D coordinates are pseudo-intersection of non-homolgous points). Hence it can be discarded. We use \texttt{GCP2MeasuresL3D} tool to convert this 2D coordinate files to a line file: \newline
+
+\begin{verbatim}
+mm3d GCP2MeasuresL3D mesures-S2D.xml 
+
+Abbey-IMG_0173.jpg 3 line(s)
+Abbey-IMG_0191.jpg 4 line(s)
+Abbey-IMG_0192.jpg 4 line(s)
+Abbey-IMG_0193.jpg 2 line(s)
+-------------------------------------------------------------------------------
+mesures-S2D.xml: 13 line(s) found in 4 image(s) -> L3D_mesures-S2D.xml
+-------------------------------------------------------------------------------
+\end{verbatim}
+
+\noindent As a result, if no output name is specified, file \texttt{L3D\_<input\_name>.xml} is created.\newline
+
+{\scriptsize
+\begin{verbatim}
+<?xml version="1.0" ?>
+    <Xml_SetMeasureGlob3DLine>
+        <AllMeasures>
+            <NameIm>Abbey-IMG_0173.jpg</NameIm>
+            <Measures>
+                <NameLine3D>D1</NameLine3D>
+                <P1>987.73286945994812 274.982879240555803</P1>
+                <P2>1011.28698974809959 821.946130239705212</P2>
+            </Measures>
+            <Measures>
+            <Measures>
+                <NameLine3D>D2</NameLine3D>
+                <P1>1126.34717028688192 186.860623522069659</P1>
+                <P2>1382.99509794605456 201.237007364946635</P2>
+            </Measures>
+            <Measures>
+                <NameLine3D>D3</NameLine3D>
+                <P1>1167.2650377369323 426.889570999637954</P1>
+                <P2>1189.27960700523249 876.110377648758913</P2>
+            </Measures>
+        </AllMeasures>
+        <AllMeasures>
+            <NameIm>Abbey-IMG_0191.jpg</NameIm>
+            <Measures>
+            ...
+\end{verbatim}
+}
+
+\noindent To read this new file \texttt{L3D\_mesure-S2D.xml} programmatically, we call \texttt{StdGetFromPCP} in C++ code: \newline
+
+
+\begin{verbatim}
+cXml_SetMeasureGlob3DLine mesures_lines = StdGetFromPCP("L3D_mesure-S2D.xml",SetMeasureGlob3DLine);
+\end{verbatim}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=120mm]{FIGS/Cuxa/linesSaisieAppuisInit2.pdf}
+	\end{center}
+	\caption{Result of \texttt{GCP2MeasuresL3D}: 4 lines in 4 images, \texttt{D1}, \texttt{D2}, \texttt{D3} and \texttt{D4} }
+\end{figure}
+
+\vspace{1cm}
+\noindent Work in progress...
+
