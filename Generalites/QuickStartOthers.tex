@@ -993,6 +993,159 @@ Named args :
 
 It is useful to avoid correlation in burned areas.
 
+
+%--------------------------%
+\subsection{SkyMask}
+
+The {\tt SkyMask} tool (in {\tt Testlib}) creates masks for each image to remove sky areas. It has two main purposes: \newline
+
+\begin{itemize}
+	\item remove sky tie points with \texttt{HomolFilterMasq}
+	\item remove non-sky line of sights of GNSS observations with \texttt{ExcludeSats} \newline
+\end{itemize}
+
+\begin{verbatim}
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+* string :: {Image pattern}
+* string :: {Output folder}
+Named args : 
+* [Name=Prob] string :: {Probabilistic prediction}
+* [Name=Thresh] string :: {Decision threshold}
+* [Name=Inv] string :: {Inverse prediction}
+* [Name=Filter] string :: {Filtering (artifacts relative size)}
+* [Name=Install] string :: {Install neural net program}
+* [Name=Uninstall] string :: {Uninstall neural net program}
+\end{verbatim}
+
+\noindent \texttt{SkyMask} relies on Python neural network, so it must be installed before first usage. It is recommended to use a Python virtual environment (venv). Installation steps are described hereafter (assuming Python is already installed). \newline
+
+\noindent In the working directory, create and activate a virtual environment with the following instructions: \newline
+
+\begin{verbatim}
+python -m venv .venv
+source .venv/bin/activate 
+\end{verbatim}
+
+\noindent If the activation was successful, the prompt should start with \texttt{(.venv)} header. It is recommended to upgrade python package installer (pip) with the command: \newline
+
+\begin{verbatim}
+pip install --upgrade pip
+\end{verbatim}
+
+\noindent Installation of \texttt{SkyMask} neural network may be automatically carried out with the \texttt{Install} optional argument of \texttt{SkyMask} command set to \texttt{1}. During this step, all the mandatory arguments may be set to arbitrary values: \newline
+
+\begin{verbatim}
+mm3d TestLib SkyMask 1 1 Install=1
+\end{verbatim}
+
+\noindent This command line should process the following tasks (assuming internet network is available): \newline
+
+
+\begin{itemize}
+	\item download python neural network code (\texttt{predict.py})
+	\item download neural network model parameters (\texttt{best\_model.h5})
+	\item install python necessary packages:  \texttt{TensorFlow}, \texttt{Keras}, \texttt{albumentations} and \texttt{segmentation-models}. \newline
+\end{itemize}
+
+\noindent The tool \texttt{SkyMask} is then installed in \texttt{home/.local/share/mm3d/skymask} folder\footnote{Note that this folder is used as well to store temporary images, but it is cleaned at the end of process.}. It is possible to uninstall it with: \newline
+
+\begin{verbatim}
+mm3d TestLib SkyMask 1 1 Uninstall=1
+\end{verbatim}
+
+\noindent Once \texttt{SkyMask} is succesfully installed, and the virtual environment is activated, it is possible to detect sky in images (for example here with \textit{Vincennes castle} datset) with the base command: \newline
+
+\begin{verbatim}
+mm3d TestLib SkyMask "Calib-IMGP52.*.JPG" sky
+\end{verbatim}
+
+\noindent Images are first reduced (to the nominal size of $480\times360$ px), then sky area is detected with dense convolutional neural network and eventually some further post-processing steps (posterior probabilities equalization, automatic thresholding, connex refinement, etc) are performed before turning back the images to their original size. Note that all input images may have different number of pixels. \newline
+
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=40mm]{FIGS/SkyMask/im1.JPG}
+		\hspace{0.2cm}
+		\includegraphics[width=40mm]{FIGS/SkyMask/mask1.JPG}
+		\caption{Original image (left) and binary sky mask inference (right).}
+	\end{center}	
+\end{figure}
+
+
+\noindent For typical image sizes ($1500 \times 1500$ px), processing speed is about 1000 images per hour (for an Intel Core(TM) i7-3770 CPU @ 3.40GHz). \newline
+
+\noindent After using \texttt{SkyMask}, the virtual environment may be shut down with \texttt{deactivate} command. If necessary, it can be suppressed with \texttt{rm -r .venv}. \newline
+
+\noindent \texttt{SkyMask} performs quite well, even on moderately challenging situations. On stereopolis dataset (urban cloudy scenes), pixewise accuracy has been estimated to be up to 99.5 \%. \newline
+
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=70mm]{FIGS/SkyMask/im2.JPG}
+		\hspace{0.2cm}
+		\includegraphics[width=70mm]{FIGS/SkyMask/mask2.JPG}
+		\caption{Original image (left) and binary sky mask inference (right).}
+	\end{center}	
+\end{figure}
+
+\noindent Regarding optional parameters of \texttt{SkyMask}: \newline
+
+\begin{itemize}
+	\item \texttt{Prob}: probabilistic prediction. Output is given in integer values between 0 and 255. When divided by 255, the value may be interpreted as the posterior probability for each pixel to be part of a sky area. \newline
+	
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=70mm]{FIGS/SkyMask/im3.JPG}
+			\hspace{0.2cm}
+			\includegraphics[width=70mm]{FIGS/SkyMask/mask3.JPG}
+			\caption{Original image (left) and posterior probability sky mask inference (right).}
+		\end{center}	
+	\end{figure}
+	
+	\item \texttt{Thresh}: decision threshold is used to input a prior probability in the inference process. By default, threshold is set automatically to get exactly 50 \% of pixels (of the entire image dataset) in sky area. For example, a threshold value of 0.9 states that all pixels above $0.9 \times 255 \approx 230$ are classified as sky. Higher threshold values mean that ambiguous pixels tend to be more easily classified as non-sly areas. \newline
+	
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=40mm]{FIGS/SkyMask/im_thresh.JPG}
+			\includegraphics[width=40mm]{FIGS/SkyMask/im_thresh_40.JPG}
+			\includegraphics[width=40mm]{FIGS/SkyMask/im_thresh_50.JPG}
+			\includegraphics[width=40mm]{FIGS/SkyMask/im_thresh_70.JPG}
+			\includegraphics[width=40mm]{FIGS/SkyMask/im_thresh_80.JPG}
+			\includegraphics[width=40mm]{FIGS/SkyMask/im_thresh_90.JPG}
+			\caption{From top to down, and left to right: original image and binary sky mask prediction for different thresholds (0.4, 0.5, 0.7, 0.8 and 0.9). The optimal threshold seems to be somewhere between 0.7 and 0.8.}
+		\end{center}	
+	\end{figure}
+	
+	\item  \texttt{Inv}: invert predicted values. Brighter values mean sky probability is lower. This option may be used with \texttt{HomolFilterMasq} to remove non-sky tie points, or in \texttt{ExcludeSats} to remove non-line of sight (NLOS) GNSS satellites from rinex observation file, for loosely-coupled GNSS-Images hybrid positioning solution. \newline
+	
+	\item \texttt{Filter}: removes small non-sky area connex components. The typical size (in image relative size) must be provided. For example, we can compare the results of the three following commands: \newline
+	
+	\begin{verbatim}
+	mm3d TestLib SkyMask "Calib-IMGP5249.*.JPG" sky Thresh=0.8
+	mm3d TestLib SkyMask "Calib-IMGP5249.*.JPG" sky Thresh=0.8 Filter=0.05
+	mm3d TestLib SkyMask "Calib-IMGP5249.*.JPG" sky Thresh=0.8 Filter=0.10
+	\end{verbatim}   
+	
+	\vspace{0.5cm}
+	
+	In the first case, no filtering is applied, then none of the artifacts in the center of the image are removed. In the second case, only non-sky connex components whose typical size is below 5\% of image dimensions. In this case, image size is $1728 \times 1152$, which means a typical size of $1500$. Therefore, only non-sky connex components of diameter up to $0.05 \times 1500 = 75$ px are filtered. We observe that one artifact is remaining after the process. In the third case, filtering is performed with parameter $0.1$, removing all artifacts. \newline
+	
+		\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=40mm]{FIGS/SkyMask/im_px_0.JPG}
+			\includegraphics[width=40mm]{FIGS/SkyMask/im_px_005.JPG}
+			\includegraphics[width=40mm]{FIGS/SkyMask/im_px_01.JPG}
+			\caption{Filtering artifacts for a typical image relative size of (from left to right) 0, 0.05 and 0.1.}
+		\end{center}	
+	\end{figure}
+
+	In general, it is recommened not to be too conservative with this parameter, since non-sky connex components (birds, planes...) are typically not often seen in photogrammetric images. Note that components adjacent to image borders are not considered as individual connex components, and will never be filtered. \newline
+	
+\end{itemize}
+
+%--------------------------%
+
 \section{Simulation tools}
 \subsection{GenerateTP}
 The {\tt TestLib GenerateTP} command generates perfectly intersected simulated tie points from a given tie point file (.dat of new format) and a given orientation folder. For now, it is possible to add a gaussian noise or bias from image files.
