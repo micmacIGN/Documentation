@@ -1144,6 +1144,290 @@ mm3d TestLib SkyMask "Calib-IMGP52.*.JPG" sky
 	
 \end{itemize}
 
+
+
+
+%--------------------------%
+\subsection{Homography for tie points}
+\vspace{0.5cm}
+
+\noindent In this section we describe how to estimate and use homographic image rectification for tie points search and matching. This tool has been developped for vehicule linear aquisition on highways, where very few tie points may be collected outside the road. In this context, homographic image rectification may assist tie points matching in order to get a more uniform collection of tie points. \newline
+
+\noindent Here, we will consider \textit{Saint-Martin Street} datset, and we will use only images where the road can be clearly seen. \newline
+
+\noindent We start by an approximate orientation of images. This is done classically with the following Micmac instructions : \newline
+
+\begin{verbatim}
+mm3d Tapioca All "IMGP41(2[3-9]|3[0-8]).JPG" 1200
+mm3d Tapas FishEyeEqui "IMGP41(2[3-9]|3[0-8]).JPG"
+\end{verbatim}
+
+\noindent The homographic process is organized in three main commands : \newline
+\begin{itemize}
+	\item \texttt{EstimHomol} : estimates homographic transformation parameters from a set of ground control points collected on the surface on which we want to rectily images. These points may be digitized with \texttt{SaisieAppuisInit}. In general, this step is done only once for a given sensor (for example, in case of Stereopolis LadyBug camera, it must be done once for each of the 5 horizontal cameras).  \newline 	
+	\item \texttt{ApplyHomol} : performs transformation of images with the parameters computed by \texttt{EstimHomol}. Rectified images are stored in a specific folder, where a classical \texttt{Tapioca} process may be launched to compute tie points.   \newline 
+	\item \texttt{InvHomolHomog} : performs reverse transformation to project tie points computed on rectified images into the original orientation. Output tie points may then be used in addition to (\texttt{MergeHomol}) original tie points.   \newline 
+\end{itemize}
+
+\noindent We use the orientation computed by \texttt{Tapioca} to digitize GCPs on images. A minimal number of 4 points (visible in at least two images) is necessary to compute homographic parameters. However, for more safety, it is suggested to collect at least 5 or 6 points. Note that the spatial extent of these points will be the reference to define the actual area where homography is computed (this means that when no margin is input into \texttt{ApplyHomol}, rectified images will be strictly bounded to the bounding box defined by GCPs used to estimate the homography parameters). \newline
+
+\noindent We use SaisieAppuisInit to collect 6 points on the road, visible on 4 different images. 3D coordinates of points are computed by pseudo-intersection. \newline
+
+\begin{verbatim}
+mm3d SaisieAppuisInit "IMGP412[3-9].JPG" Ori-FishEyeEqui/ toto mesure.xml
+\end{verbatim}
+
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=60mm]{FIGS/StreetSainMartin/saisieAppuisHomol.jpg}
+		\caption{Collection of 6 points on Saint-Martin Street dataset}
+	\end{center}	
+\end{figure}
+
+\noindent Output 2D and 3D coordinates of digitized points are collected in \texttt{mesure-S2D.xml} and \texttt{mesure-S3D.xml} respectively. These two files may be used to compute parameters of the homographic transformation :
+\newline
+
+$$\left(
+\begin{array}{c}
+X\\
+Y\\
+\end{array}
+\right)_{road} \rightarrow \mathcal{H}\left(\begin{array}{c}
+X\\
+Y\\
+\end{array}\right)_{road} = \left(\begin{array}{c}
+X\\
+Y\\
+\end{array}\right)_{img}$$ \newline
+
+\noindent where $(.)_{img}$ denotes image coordinates of the collected points (coordinates are defined in one reference image, which is choosen automatically, by default, as the image containing most points). On the other hand, $(.)_{road}$, denotes ground coordinates of GCPs, measured in a reference plane frame contained in the road (technically it is computed as a least squares regression plane of all points). The homographic transformation $\mathcal{H}$ seeks to put in relations these two quantities. It is a $3 \times 3$ real matrix, with 8 degrees of freedom. \newline
+
+\noindent Note that homographic transformation is valid only if points are coplanar (at least to a satisfactory level), and if distorsions are small. When distorsions cannot be neglected, orientation folder needs to be specified to \texttt{EstimHomol} and distorsions will be taken into account as: \newline
+
+$$\left(
+\begin{array}{c}
+X\\
+Y\\
+\end{array}
+\right)_{road} \rightarrow \mathcal{D} \circ \mathcal{H}\left(\begin{array}{c}
+X\\
+Y\\
+\end{array}\right)_{road} = \left(\begin{array}{c}
+X\\
+Y\\
+\end{array}\right)_{img}$$ \newline
+
+\noindent where $\mathcal{D} : \mathbb{R}^2 \rightarrow \mathbb{R}^2$ stands for the distorsion function, estimated during the intial \texttt{Tapas} internal calibration. \newline
+
+\noindent The 8 unknown parameters of $\mathcal{H}$ are estimated with \texttt{EstimHomol}: \newline
+
+\begin{verbatim}
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+* string :: {Ground 3D points coordinates file}
+* string :: {Image 2D points measurement file}
+Named args : 
+* [Name=Ori] string :: {Orientation folder}
+* [Name=ImRef] string :: {Name of reference image}
+* [Name=Margin] string :: {Ground 3D points margin}
+* [Name=CamRot] bool :: {Camera frame rotation}
+\end{verbatim}
+
+\noindent Essentially, it takes as input, 3D and 2D coordinates output from \texttt{SaisieAppuisInit} (make sure that initial orientation is accurate enough to compute relatively precise 3D coordinates). \newline
+
+\noindent Orientation folder needs to be provided in \texttt{Ori}, when distorsions are not negligible, or when \texttt{CamRot} is set to 1 (which aligns rectified images to the sensor orientation). \newline
+
+\noindent \texttt{ImRef} option is used when we want to force the selection of a particular image as reference frame for image 2D coordinates in homographic transformation. Note that all images (in the current or future datasets) that have the same relative orientation with respect to the road, will share the same homographic parameters. Then \texttt{ImRef} option may be used if we want to force the selection of a very representative image, even if in this image does not contain a maximal number of points (provided that it contains at least 4 points). \newline
+
+\noindent Eventually \texttt{Margin} option enables to set the area used for the homography computation. For instance, a margin set to the value 0.5, means that the area visible in rectified images will be 50\% larger than the actual bounding box of points used for the parameters computation. In some case, it is possible that negative values may be accepted as input (but with no garantee), meaning that, for example, a margin set to -0.5 means that tge visible area is twice as small as the original bounding box. \newline
+
+\begin{verbatim}
+mm3d EstimHomog mesure-S3D.xml mesure-S2D.xml Ori=FishEyeEqui CamRot=1 Margin=0.5
+\end{verbatim}
+
+\noindent The program return the following console outut: \newline
+
+\begin{verbatim}
+-----------------------------------------------------------------------
+HOMOGRAPHIE ESTIMATION                         
+-----------------------------------------------------------------------
+Number of images in measurement file [mesure-S2D.xml]: 7
+IMGP4123.JPG: 6 pts
+IMGP4124.JPG: 6 pts
+IMGP4125.JPG: 5 pts
+SELECTED IMAGE: IMGP4123.JPG  (6 pts)
+-----------------------------------------------------------------------
+Number of 3D ground points in [mesure-S3D.xml]: 6
+...
+-----------------------------------------------------------------------
+Distorsion correction from orientation: [FishEyeEqui]
+-----------------------------------------------------------------------
+Rotation in camera frame: IMGP4123.JPG
+-----------------------------------------------------------------------
+Point planarization
+RESIDUAL POINT 1   0.069
+RESIDUAL POINT 2   0.082
+RESIDUAL POINT 3   0.243
+RESIDUAL POINT 4   0.013
+RESIDUAL POINT 5   0.052
+RESIDUAL POINT 6   0.183     RMSE = 0.133 GROUND UNITS
+-----------------------------------------------------------------------
+Corrected ground points: 
+...
+-----------------------------------------------------------------------
+Bounding box:
+xmin: -16.75  xmax:  10.09
+ymin:  23.99  ymax:  45.66
+-----------------------------------------------------------------------
+Solving least squares
+RESIDUAL POINT 1   2.571 PX
+RESIDUAL POINT 2   1.425 PX
+RESIDUAL POINT 3   1.564 PX
+RESIDUAL POINT 4   3.085 PX
+RESIDUAL POINT 5   3.110 PX
+RESIDUAL POINT 6   1.600 PX     RMSE = 2.34 PX
+-----------------------------------------------------------------------
+H =   -105.537   -124.917    847.206
+       -14.651    -82.052   -387.203
+        -0.018     -0.145      1.000
+-----------------------------------------------------------------------
+Homography parameters written in [homog.xml] file
+-----------------------------------------------------------------------
+\end{verbatim}
+
+\noindent Among important informations, we have: \newline
+
+\begin{itemize}
+	\item \textbf{Input statistics:} the number of images in 2D measurement file, the number of 3D points and the numbers of points per image. The selected reference image (IMGP4123.JPG), \textit{i.e.} by default one that maximizes the number of visible points, is also displayed. \newline
+	\item \textbf{Point planirization statistics:} the plane regression residual for each 3D point (in ground units). Here we have 13 cm, which means that input points are relatively coplanar. \newline
+	\item \textbf{Bounding box:} the 3D coordinates (in input orientation units) of the definition domain of the homography. \newline
+	\item \textbf{Homography statistics:} least squares residual (in pixels) for each 3D point. Here we have a root mean square error of 2.34 pixels, with a maximal value of about 3 pixels. \newline
+	\item \textbf{Homography parameters:} given in the form of a $3 \times 3$ matrix, with 8 DOF. \newline
+\end{itemize}
+
+\noindent Homography parameters (along with its definition domain) are saved in \texttt{homog.xml}. This file can then be input into \texttt{ApplyHomog} to transform a batch of images: \newline
+
+\begin{verbatim}
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+* string :: {Images pattern}
+* string :: {Homography parameters file}
+Named args : 
+* [Name=Out] string :: {Output folder}
+* [Name=Calib] string :: {Calibration xml file}
+* [Name=ImRes] string :: {Output resolution of images}
+* [Name=Interp] string :: {Interpolation method (ppv/bilin)}
+\end{verbatim}
+
+
+\noindent By default, rectified images are saved in \texttt{Homog} directory. Default resolution is 2000 px (in the largest direction), and default interpolation method is bilinear interpolation. When distorsion $\mathcal{D}$ has been taken into account for homography computation, it myst be provided in input (through its xml file in orienattion directory). \newline
+
+\begin{verbatim}
+mm3d ApplyHomog "IMG.*.JPG" homog.xml Calib=Ori-FishEyeEqui/AutoCal_Foc-10000_Cam-PENTAX_K5.xml
+\end{verbatim}
+
+\noindent As a result, all images are rectified with \texttt{homog.xml} parameters. \newline
+
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=70mm]{FIGS/StreetSainMartin/rectified.jpg}
+		\caption{Output of homographic transformation.}
+	\end{center}	
+\end{figure}
+
+\noindent Then, a classifcal tie point computation may be performed on the rectified images (note that output images are .tif) \newline
+
+\begin{verbatim}
+cd Homog/
+mm3d Tapioca All "IMGP41(2[3-9]|3[0-8]).tif" 1200
+\end{verbatim} 
+
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=52mm]{FIGS/StreetSainMartin/rect_tie1.jpg}
+		\includegraphics[width=52mm]{FIGS/StreetSainMartin/rect_tie2.jpg}
+		\includegraphics[width=52mm]{FIGS/StreetSainMartin/rect_tie3.jpg}
+		\caption{Tie points computation on a pair of rectified images.}
+	\end{center}	
+\end{figure}
+
+\noindent \texttt{InvHomolHomog} is then executed to transform tie points back to the original orientation. \newline
+
+
+
+\begin{verbatim}
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+* string :: {Rectified images pattern}
+* string :: {Raw images folder}
+* string :: {Homography parameters file}
+Named args : 
+* [Name=Calib] string :: {Calibration xml file}
+* [Name=Out] string :: {Homol output folder}
+* [Name=ExpTxtIn] string :: {Input in txt}
+* [Name=ExpTxtOut] string :: {Output in txt}
+* [Name=Ext] string :: {Target image extension}
+\end{verbatim} 
+\vspace{0.5cm}
+
+\noindent Here also, if homography has been computed with distorsion $\mathcal{D}$, xml intrinsic calibration file must be provided. Also, target image extension (here \texttt{JPG}) may be specified (in case, like here, original images are not .tif). \newline
+
+\begin{verbatim}
+mm3d InvHomolHomog "IMGP41(2[3-9]|3[0-8]).tif" ../ ../homog.xml
+Calib=../Ori-FishEyeEqui/AutoCal_Foc-10000_Cam-PENTAX_K5.xml Ext=JPG
+\end{verbatim} 
+
+
+\noindent By default \texttt{HomolInvHomog} folder is created. It can be merged with original tie points folder: \newline
+
+\begin{verbatim}
+mv HomolInvHomog ../
+cd ../
+mm3d MergeHomol Homol.* HomolAll
+\end{verbatim} 
+
+\noindent All tie points (original plus collected after rectification) may be visualized: \newline
+
+\begin{verbatim}
+mm3d SEL './' IMGP4125.JPG IMGP4126.JPG KH=NB SH=All
+\end{verbatim} 
+
+\noindent Also, we can compare individually original and rectified groups: \newline
+
+\begin{verbatim}
+mm3d SEL './' IMGP4125.JPG IMGP4126.JPG KH=NB
+mm3d SEL './' IMGP4125.JPG IMGP4126.JPG KH=NB SH=InvHomog
+\end{verbatim} 
+
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=52mm]{FIGS/StreetSainMartin/rect2.jpg}
+		\includegraphics[width=52mm]{FIGS/StreetSainMartin/rect1.jpg}
+		\includegraphics[width=52mm]{FIGS/StreetSainMartin/rect3.jpg}
+		\caption{Left: original tie points. Center: complementary tie points computed on rectified images. Right: all tie points merged together.}
+	\end{center}	
+\end{figure}
+
+\noindent Eventually, we can use \texttt{Schnaps} tool to remove redundant points ang get a more uniform coverage: \newline
+
+\begin{verbatim}
+mm3d Schnaps "IMGP41(2[3-9]|3[0-8]).JPG" HomolIn=All HomolOut=AllReduced
+mm3d SEL './' IMGP4125.JPG IMGP4126.JPG KH=NB SH=AllReduced
+\end{verbatim} 
+
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=75mm]{FIGS/StreetSainMartin/rect2.jpg}
+		\includegraphics[width=75mm]{FIGS/StreetSainMartin/rect4.jpg}
+		\caption{Left: original tie points. Right: all tie points merged and reduced with \texttt{Schnaps}.}
+	\end{center}	
+\end{figure}
 %--------------------------%
 
 \section{Simulation tools}
