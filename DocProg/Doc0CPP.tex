@@ -965,7 +965,7 @@ We use a specific xml datafile for storing input lines. Three main C++ objects a
 	\item \textbf{cSetMeasureGlob3DLine} contains the global dataset for this application, namely a set of lines in multiple images, stored as a list of cSetMeasure3DLineInOneIm objects in a member variable AllMeasures. \newline
 \end{itemize}
 
-\noindent In fine, we believe that the input xml datafile may be generated automatically (\textit{e.g.} by Hough transform or LSD algorithms). For now, we have to create it manually, by digitizing points on images. To do so, it is possible to use \texttt{SaisieAppuisInit} or \texttt{SaisieAppuisInitQT} tools (see section \ref{SaisieAppuisInit} for further information on these tools) and convert the output with \texttt{GCP2MeasuresL3D}. \newline
+\noindent In fine, we believe that the input xml datafile may be generated automatically (\textit{e.g.} by Hough transform or LSD algorithms). For now, we have to create it manually, by digitizing points on images. To do so, it is possible to use \texttt{SaisieAppuisInit} or \texttt{SaisieAppuisInitQT} tools (see section \ref{SaisieAppuisInit} for further information on these tools) and convert the output with \texttt{GCP2MeasuresL2D}. \newline
 
 \noindent As an example, we use \textit{Saint-Michel de Cuxa} dataset. We start by selecting line end points on the first four images. Digitized points must have the following name convention: \texttt{<LineName>\_1} and \texttt{<LineName>\_2} define the first and second end points, respectively, of the line LineName. In the following example, we digitize 4 lines \texttt{D1} (on 4 images), \texttt{D2} (3 images), \texttt{D3} (4 images) and \texttt{D4} (2 images), hence a total of $2 \times 13 = 26$ points. Note that, for example, \texttt{D1\_1} in top left image is significantly different than \texttt{D1\_1} in bottom left, but it invariably describes the same line (\texttt{D1}) in all four images. \newline
 
@@ -980,17 +980,17 @@ mm3d SaisieAppuisInit "Abbey-IMG_01(73|9[1-3]).jpg" NONE toto mesures.xml
 	\caption{2D points acquisition with SaisieAppuisInit tool.}
 \end{figure}
 
-\noindent Hereafter, we will only be interested in the output file \texttt{mesures-S2D.xml} which contains pixel coordinates of $P_{ij}^1$ and $P_{ij}^2$ end points. Note that \texttt{mesures-S3D.xml} is either empty (when NONE argument has been provided as input orientation) or otherwise, does not contain any valuable information (since 3D coordinates are pseudo-intersection of non-homolgous points). Hence it can be discarded. We use \texttt{GCP2MeasuresL3D} tool to convert this 2D coordinate files to a line file: \newline
+\noindent Hereafter, we will only be interested in the output file \texttt{mesures-S2D.xml} which contains pixel coordinates of $P_{ij}^1$ and $P_{ij}^2$ end points. Note that \texttt{mesures-S3D.xml} is either empty (when NONE argument has been provided as input orientation) or otherwise, does not contain any valuable information (since 3D coordinates are pseudo-intersection of non-homolgous points). Hence it can be discarded. We use \texttt{GCP2MeasuresL2D} tool to convert this 2D coordinate file to a 2D line file: \newline
 
 \begin{verbatim}
-mm3d GCP2MeasuresL3D mesures-S2D.xml 
+mm3d GCP2MeasuresL2D mesures-S2D.xml 
 
 Abbey-IMG_0173.jpg 3 line(s)
 Abbey-IMG_0191.jpg 4 line(s)
 Abbey-IMG_0192.jpg 4 line(s)
 Abbey-IMG_0193.jpg 2 line(s)
 -------------------------------------------------------------------------------
-mesures-S2D.xml: 13 line(s) found in 4 image(s) -> L3D_mesures-S2D.xml
+mesures-S2D.xml: 13 line(s) found in 4 image(s) -> L2D_mesures-S2D.xml
 -------------------------------------------------------------------------------
 \end{verbatim}
 
@@ -1026,18 +1026,18 @@ mesures-S2D.xml: 13 line(s) found in 4 image(s) -> L3D_mesures-S2D.xml
 \end{verbatim}
 }
 
-\noindent To read this new file \texttt{L3D\_mesure-S2D.xml} programmatically, we call \texttt{StdGetFromPCP} in C++ code: \newline
+\noindent To read this new file \texttt{L2D\_mesure-S2D.xml} programmatically, we call \texttt{StdGetFromPCP} in C++ code: \newline
 
 
 \begin{verbatim}
-cXml_SetMeasureGlob3DLine mesures_lines = StdGetFromPCP("L3D_mesure-S2D.xml",SetMeasureGlob3DLine);
+cXml_SetMeasureGlob3DLine mesures_lines = StdGetFromPCP("L2D_mesure-S2D.xml",SetMeasureGlob3DLine);
 \end{verbatim}
 
 \begin{figure}
 	\begin{center}
 		\includegraphics[width=120mm]{FIGS/Cuxa/linesSaisieAppuisInit2.pdf}
 	\end{center}
-	\caption{Result of \texttt{GCP2MeasuresL3D}: 4 lines in 4 images, \texttt{D1}, \texttt{D2}, \texttt{D3} and \texttt{D4} }
+	\caption{Result of \texttt{GCP2MeasuresL2D}: 4 lines in 4 images, \texttt{D1}, \texttt{D2}, \texttt{D3} and \texttt{D4} }
 \end{figure}
 
 \vspace{1cm}
