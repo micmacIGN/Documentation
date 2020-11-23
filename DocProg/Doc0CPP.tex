@@ -965,9 +965,9 @@ We use a specific xml datafile for storing input lines. Three main C++ objects a
 	\item \textbf{cSetMeasureGlob3DLine} contains the global dataset for this application, namely a set of lines in multiple images, stored as a list of cSetMeasure3DLineInOneIm objects in a member variable AllMeasures. \newline
 \end{itemize}
 
-\noindent In fine, we believe that the input xml datafile may be generated automatically (\textit{e.g.} by Hough transform or LSD algorithms). For now, we have to create it manually, by digitizing points on images. To do so, it is possible to use \texttt{SaisieAppuisInit} or \texttt{SaisieAppuisInitQT} tools (see section \ref{SaisieAppuisInit} for further information on these tools) and convert the output with \texttt{GCP2MeasuresL2D}. \newline
+\noindent \textit{In fine}, we believe that the input xml datafile may be generated automatically (\textit{e.g.} by Hough transform or LSD algorithms). For now, we have to create it manually, by digitizing points on images. To do so, it is possible to use \texttt{SaisieAppuisInit} or \texttt{SaisieAppuisInitQT} tools (see section \ref{SaisieAppuisInit} for further information on these tools) and convert the output with \texttt{GCP2MeasuresL2D}. \newline
 
-\noindent As an example, we use \textit{Saint-Michel de Cuxa} dataset. We start by selecting line end points on the first four images. Digitized points must have the following name convention: \texttt{<LineName>\_1} and \texttt{<LineName>\_2} define the first and second end points, respectively, of the line LineName. In the following example, we digitize 4 lines \texttt{D1} (on 4 images), \texttt{D2} (3 images), \texttt{D3} (4 images) and \texttt{D4} (2 images), hence a total of $2 \times 13 = 26$ points. Note that, for example, \texttt{D1\_1} in top left image is significantly different than \texttt{D1\_1} in bottom left, but it invariably describes the same line (\texttt{D1}) in all four images. \newline
+\noindent As an example, we use \textit{Saint-Michel de Cuxa} dataset. We start by selecting line end points on the first four images. Digitized points must have the following name convention: \texttt{<LineName>\_1} and \texttt{<LineName>\_2} define the first and second end points, respectively, of the line LineName. In the following example, we digitize 4 lines \texttt{D1} (on 4 images), \texttt{D2} (3 images), \texttt{D3} (4 images) and \texttt{D4} (2 images), hence a total of $2 \times 13 = 26$ points. Note that, for example, \texttt{D1\_1} in top left image is significantly different from \texttt{D1\_1} in bottom left, but it invariably describes the same line (\texttt{D1}) in all four images. \newline
 
 \begin{verbatim}
 mm3d SaisieAppuisInit "Abbey-IMG_01(73|9[1-3]).jpg" NONE toto mesures.xml
@@ -1030,7 +1030,7 @@ mesures-S2D.xml: 13 line(s) found in 4 image(s) -> L2D_mesures-S2D.xml
 
 
 \begin{verbatim}
-cXml_SetMeasureGlob3DLine mesures_lines = StdGetFromSI("L2D_mesure-S2D.xml",SetMeasureGlob3DLine);
+cXml_SetMeasureGlob3DLine M = StdGetFromSI("L2D_mesure-S2D.xml",SetMeasureGlob3DLine);
 \end{verbatim}
 
 \begin{figure}
@@ -1057,16 +1057,59 @@ Mandatory unnamed args :
 Named args : 
 * [Name=3D Line output xml file] string
 \end{verbatim}
+\vspace{0.3cm}
 
-\noindent Output file is an wml file containing a \texttt{cXml\_Set3DLine} type of object. An object \texttt{cXml\_Set3DLine} contains a member value \texttt{AllLines}, a list of \texttt{cXml\_One3DLine}, each of them containing the information relative to a 3D line in space : its name \texttt{NameLine3D}, an arbitrary reference point \texttt{Pt} (when there is no ambiguity, this point is defined as the intersection between the line and the $z=0$ plane) and a unit direction vector \texttt{Vec}. The output line parameters are refered to the input orientation. \newline
+\noindent Output file is an xml file containing a \texttt{cXml\_Set3DLine} type of object. An object \texttt{cXml\_Set3DLine} contains a member value \texttt{AllLines}, a list of \texttt{cXml\_One3DLine}, each of them containing the information relative to a 3D line in space : its name \texttt{NameLine3D}, an arbitrary reference point \texttt{Pt} (when there is no ambiguity, this point is defined as the intersection between the line and the $z=0$ plane) and a unit direction vector \texttt{Vec}. The output line parameters are refered to the input orientation. \newline
 
 \begin{verbatim}
 mm3d MeasuresL2D2L3D L2D_mesures-S2D.xml Ori-All-Rel/
 \end{verbatim}
+\vspace{0.3cm}
 
-\noindent Currently, the 3D lines are simple intersections of the "bundle planes" issued from the first two images where the line is visible. In the near future, a RANSAC algorithm should be used to deal with more than only two observations. \newline 
+\noindent Currently, the 3D lines are computed with a simpler version of RANSAC algorithm : intersections of the "bundle planes" issued from two images where the line is visible are computed, hence for each pair of images, a line candidate is generated. This line is then compared with individual bundles issued from all other images where it is visible. A root mean square error score (RMSE) is computed based on the geometric 3D residuals of pseudo-intersections between candidate lines and bundles. The line with the lowest residual is selected and added to the output file.  \newline
 
-\noindent The output file (by default \texttt{L3D\_ + input\_file\_name} if not specified) can be transformed to a ply file with: \newline
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=140mm]{FIGS/Cuxa/linesWithMeshlab.png}
+	\end{center}
+	\caption{Result of \texttt{MeasuresL2D2L3D} and \texttt{L3D2Ply} for 8 lines on 4 images. }
+\end{figure}
+
+
+\noindent In the near future, a more sophisticated algorithm should be used to deal with more than only two observations at a time. In this second version, we may retain all line candidates with an RMSE score below a certain threshold, which enabls to remove outlier plane intersections. Subsequently, each of those lines will be sampled with $n$ 3D points. Merging point samples generated from all candidate lines will provide a 3D point cloud which can be used to estimate a 3D line (with least squares or principal component analysis). This method will enable to remove outliers and to compute the final solution based on more than only one pair of images at a time. Moreover, this solution will provide standard deviation paramaters for the 3D line estimations, which may pay off later as those lines are meant to be used as input prior solution to Campari algorithm.  \newline 
+
+\noindent As a console output, the program displays the RMSE error for each pair of images and, for each 3D line, the select pair with lowest RMSE. The total RMSE is estimated a the square root of the sum of squares of individual RMSEs. It is provided in 3D ground units, at the end of the process. \newline
+
+\begin{verbatim}
+-----------------------------------------------------------------
+IMAGE Abbey-IMG_0173.jpg 8 LINE MEASUREMENTS
+IMAGE Abbey-IMG_0191.jpg 6 LINE MEASUREMENTS
+IMAGE Abbey-IMG_0192.jpg 7 LINE MEASUREMENTS
+IMAGE Abbey-IMG_0193.jpg 7 LINE MEASUREMENTS
+-----------------------------------------------------------------
+8 bundle observations for 3D line D1
+Abbey-IMG_0173.jpg Abbey-IMG_0191.jpg  RMSE = 0.0023116
+Abbey-IMG_0173.jpg Abbey-IMG_0192.jpg  RMSE = 0.00230208
+Abbey-IMG_0173.jpg Abbey-IMG_0193.jpg  RMSE = 0.00254476
+Abbey-IMG_0191.jpg Abbey-IMG_0192.jpg  RMSE = 0.0335992
+Abbey-IMG_0191.jpg Abbey-IMG_0193.jpg  RMSE = 0.01574
+Abbey-IMG_0192.jpg Abbey-IMG_0193.jpg  RMSE = 0.0273474
+MIN: Abbey-IMG_0173.jpg Abbey-IMG_0192.jpg  RMSE = 0.00230208
+-----------------------------------------------------------------
+8 bundle observations for 3D line D2
+Abbey-IMG_0173.jpg Abbey-IMG_0191.jpg  RMSE = 0.00276077
+...
+==================================================================
+Output: 8 line(s) written in L3D_L2D_mesures-S2D.xml
+Total RMSE = 0.00290502
+==================================================================
+\end{verbatim}
+\vspace{0.3cm}
+
+\noindent For example, with the 8 lines collected on \textit{Saint-Michel de Cuxa} dataset, the total root mean square error between candidate lines and bundles is 0.0029 ground units, which amounts to about 2.5 cm. \newline 
+
+
+\noindent The output file (\texttt{L3D\_ + input\_file\_name} if not specified) can be transformed to a ply file with:
 
 \begin{verbatim}
 mm3d L3D2Ply L3D_L2D_mesures-S2D.xml
