@@ -1066,7 +1066,31 @@ mm3d MeasuresL2D2L3D L2D_mesures-S2D.xml Ori-All-Rel/
 \end{verbatim}
 \vspace{0.3cm}
 
-\noindent Currently, the 3D lines are computed with a simpler version of RANSAC algorithm : intersections of the "bundle planes" issued from two images where the line is visible are computed, hence for each pair of images, a line candidate is generated. This line is then compared with individual bundles issued from all other images where it is visible. A root mean square error score (RMSE) is computed based on the geometric 3D residuals of pseudo-intersections between candidate lines and bundles. The line with the lowest residual is selected and added to the output file.  \newline
+\noindent Currently, the 3D lines are computed with an empirical version of RANSAC algorithm, developped with Paul Chapron. Intersections of the "bundle planes" issued from two images where the line is visible are computed, hence for each pair of images, a line candidate is generated. This line is then compared with individual bundles issued from all other images where it is visible. A total root mean square error score $\rho$ is computed based on the geometric 3D residuals of pseudo-intersections between candidate lines and bundles. All line candidates with residual above $Z \times \rho$ (where $Z$ is a parameter, set to $1.0$ by default) are removed from the observation dataset. The remaining lines are then digitized with 100 points $\mathbf{x}_i \in \mathbb{R}^3$: \newline
+
+$$\mathbf{x}_i = (1-\lambda_i) \mathbf{P}_1   + \lambda_i \mathbf{P}_2 
+~~~~~~~~ \mbox{with:} ~~~~~~~~  \lambda_i = \frac{i}{100}$$ \newline
+
+\noindent where $\mathbf{P}_1$ and $\mathbf{P}_2$ denote extremal intersections between bundles and line candidate. The digitization process provides $100 \times L$ 3D points for each line, where $L$ is the number of line candidates. When no candidate has been removed during the outlier search process, this number is equal to: \newline
+
+$$L = \frac{M(M+1)}{2}$$ \newline
+
+\noindent where $M$ is the number of images viewing the 3D line. \newline
+
+\noindent The line direction is then estimated with a principal component analysis (PCA) on the digitized points. Since we are only interested in finding the eigen vector associated to the largest eigen value of the covariance matrix $\mathbf{\Sigma}$, we use the \textit{power iteration} method with convergence speed proportional to the ratio between the largest two eigen values (which makes this method particularly suitable in our case). The process is initiated with an arbitrary unit vector $\mathbf{x}^{(0)} = (1,0,0)^{T}$. The following iterations are performed until convergence (with $\mathbf{\Sigma} \in \mathbb{R}^{3 \times 3}$, convergence is usually reached with a couple of iterations) : \newline
+
+$$\mathbf{x}^{(n+1)} = \frac{\mathbf{\Sigma}\mathbf{x}^{(n)}}{||\mathbf{\Sigma}\mathbf{x}^{(n)}||_2}$$ \newline
+
+\noindent After convergence, $\mathbf{x}^{(n)}$ contains the unit vector of the estimated 3D line. As a byproduct, the adjustment residual is readily available, by substracting the eigen value $||\mathbf{\Sigma}\mathbf{x}^{(n)}||$ from the total variance of the dataset, which is equal to the trace of the covariance matrix : \newline
+
+
+
+$$\mbox{RMSE} = \Big(\mbox{Tr}(\mathbf{\Sigma})  -  ||\mathbf{\Sigma}\mathbf{x}^{(n)}||\Big)^{\frac{1}{2}}$$ \newline
+
+\noindent Eventually, the reference point is estimated through the mean vector of digitized points. \newline 
+
+\noindent In the near future, a more sophisticated algorithm should be used to deal with more than only two observations at a time. In this second version, we may perform a global non-linear least squares adjustment between the unknown line and bundles. This solution will provide standard deviation paramaters for the 3D line estimations, which may pay off later as those lines are meant to be used as input prior solution to Campari algorithm.  \newline 
+
 
 \begin{figure}[!h]
 	\begin{center}
@@ -1076,9 +1100,9 @@ mm3d MeasuresL2D2L3D L2D_mesures-S2D.xml Ori-All-Rel/
 \end{figure}
 
 
-\noindent In the near future, a more sophisticated algorithm should be used to deal with more than only two observations at a time. In this second version, we may retain all line candidates with an RMSE score below a certain threshold, which enabls to remove outlier plane intersections. Subsequently, each of those lines will be sampled with $n$ 3D points. Merging point samples generated from all candidate lines will provide a 3D point cloud which can be used to estimate a 3D line (with least squares or principal component analysis). This method will enable to remove outliers and to compute the final solution based on more than only one pair of images at a time. Moreover, this solution will provide standard deviation paramaters for the 3D line estimations, which may pay off later as those lines are meant to be used as input prior solution to Campari algorithm.  \newline 
-
 \noindent As a console output, the program displays the RMSE error for each pair of images and, for each 3D line, the select pair with lowest RMSE. The total RMSE is estimated a the square root of the sum of squares of individual RMSEs. It is provided in 3D ground units, at the end of the process. \newline
+
+
 
 \begin{verbatim}
 -----------------------------------------------------------------
