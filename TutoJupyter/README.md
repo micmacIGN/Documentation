@@ -4,15 +4,14 @@
 
 This tutorial was written having in mind *google colab* cloud processing. To run it:
 
-    1. Go to `colab.research.google.com`
-    2. Choose MicMac github repository `https://github.com/micmacIGN/Documentation` (see the Figure)
-	3. Run the code 
+1. Go to `colab.research.google.com`
+2. Choose MicMac github repository `https://github.com/micmacIGN/Documentation` (see the Figure)
+3. Run the code 
 
 <center>
-  <img src="img/jupyter_in_colab.png" height=220pix/>
+  <img src="img/jupyter_in_colab.png" height=320pix/>
   <br>
 </center>
-
 <center>
 Figure. Loading MicMac Jupyter tutorial in `colab`. 
   <br> 
@@ -21,3 +20,6 @@ Figure. Loading MicMac Jupyter tutorial in `colab`.
 ## Table of content
 
   1. *01_satellite_basic.ipynb* : this tutorial goes through basic satellite image processing in MicMac 
+
+
+<sub> *Contact: ewelina.rupnik(at)ign.fr*
