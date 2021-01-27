@@ -6,7 +6,8 @@ This tutorial was written having in mind *google colab* cloud processing. To run
 
 1. Go to `colab.research.google.com`
 2. Choose MicMac github repository `https://github.com/micmacIGN/Documentation` (see the Figure)
-3. Run the code 
+3. Copy the `ipynb` file to your drive to be able to save any changes made to it
+4. Run the code 
 
 <center>
   <img src="img/jupyter_in_colab.png" height=320pix/>
