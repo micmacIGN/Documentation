@@ -1,4 +1,4 @@
-#MicMac Jupyter Tutorials
+# MicMac Jupyter Tutorials
 
 ## How to run the jupyter file
 
