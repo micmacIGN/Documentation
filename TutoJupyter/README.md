@@ -21,10 +21,7 @@ Figure. Loading MicMac Jupyter tutorial in `colab`.
 ## Table of content
 
   1. *01_satellite_basic.ipynb* : this tutorial goes through basic satellite image processing in MicMac 
-<<<<<<< HEAD
   2. *02_satellite_epipolaire.ipynb* : this tutorial introduces an automated 3D reconstruction pipeline using satellite images; it is a modular pipeline and does the image matching in epipolar geometry
-=======
 
 
 <sub> *Contact: ewelina.rupnik(at)ign.fr*
->>>>>>> 8792f603bbf7b6192c37f3914372f18f17e78dbd
