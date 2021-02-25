@@ -1,0 +1,894 @@
+\BOOKMARK [-1][-]{part.1}{I Generalities}{}% 1
+\BOOKMARK [0][-]{section.0.1}{Foreword}{part.1}% 2
+\BOOKMARK [0][-]{chapter.1}{Introduction}{part.1}% 3
+\BOOKMARK [1][-]{section.1.1}{History, Status and Contributors}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.2}{Prerequisites}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.3}{Installation and Distribution}{chapter.1}% 6
+\BOOKMARK [2][-]{subsection.1.3.1}{Documentation}{section.1.3}% 7
+\BOOKMARK [2][-]{subsection.1.3.2}{Install}{section.1.3}% 8
+\BOOKMARK [1][-]{section.1.4}{Libraries, Programs and Dependencies}{chapter.1}% 9
+\BOOKMARK [1][-]{section.1.5}{Interface for the Tools}{chapter.1}% 10
+\BOOKMARK [2][-]{subsection.1.5.1}{Kinds of Interfaces}{section.1.5}% 11
+\BOOKMARK [2][-]{subsection.1.5.2}{Simple Tools}{section.1.5}% 12
+\BOOKMARK [3][-]{subsubsection.1.5.2.1}{GUI for command line tools}{subsection.1.5.2}% 13
+\BOOKMARK [2][-]{subsection.1.5.3}{Complex Tools}{section.1.5}% 14
+\BOOKMARK [2][-]{subsection.1.5.4}{Where Calling the Tools From \(The Mandatory Working Directory\)}{section.1.5}% 15
+\BOOKMARK [1][-]{section.1.6}{Data Organization and Communication}{chapter.1}% 16
+\BOOKMARK [1][-]{section.1.7}{Existing Tools}{chapter.1}% 17
+\BOOKMARK [0][-]{chapter.2}{Some Realization Examples}{part.1}% 18
+\BOOKMARK [1][-]{section.2.1}{3D Objects}{chapter.2}% 19
+\BOOKMARK [2][-]{subsection.2.1.1}{Statues}{section.2.1}% 20
+\BOOKMARK [2][-]{subsection.2.1.2}{Architectural Details}{section.2.1}% 21
+\BOOKMARK [1][-]{section.2.2}{Indoors Global Modelization}{chapter.2}% 22
+\BOOKMARK [2][-]{subsection.2.2.1}{Architecture}{section.2.2}% 23
+\BOOKMARK [1][-]{section.2.3}{Globally Planar Objects}{chapter.2}% 24
+\BOOKMARK [2][-]{subsection.2.3.1}{Elevation and ortho images}{section.2.3}% 25
+\BOOKMARK [2][-]{subsection.2.3.2}{Painting and Fresco}{section.2.3}% 26
+\BOOKMARK [2][-]{subsection.2.3.3}{Bas-relief}{section.2.3}% 27
+\BOOKMARK [2][-]{subsection.2.3.4}{Macro-photo}{section.2.3}% 28
+\BOOKMARK [1][-]{section.2.4}{Aerial Photos}{chapter.2}% 29
+\BOOKMARK [2][-]{subsection.2.4.1}{Urban DEM}{section.2.4}% 30
+\BOOKMARK [2][-]{subsection.2.4.2}{Satellite Images}{section.2.4}% 31
+\BOOKMARK [2][-]{subsection.2.4.3}{UAV Missions}{section.2.4}% 32
+\BOOKMARK [1][-]{section.2.5}{Miscellaneous}{chapter.2}% 33
+\BOOKMARK [2][-]{subsection.2.5.1}{Industrial}{section.2.5}% 34
+\BOOKMARK [1][-]{section.2.6}{Gallery of images}{chapter.2}% 35
+\BOOKMARK [0][-]{chapter.3}{Simplified Tools}{part.1}% 36
+\BOOKMARK [1][-]{section.3.1}{All in one command}{chapter.3}% 37
+\BOOKMARK [1][-]{section.3.2}{Modification since git version}{chapter.3}% 38
+\BOOKMARK [2][-]{subsection.3.2.1}{Installing the tools}{section.3.2}% 39
+\BOOKMARK [2][-]{subsection.3.2.2}{Access documentation samples}{section.3.2}% 40
+\BOOKMARK [2][-]{subsection.3.2.3}{The new universal command mm3d}{section.3.2}% 41
+\BOOKMARK [2][-]{subsection.3.2.4}{Help with mm3d}{section.3.2}% 42
+\BOOKMARK [2][-]{subsection.3.2.5}{Log files}{section.3.2}% 43
+\BOOKMARK [2][-]{subsection.3.2.6}{Help for each command}{section.3.2}% 44
+\BOOKMARK [2][-]{subsection.3.2.7}{Help to find a command}{section.3.2}% 45
+\BOOKMARK [3][-]{subsubsection.3.2.7.1}{For the user}{subsection.3.2.7}% 46
+\BOOKMARK [3][-]{subsubsection.3.2.7.2}{For the devlopper}{subsection.3.2.7}% 47
+\BOOKMARK [1][-]{section.3.3}{Computing Tie Points with Tapioca}{chapter.3}% 48
+\BOOKMARK [2][-]{subsection.3.3.1}{General Structure}{section.3.3}% 49
+\BOOKMARK [2][-]{subsection.3.3.2}{Computing All the Tie Points of a Set of Images}{section.3.3}% 50
+\BOOKMARK [2][-]{subsection.3.3.3}{Optimization for Linear Canvas}{section.3.3}% 51
+\BOOKMARK [2][-]{subsection.3.3.4}{Multi Scale Approach}{section.3.3}% 52
+\BOOKMARK [2][-]{subsection.3.3.5}{Explicit Specification of images pairs}{section.3.3}% 53
+\BOOKMARK [2][-]{subsection.3.3.6}{The tool GrapheHom}{section.3.3}% 54
+\BOOKMARK [1][-]{section.3.4}{Simple relative orientation and calibration with Tapas}{chapter.3}% 55
+\BOOKMARK [2][-]{subsection.3.4.1}{Generalities}{section.3.4}% 56
+\BOOKMARK [2][-]{subsection.3.4.2}{The data set "Mur Saint Martin"}{section.3.4}% 57
+\BOOKMARK [2][-]{subsection.3.4.3}{Basic usage}{section.3.4}% 58
+\BOOKMARK [3][-]{subsubsection.3.4.3.1}{Syntax}{subsection.3.4.3}% 59
+\BOOKMARK [3][-]{subsubsection.3.4.3.2}{Distorsion models}{subsection.3.4.3}% 60
+\BOOKMARK [3][-]{subsubsection.3.4.3.3}{Strategy}{subsection.3.4.3}% 61
+\BOOKMARK [3][-]{subsubsection.3.4.3.4}{Results}{subsection.3.4.3}% 62
+\BOOKMARK [2][-]{subsection.3.4.4}{Successive calls to Tapas}{section.3.4}% 63
+\BOOKMARK [1][-]{section.3.5}{Multiple lenses with Tapas}{chapter.3}% 64
+\BOOKMARK [2][-]{subsection.3.5.1}{The Saint Martin Street data set}{section.3.5}% 65
+\BOOKMARK [2][-]{subsection.3.5.2}{Exploiting the data with Tapas}{section.3.5}% 66
+\BOOKMARK [1][-]{section.3.6}{Camera data base and exif handling}{chapter.3}% 67
+\BOOKMARK [2][-]{subsection.3.6.1}{How Tapas initialize calibration}{section.3.6}% 68
+\BOOKMARK [2][-]{subsection.3.6.2}{Camera data base}{section.3.6}% 69
+\BOOKMARK [2][-]{subsection.3.6.3}{Indicating missing xif info}{section.3.6}% 70
+\BOOKMARK [2][-]{subsection.3.6.4}{Modifying exif}{section.3.6}% 71
+\BOOKMARK [2][-]{subsection.3.6.5}{XML "cache" version of xif information}{section.3.6}% 72
+\BOOKMARK [1][-]{section.3.7}{Using Raw images}{chapter.3}% 73
+\BOOKMARK [1][-]{section.3.8}{Other options of Tapas}{chapter.3}% 74
+\BOOKMARK [2][-]{subsection.3.8.1}{Saving intermediar results with SauvAutom}{section.3.8}% 75
+\BOOKMARK [2][-]{subsection.3.8.2}{Forcing first image with ImInit}{section.3.8}% 76
+\BOOKMARK [2][-]{subsection.3.8.3}{Freezing poses with FrozenPoses}{section.3.8}% 77
+\BOOKMARK [1][-]{section.3.9}{Other tools for orientation}{chapter.3}% 78
+\BOOKMARK [2][-]{subsection.3.9.1}{The tool AperiCloud}{section.3.9}% 79
+\BOOKMARK [2][-]{subsection.3.9.2}{The tool Campari}{section.3.9}% 80
+\BOOKMARK [3][-]{subsubsection.3.9.2.1}{Estimate lever-arm with the tool Campari}{subsection.3.9.2}% 81
+\BOOKMARK [3][-]{subsubsection.3.9.2.2}{Bundle adjustment with pushbroom sensor}{subsection.3.9.2}% 82
+\BOOKMARK [2][-]{subsection.3.9.3}{Convention for Orientation name}{section.3.9}% 83
+\BOOKMARK [1][-]{section.3.10}{The Bascule's tools}{chapter.3}% 84
+\BOOKMARK [2][-]{subsection.3.10.1}{Generalities}{section.3.10}% 85
+\BOOKMARK [3][-]{subsubsection.3.10.1.1}{Scene based orientation with SBGlobBascule}{subsection.3.10.1}% 86
+\BOOKMARK [3][-]{subsubsection.3.10.1.2}{Geo-referencing with GCPBascule}{subsection.3.10.1}% 87
+\BOOKMARK [3][-]{subsubsection.3.10.1.3}{Creating local repair with RepLocBascule}{subsection.3.10.1}% 88
+\BOOKMARK [3][-]{subsubsection.3.10.1.4}{Geo-referencing with CenterBascule}{subsection.3.10.1}% 89
+\BOOKMARK [3][-]{subsubsection.3.10.1.5}{Merging Orientation with Morito}{subsection.3.10.1}% 90
+\BOOKMARK [3][-]{subsubsection.3.10.1.6}{Accuracy Control with GCPCtrl}{subsection.3.10.1}% 91
+\BOOKMARK [2][-]{subsection.3.10.2}{MakeGrid}{section.3.10}% 92
+\BOOKMARK [1][-]{section.3.11}{Tools for full automatic matching}{chapter.3}% 93
+\BOOKMARK [2][-]{subsection.3.11.1}{The tortue data set}{section.3.11}% 94
+\BOOKMARK [2][-]{subsection.3.11.2}{The tool AperoChImSecMM}{section.3.11}% 95
+\BOOKMARK [2][-]{subsection.3.11.3}{The tool MMInitialModel}{section.3.11}% 96
+\BOOKMARK [2][-]{subsection.3.11.4}{The tool MMTestAllAuto}{section.3.11}% 97
+\BOOKMARK [1][-]{section.3.12}{Tools for simplified semi-automatic matching}{chapter.3}% 98
+\BOOKMARK [2][-]{subsection.3.12.1}{Basic rectification with Tarama}{section.3.12}% 99
+\BOOKMARK [2][-]{subsection.3.12.2}{Simplified matching in ground geometry with Malt}{section.3.12}% 100
+\BOOKMARK [3][-]{subsubsection.3.12.2.1}{General characteristics}{subsection.3.12.2}% 101
+\BOOKMARK [3][-]{subsubsection.3.12.2.2}{Optional parameters}{subsection.3.12.2}% 102
+\BOOKMARK [2][-]{subsection.3.12.3}{Image geometry with Malt}{section.3.12}% 103
+\BOOKMARK [2][-]{subsection.3.12.4}{One-Two-Pixel Matching with Malt}{section.3.12}% 104
+\BOOKMARK [1][-]{section.3.13}{Ortho photo generation}{chapter.3}% 105
+\BOOKMARK [0][-]{chapter.4}{Use cases with Simplified tools}{part.1}% 106
+\BOOKMARK [1][-]{section.4.1}{The Vincennes data set}{chapter.4}% 107
+\BOOKMARK [2][-]{subsection.4.1.1}{Description of the data set}{section.4.1}% 108
+\BOOKMARK [2][-]{subsection.4.1.2}{Computing tie points and orientations}{section.4.1}% 109
+\BOOKMARK [3][-]{subsubsection.4.1.2.1}{Tie points}{subsection.4.1.2}% 110
+\BOOKMARK [3][-]{subsubsection.4.1.2.2}{Relative orientation}{subsection.4.1.2}% 111
+\BOOKMARK [3][-]{subsubsection.4.1.2.3}{Optional, absolute orientation}{subsection.4.1.2}% 112
+\BOOKMARK [3][-]{subsubsection.4.1.2.4}{Optional, scene-based orientation}{subsection.4.1.2}% 113
+\BOOKMARK [2][-]{subsection.4.1.3}{Matching}{section.4.1}% 114
+\BOOKMARK [3][-]{subsubsection.4.1.3.1}{"Standard" option}{subsection.4.1.3}% 115
+\BOOKMARK [3][-]{subsubsection.4.1.3.2}{"Ortho-cylindrical" option}{subsection.4.1.3}% 116
+\BOOKMARK [3][-]{subsubsection.4.1.3.3}{Concrete use of "Ortho-cylindric" option}{subsection.4.1.3}% 117
+\BOOKMARK [1][-]{section.4.2}{The Saint-Michel de Cuxa data set}{chapter.4}% 118
+\BOOKMARK [2][-]{subsection.4.2.1}{Description of the data set}{section.4.2}% 119
+\BOOKMARK [2][-]{subsection.4.2.2}{Computing tie points and relative orientations}{section.4.2}% 120
+\BOOKMARK [3][-]{subsubsection.4.2.2.1}{Tie points}{subsection.4.2.2}% 121
+\BOOKMARK [3][-]{subsubsection.4.2.2.2}{Relative orientation}{subsection.4.2.2}% 122
+\BOOKMARK [2][-]{subsection.4.2.3}{GCP transforms}{section.4.2}% 123
+\BOOKMARK [3][-]{subsubsection.4.2.3.1}{Ground control point coordinates conversion}{subsection.4.2.3}% 124
+\BOOKMARK [3][-]{subsubsection.4.2.3.2}{Ground control point image coordinates input}{subsection.4.2.3}% 125
+\BOOKMARK [3][-]{subsubsection.4.2.3.3}{Bascule}{subsection.4.2.3}% 126
+\BOOKMARK [3][-]{subsubsection.4.2.3.4}{Adding points with predictive interface SaisieAppuisPredic}{subsection.4.2.3}% 127
+\BOOKMARK [3][-]{subsubsection.4.2.3.5}{Bascule}{subsection.4.2.3}% 128
+\BOOKMARK [2][-]{subsection.4.2.4}{Bundle adjustment with ground control points}{section.4.2}% 129
+\BOOKMARK [2][-]{subsection.4.2.5}{Post-processing}{section.4.2}% 130
+\BOOKMARK [3][-]{subsubsection.4.2.5.1}{Coordinate system backward transform}{subsection.4.2.5}% 131
+\BOOKMARK [1][-]{section.4.3}{The Grand-Leez dataset}{chapter.4}% 132
+\BOOKMARK [2][-]{subsection.4.3.1}{Dataset description}{section.4.3}% 133
+\BOOKMARK [2][-]{subsection.4.3.2}{Computing tie points and absolute orientation}{section.4.3}% 134
+\BOOKMARK [3][-]{subsubsection.4.3.2.1}{Conversion of GPS data in MicMac format}{subsection.4.3.2}% 135
+\BOOKMARK [3][-]{subsubsection.4.3.2.2}{Tie points}{subsection.4.3.2}% 136
+\BOOKMARK [3][-]{subsubsection.4.3.2.3}{Relative orientation}{subsection.4.3.2}% 137
+\BOOKMARK [3][-]{subsubsection.4.3.2.4}{Georeferencing}{subsection.4.3.2}% 138
+\BOOKMARK [3][-]{subsubsection.4.3.2.5}{Bundle adjustment with embedded GPS data}{subsection.4.3.2}% 139
+\BOOKMARK [2][-]{subsection.4.3.3}{Dense matching and orthorectification}{section.4.3}% 140
+\BOOKMARK [1][-]{section.4.4}{GoPro Video data-set}{chapter.4}% 141
+\BOOKMARK [2][-]{subsection.4.4.1}{Description of the data set}{section.4.4}% 142
+\BOOKMARK [2][-]{subsection.4.4.2}{The commands}{section.4.4}% 143
+\BOOKMARK [2][-]{subsection.4.4.3}{Some comments}{section.4.4}% 144
+\BOOKMARK [3][-]{subsubsection.4.4.3.1}{Developing still images with ffmpeg}{subsection.4.4.3}% 145
+\BOOKMARK [3][-]{subsubsection.4.4.3.2}{Adding missing xif with SetExif}{subsection.4.4.3}% 146
+\BOOKMARK [3][-]{subsubsection.4.4.3.3}{Selecting sharpest images with DIV}{subsection.4.4.3}% 147
+\BOOKMARK [3][-]{subsubsection.4.4.3.4}{Standard orientation}{subsection.4.4.3}% 148
+\BOOKMARK [3][-]{subsubsection.4.4.3.5}{Seizing the waves}{subsection.4.4.3}% 149
+\BOOKMARK [3][-]{subsubsection.4.4.3.6}{Filtering homologous points}{subsection.4.4.3}% 150
+\BOOKMARK [3][-]{subsubsection.4.4.3.7}{Final orientation}{subsection.4.4.3}% 151
+\BOOKMARK [1][-]{section.4.5}{The satellite datasets}{chapter.4}% 152
+\BOOKMARK [2][-]{subsection.4.5.1}{Example1 \205 the classical pipeline }{section.4.5}% 153
+\BOOKMARK [2][-]{subsection.4.5.2}{Example2 \205 the multi-view pipeline}{section.4.5}% 154
+\BOOKMARK [1][-]{section.4.6}{The Viabon dataset}{chapter.4}% 155
+\BOOKMARK [2][-]{subsection.4.6.1}{Processing GPS data}{section.4.6}% 156
+\BOOKMARK [3][-]{subsubsection.4.6.1.1}{Compile MicMac with RTKlib}{subsection.4.6.1}% 157
+\BOOKMARK [3][-]{subsubsection.4.6.1.2}{Base station processing}{subsection.4.6.1}% 158
+\BOOKMARK [3][-]{subsubsection.4.6.1.3}{UAV trajectories processing}{subsection.4.6.1}% 159
+\BOOKMARK [2][-]{subsection.4.6.2}{Computing tie points}{section.4.6}% 160
+\BOOKMARK [3][-]{subsubsection.4.6.2.1}{Computing exterior orientation}{subsection.4.6.2}% 161
+\BOOKMARK [3][-]{subsubsection.4.6.2.2}{GPS positions \046 Camera centers matching}{subsection.4.6.2}% 162
+\BOOKMARK [3][-]{subsubsection.4.6.2.3}{Images georeferencing}{subsection.4.6.2}% 163
+\BOOKMARK [3][-]{subsubsection.4.6.2.4}{Bundle Bloc Adjustment with GPS observations and lever-arm offset}{subsection.4.6.2}% 164
+\BOOKMARK [3][-]{subsubsection.4.6.2.5}{Advanced internal camera model}{subsection.4.6.2}% 165
+\BOOKMARK [3][-]{subsubsection.4.6.2.6}{Integrated Sensor Orientation using embedded GPS and 1 GCP}{subsection.4.6.2}% 166
+\BOOKMARK [3][-]{subsubsection.4.6.2.7}{Classical GCPs indirect georeferencing}{subsection.4.6.2}% 167
+\BOOKMARK [2][-]{subsection.4.6.3}{Dense Matching and Orthorectification}{section.4.6}% 168
+\BOOKMARK [1][-]{section.4.7}{The Chambord tower dataset}{chapter.4}% 169
+\BOOKMARK [2][-]{subsection.4.7.1}{Computing Tie Points}{section.4.7}% 170
+\BOOKMARK [2][-]{subsection.4.7.2}{Computing exterior orientation}{section.4.7}% 171
+\BOOKMARK [2][-]{subsection.4.7.3}{Fixing orientation of the cylinder}{section.4.7}% 172
+\BOOKMARK [2][-]{subsection.4.7.4}{Dense matching on the surface of the cylinder}{section.4.7}% 173
+\BOOKMARK [2][-]{subsection.4.7.5}{Estimate the cylinder equation}{section.4.7}% 174
+\BOOKMARK [2][-]{subsection.4.7.6}{Dense matching \046 Orthoimage}{section.4.7}% 175
+\BOOKMARK [0][-]{chapter.5}{A Quick Overview of Matching}{part.1}% 176
+\BOOKMARK [1][-]{section.5.1}{Installing the Tools}{chapter.5}% 177
+\BOOKMARK [2][-]{subsection.5.1.1}{svn Extraction - obsolete \(see \0403.2.1\)}{section.5.1}% 178
+\BOOKMARK [2][-]{subsection.5.1.2}{Compilation}{section.5.1}% 179
+\BOOKMARK [2][-]{subsection.5.1.3}{Some Important Directories}{section.5.1}% 180
+\BOOKMARK [2][-]{subsection.5.1.4}{Verification and Global Vision of the Main Tools}{section.5.1}% 181
+\BOOKMARK [1][-]{section.5.2}{A MicMac Example Using Simplest Parametrization}{chapter.5}% 182
+\BOOKMARK [2][-]{subsection.5.2.1}{Epipolar Geometry}{section.5.2}% 183
+\BOOKMARK [2][-]{subsection.5.2.2}{Analyzing Matching Parameters}{section.5.2}% 184
+\BOOKMARK [2][-]{subsection.5.2.3}{Running the Program}{section.5.2}% 185
+\BOOKMARK [2][-]{subsection.5.2.4}{Analyzing the Results }{section.5.2}% 186
+\BOOKMARK [1][-]{section.5.3}{Examples Using MicMac, Algorithmic Aspect}{chapter.5}% 187
+\BOOKMARK [2][-]{subsection.5.3.1}{Using Multi-resolution}{section.5.3}% 188
+\BOOKMARK [2][-]{subsection.5.3.2}{Using Regularization}{section.5.3}% 189
+\BOOKMARK [1][-]{section.5.4}{Examples using MicMac, Geometric Aspect}{chapter.5}% 190
+\BOOKMARK [2][-]{subsection.5.4.1}{Ground Geometry}{section.5.4}% 191
+\BOOKMARK [2][-]{subsection.5.4.2}{An Example in Ground Terrain, Parameter Analysis}{section.5.4}% 192
+\BOOKMARK [2][-]{subsection.5.4.3}{An Example in Ground Terrain, Result Analysis}{section.5.4}% 193
+\BOOKMARK [2][-]{subsection.5.4.4}{An Example in Ground Terrain with CUDA}{section.5.4}% 194
+\BOOKMARK [2][-]{subsection.5.4.5}{An Example in "Ground-image" Geometry}{section.5.4}% 195
+\BOOKMARK [2][-]{subsection.5.4.6}{Batching Several Computations}{section.5.4}% 196
+\BOOKMARK [1][-]{section.5.5}{Hidden part and individual ortho images generation}{chapter.5}% 197
+\BOOKMARK [2][-]{subsection.5.5.1}{Other Options}{section.5.5}% 198
+\BOOKMARK [1][-]{section.5.6}{2D Matching}{chapter.5}% 199
+\BOOKMARK [2][-]{subsection.5.6.1}{Pure Image 2D Matching}{section.5.6}% 200
+\BOOKMARK [2][-]{subsection.5.6.2}{Ground Image 2D Matching}{section.5.6}% 201
+\BOOKMARK [0][-]{chapter.6}{A Quick Overview of Orientation}{part.1}% 202
+\BOOKMARK [1][-]{section.6.1}{General Organization of Apero}{chapter.6}% 203
+\BOOKMARK [2][-]{subsection.6.1.1}{Input and Output}{section.6.1}% 204
+\BOOKMARK [2][-]{subsection.6.1.2}{General Strategy}{section.6.1}% 205
+\BOOKMARK [1][-]{section.6.2}{A First Example}{chapter.6}% 206
+\BOOKMARK [2][-]{subsection.6.2.1}{Introduction}{section.6.2}% 207
+\BOOKMARK [2][-]{subsection.6.2.2}{Tie Points}{section.6.2}% 208
+\BOOKMARK [2][-]{subsection.6.2.3}{Declaring the Observations}{section.6.2}% 209
+\BOOKMARK [2][-]{subsection.6.2.4}{Declaring the Unknowns, Camera-calibration}{section.6.2}% 210
+\BOOKMARK [2][-]{subsection.6.2.5}{Declaring the Unknowns, Camera-poses}{section.6.2}% 211
+\BOOKMARK [2][-]{subsection.6.2.6}{Running the Compensation}{section.6.2}% 212
+\BOOKMARK [3][-]{subsubsection.6.2.6.1}{What Is Done During the Compensation}{subsection.6.2.6}% 213
+\BOOKMARK [3][-]{subsubsection.6.2.6.2}{Structure of SectionCompensation}{subsection.6.2.6}% 214
+\BOOKMARK [3][-]{subsubsection.6.2.6.3}{Handling the Constraints}{subsection.6.2.6}% 215
+\BOOKMARK [3][-]{subsubsection.6.2.6.4}{Using Weighted Observations}{subsection.6.2.6}% 216
+\BOOKMARK [3][-]{subsubsection.6.2.6.5}{Weighting of homogeneous and heterogeneous observations}{subsection.6.2.6}% 217
+\BOOKMARK [2][-]{subsection.6.2.7}{Understanding the Message}{section.6.2}% 218
+\BOOKMARK [2][-]{subsection.6.2.8}{Storing the Results}{section.6.2}% 219
+\BOOKMARK [1][-]{section.6.3}{More Examples}{chapter.6}% 220
+\BOOKMARK [2][-]{subsection.6.3.1}{Adding More Images}{section.6.3}% 221
+\BOOKMARK [2][-]{subsection.6.3.2}{Computing the Internal Parameters}{section.6.3}% 222
+\BOOKMARK [2][-]{subsection.6.3.3}{Automatic Image Ordering}{section.6.3}% 223
+\BOOKMARK [1][-]{section.6.4}{Geo-referencing}{chapter.6}% 224
+\BOOKMARK [2][-]{subsection.6.4.1}{External Initialization}{section.6.4}% 225
+\BOOKMARK [2][-]{subsection.6.4.2}{Scene-based Orientation}{section.6.4}% 226
+\BOOKMARK [2][-]{subsection.6.4.3}{Using Embedded GPS}{section.6.4}% 227
+\BOOKMARK [2][-]{subsection.6.4.4}{Ground Control Points}{section.6.4}% 228
+\BOOKMARK [3][-]{subsubsection.6.4.4.1}{Ground Points Organization}{subsection.6.4.4}% 229
+\BOOKMARK [3][-]{subsubsection.6.4.4.2}{Using GCP}{subsection.6.4.4}% 230
+\BOOKMARK [0][-]{chapter.7}{A Quick Overview of Other Tools}{part.1}% 231
+\BOOKMARK [1][-]{section.7.1}{Developing raw and jpeg Images with Devlop}{chapter.7}% 232
+\BOOKMARK [1][-]{section.7.2}{Making Ortho Mosaic with Porto}{chapter.7}% 233
+\BOOKMARK [2][-]{subsection.7.2.1}{Introduction}{section.7.2}% 234
+\BOOKMARK [2][-]{subsection.7.2.2}{Input to Porto}{section.7.2}% 235
+\BOOKMARK [2][-]{subsection.7.2.3}{Output to Porto}{section.7.2}% 236
+\BOOKMARK [1][-]{section.7.3}{V.O.D.K.A.}{chapter.7}% 237
+\BOOKMARK [2][-]{subsection.7.3.1}{Theory}{section.7.3}% 238
+\BOOKMARK [2][-]{subsection.7.3.2}{Name and function}{section.7.3}% 239
+\BOOKMARK [2][-]{subsection.7.3.3}{Input data}{section.7.3}% 240
+\BOOKMARK [2][-]{subsection.7.3.4}{Output data}{section.7.3}% 241
+\BOOKMARK [2][-]{subsection.7.3.5}{Options}{section.7.3}% 242
+\BOOKMARK [2][-]{subsection.7.3.6}{How to use VODKA}{section.7.3}% 243
+\BOOKMARK [1][-]{section.7.4}{Vignetting correction}{chapter.7}% 244
+\BOOKMARK [2][-]{subsection.7.4.1}{How MicMac use vignetting ?}{section.7.4}% 245
+\BOOKMARK [2][-]{subsection.7.4.2}{Command StackFlatField}{section.7.4}% 246
+\BOOKMARK [2][-]{subsection.7.4.3}{Command PolynOfImage}{section.7.4}% 247
+\BOOKMARK [1][-]{section.7.5}{A.R.S.E.N.I.C}{chapter.7}% 248
+\BOOKMARK [2][-]{subsection.7.5.1}{Name and function}{section.7.5}% 249
+\BOOKMARK [2][-]{subsection.7.5.2}{Input data}{section.7.5}% 250
+\BOOKMARK [2][-]{subsection.7.5.3}{Output data}{section.7.5}% 251
+\BOOKMARK [2][-]{subsection.7.5.4}{Options}{section.7.5}% 252
+\BOOKMARK [2][-]{subsection.7.5.5}{Algorithm}{section.7.5}% 253
+\BOOKMARK [3][-]{subsubsection.7.5.5.1}{Tie point detection}{subsection.7.5.5}% 254
+\BOOKMARK [3][-]{subsubsection.7.5.5.2}{Equalization}{subsection.7.5.5}% 255
+\BOOKMARK [2][-]{subsection.7.5.6}{How to use ARSENIC}{section.7.5}% 256
+\BOOKMARK [1][-]{section.7.6}{Comparaison tools}{chapter.7}% 257
+\BOOKMARK [2][-]{subsection.7.6.1}{CmpOri}{section.7.6}% 258
+\BOOKMARK [2][-]{subsection.7.6.2}{CmpCalib}{section.7.6}% 259
+\BOOKMARK [2][-]{subsection.7.6.3}{CmpIm}{section.7.6}% 260
+\BOOKMARK [2][-]{subsection.7.6.4}{CompMAF}{section.7.6}% 261
+\BOOKMARK [2][-]{subsection.7.6.5}{CmpTieP}{section.7.6}% 262
+\BOOKMARK [2][-]{subsection.7.6.6}{CmpOrthos}{section.7.6}% 263
+\BOOKMARK [2][-]{subsection.7.6.7}{CmpTrajGps}{section.7.6}% 264
+\BOOKMARK [1][-]{section.7.7}{Miscellaneous tools}{chapter.7}% 265
+\BOOKMARK [2][-]{subsection.7.7.1}{TestLib PackHomolToPly}{section.7.7}% 266
+\BOOKMARK [2][-]{subsection.7.7.2}{MeshProjOnImg}{section.7.7}% 267
+\BOOKMARK [2][-]{subsection.7.7.3}{InitOriLinear}{section.7.7}% 268
+\BOOKMARK [2][-]{subsection.7.7.4}{ReprojImg}{section.7.7}% 269
+\BOOKMARK [2][-]{subsection.7.7.5}{ExtractMesure2D}{section.7.7}% 270
+\BOOKMARK [2][-]{subsection.7.7.6}{BasculeCamsInRepCam}{section.7.7}% 271
+\BOOKMARK [2][-]{subsection.7.7.7}{BasculePtsInRepCam}{section.7.7}% 272
+\BOOKMARK [2][-]{subsection.7.7.8}{CorrLA}{section.7.7}% 273
+\BOOKMARK [2][-]{subsection.7.7.9}{ExportXmlGcp2Txt}{section.7.7}% 274
+\BOOKMARK [2][-]{subsection.7.7.10}{SimplePredict}{section.7.7}% 275
+\BOOKMARK [2][-]{subsection.7.7.11}{Export2Ply}{section.7.7}% 276
+\BOOKMARK [2][-]{subsection.7.7.12}{PseudoIntersect}{section.7.7}% 277
+\BOOKMARK [2][-]{subsection.7.7.13}{MasqMaker}{section.7.7}% 278
+\BOOKMARK [2][-]{subsection.7.7.14}{SkyMask}{section.7.7}% 279
+\BOOKMARK [2][-]{subsection.7.7.15}{Homography for tie points}{section.7.7}% 280
+\BOOKMARK [1][-]{section.7.8}{Simulation tools}{chapter.7}% 281
+\BOOKMARK [2][-]{subsection.7.8.1}{GenerateTP}{section.7.8}% 282
+\BOOKMARK [2][-]{subsection.7.8.2}{GenerateMAF}{section.7.8}% 283
+\BOOKMARK [0][-]{chapter.8}{Interactive tools}{part.1}% 284
+\BOOKMARK [1][-]{section.8.1}{Generalities}{chapter.8}% 285
+\BOOKMARK [1][-]{section.8.2}{Entering mask with SaisieMasq or SaisieMasqQT }{chapter.8}% 286
+\BOOKMARK [2][-]{subsection.8.2.1}{SaisieMasq}{section.8.2}% 287
+\BOOKMARK [2][-]{subsection.8.2.2}{SaisieMasqQT}{section.8.2}% 288
+\BOOKMARK [1][-]{section.8.3}{Entering 3D mask with SaisieMasqQT }{chapter.8}% 289
+\BOOKMARK [1][-]{section.8.4}{Entering points}{chapter.8}% 290
+\BOOKMARK [2][-]{subsection.8.4.1}{Generalities}{section.8.4}% 291
+\BOOKMARK [3][-]{subsubsection.8.4.1.1}{Geometry menu}{subsection.8.4.1}% 292
+\BOOKMARK [3][-]{subsubsection.8.4.1.2}{Info menu}{subsection.8.4.1}% 293
+\BOOKMARK [3][-]{subsubsection.8.4.1.3}{Undo menu}{subsection.8.4.1}% 294
+\BOOKMARK [3][-]{subsubsection.8.4.1.4}{Zoom menu}{subsection.8.4.1}% 295
+\BOOKMARK [2][-]{subsection.8.4.2}{For initial GCP with SaisieAppuisInit}{section.8.4}% 296
+\BOOKMARK [2][-]{subsection.8.4.3}{For fast predictive entering GCP with SaisieAppuisPredic}{section.8.4}% 297
+\BOOKMARK [2][-]{subsection.8.4.4}{For bascule with SaisieBasc}{section.8.4}% 298
+\BOOKMARK [1][-]{section.8.5}{Visualize Tie-points with SEL}{chapter.8}% 299
+\BOOKMARK [1][-]{section.8.6}{Visualize \(very large\) images with Vino}{chapter.8}% 300
+\BOOKMARK [1][-]{section.8.7}{Generating auxiliary ply visualisation}{chapter.8}% 301
+\BOOKMARK [2][-]{subsection.8.7.1}{PlySphere}{section.8.7}% 302
+\BOOKMARK [2][-]{subsection.8.7.2}{San2Ply}{section.8.7}% 303
+\BOOKMARK [0][-]{chapter.9}{New "generation" of tools}{part.1}% 304
+\BOOKMARK [1][-]{section.9.1}{Fully automatic dense matching}{chapter.9}% 305
+\BOOKMARK [2][-]{subsection.9.1.1}{Generalities}{section.9.1}% 306
+\BOOKMARK [2][-]{subsection.9.1.2}{Quickmac option}{section.9.1}% 307
+\BOOKMARK [1][-]{section.9.2}{Algorithm used in the "Mac" options}{chapter.9}% 308
+\BOOKMARK [2][-]{subsection.9.2.1}{Formal definition}{section.9.2}% 309
+\BOOKMARK [2][-]{subsection.9.2.2}{Algorithmic implementation}{section.9.2}% 310
+\BOOKMARK [2][-]{subsection.9.2.3}{Software implementation}{section.9.2}% 311
+\BOOKMARK [1][-]{section.9.3}{Post-processing tools - mesh generation and texturing}{chapter.9}% 312
+\BOOKMARK [2][-]{subsection.9.3.1}{Mesh generation}{section.9.3}% 313
+\BOOKMARK [2][-]{subsection.9.3.2}{Texturing the mesh}{section.9.3}% 314
+\BOOKMARK [1][-]{section.9.4}{Parallelizing Apero}{chapter.9}% 315
+\BOOKMARK [2][-]{subsection.9.4.1}{Parallelizing Apero}{section.9.4}% 316
+\BOOKMARK [0][-]{chapter.10}{XML-Formal Parameter Specification}{part.1}% 317
+\BOOKMARK [1][-]{section.10.1}{Introduction}{chapter.10}% 318
+\BOOKMARK [2][-]{subsection.10.1.1}{General Mechanism}{section.10.1}% 319
+\BOOKMARK [2][-]{subsection.10.1.2}{Format Specification}{section.10.1}% 320
+\BOOKMARK [2][-]{subsection.10.1.3}{Command Line}{section.10.1}% 321
+\BOOKMARK [1][-]{section.10.2}{Tree Matching}{chapter.10}% 322
+\BOOKMARK [1][-]{section.10.3}{Types des n\234uds terminaux}{chapter.10}% 323
+\BOOKMARK [2][-]{subsection.10.3.1}{Types g\351n\351raux}{section.10.3}% 324
+\BOOKMARK [2][-]{subsection.10.3.2}{Types \351num\351r\351s}{section.10.3}% 325
+\BOOKMARK [1][-]{section.10.4}{D\351finition de types d'arbres}{chapter.10}% 326
+\BOOKMARK [1][-]{section.10.5}{Mode "diff\351rentiel"}{chapter.10}% 327
+\BOOKMARK [1][-]{section.10.6}{Autres caract\351ristiques}{chapter.10}% 328
+\BOOKMARK [2][-]{subsection.10.6.1}{Modification par ligne de commande}{section.10.6}% 329
+\BOOKMARK [2][-]{subsection.10.6.2}{Valeurs par d\351faut}{section.10.6}% 330
+\BOOKMARK [2][-]{subsection.10.6.3}{Fichiers de param\350tres g\351n\351r\351s}{section.10.6}% 331
+\BOOKMARK [0][-]{chapter.11}{Names Convention Organization}{part.1}% 332
+\BOOKMARK [1][-]{section.11.1}{General Organization}{chapter.11}% 333
+\BOOKMARK [2][-]{subsection.11.1.1}{Requirements}{section.11.1}% 334
+\BOOKMARK [2][-]{subsection.11.1.2}{The struct ChantierDescripteur}{section.11.1}% 335
+\BOOKMARK [2][-]{subsection.11.1.3}{The Files Containing ChantierDescripteur}{section.11.1}% 336
+\BOOKMARK [2][-]{subsection.11.1.4}{Overriding and Priority}{section.11.1}% 337
+\BOOKMARK [1][-]{section.11.2}{Regular Expression and Substitution}{chapter.11}% 338
+\BOOKMARK [2][-]{subsection.11.2.1}{Regular Expression}{section.11.2}% 339
+\BOOKMARK [2][-]{subsection.11.2.2}{Substitution}{section.11.2}% 340
+\BOOKMARK [1][-]{section.11.3}{Helps tools in names manipulation}{chapter.11}% 341
+\BOOKMARK [2][-]{subsection.11.3.1}{TestKey}{section.11.3}% 342
+\BOOKMARK [2][-]{subsection.11.3.2}{TestMTD}{section.11.3}% 343
+\BOOKMARK [2][-]{subsection.11.3.3}{TestNameCalib}{section.11.3}% 344
+\BOOKMARK [1][-]{section.11.4}{Describing String Sets}{chapter.11}% 345
+\BOOKMARK [1][-]{section.11.5}{Describing String Mapping}{chapter.11}% 346
+\BOOKMARK [2][-]{subsection.11.5.1}{Advanced association}{section.11.5}% 347
+\BOOKMARK [1][-]{section.11.6}{Describing String Relations}{chapter.11}% 348
+\BOOKMARK [1][-]{section.11.7}{Filters and In-File Definition}{chapter.11}% 349
+\BOOKMARK [0][-]{chapter.12}{Use cases for 2D Matching}{part.1}% 350
+\BOOKMARK [1][-]{section.12.1}{Checking orientation}{chapter.12}% 351
+\BOOKMARK [2][-]{subsection.12.1.1}{For Conik Orientation}{section.12.1}% 352
+\BOOKMARK [2][-]{subsection.12.1.2}{For Push-Broom Orientation}{section.12.1}% 353
+\BOOKMARK [1][-]{section.12.2}{The Mars data-set}{chapter.12}% 354
+\BOOKMARK [2][-]{subsection.12.2.1}{Description of the data set}{section.12.2}% 355
+\BOOKMARK [2][-]{subsection.12.2.2}{Comment on the parameters}{section.12.2}% 356
+\BOOKMARK [3][-]{subsubsection.12.2.2.1}{Geometry}{subsection.12.2.2}% 357
+\BOOKMARK [3][-]{subsubsection.12.2.2.2}{Matching}{subsection.12.2.2}% 358
+\BOOKMARK [3][-]{subsubsection.12.2.2.3}{Results}{subsection.12.2.2}% 359
+\BOOKMARK [1][-]{section.12.3}{The Gulya Earthquake Data-Set}{chapter.12}% 360
+\BOOKMARK [2][-]{subsection.12.3.1}{Introduction}{section.12.3}% 361
+\BOOKMARK [2][-]{subsection.12.3.2}{Description of the data set}{section.12.3}% 362
+\BOOKMARK [2][-]{subsection.12.3.3}{Simplified interface}{section.12.3}% 363
+\BOOKMARK [2][-]{subsection.12.3.4}{Comment on the parameters}{section.12.3}% 364
+\BOOKMARK [3][-]{subsubsection.12.3.4.1}{Interpolation}{subsection.12.3.4}% 365
+\BOOKMARK [3][-]{subsubsection.12.3.4.2}{Image term}{subsection.12.3.4}% 366
+\BOOKMARK [3][-]{subsubsection.12.3.4.3}{Non isotropic regularization}{subsection.12.3.4}% 367
+\BOOKMARK [1][-]{section.12.4}{The Concrete Data-Set and civil engineering}{chapter.12}% 368
+\BOOKMARK [2][-]{subsection.12.4.1}{Introduction}{section.12.4}% 369
+\BOOKMARK [2][-]{subsection.12.4.2}{Parametring}{section.12.4}% 370
+\BOOKMARK [1][-]{section.12.5}{FDSC - a post-processing tool for 2D correlation results}{chapter.12}% 371
+\BOOKMARK [2][-]{subsection.12.5.1}{Drawing the fault trace}{section.12.5}% 372
+\BOOKMARK [2][-]{subsection.12.5.2}{Stacking profiles}{section.12.5}% 373
+\BOOKMARK [2][-]{subsection.12.5.3}{Drawing the slip-curve}{section.12.5}% 374
+\BOOKMARK [1][-]{section.12.6}{Modelization of analytical deformation}{chapter.12}% 375
+\BOOKMARK [2][-]{subsection.12.6.1}{Mathematicall models and their implementation}{section.12.6}% 376
+\BOOKMARK [2][-]{subsection.12.6.2}{Description of C++ classe}{section.12.6}% 377
+\BOOKMARK [2][-]{subsection.12.6.3}{Possible pipeline}{section.12.6}% 378
+\BOOKMARK [2][-]{subsection.12.6.4}{XML Parameter to create dense map}{section.12.6}% 379
+\BOOKMARK [3][-]{subsubsection.12.6.4.1}{Example and naming}{subsection.12.6.4}% 380
+\BOOKMARK [3][-]{subsubsection.12.6.4.2}{Usefull tags}{subsection.12.6.4}% 381
+\BOOKMARK [2][-]{subsection.12.6.5}{Testing dense maps with FermDenseMap}{section.12.6}% 382
+\BOOKMARK [2][-]{subsection.12.6.6}{Comparing dense maps with CmpDenseMap}{section.12.6}% 383
+\BOOKMARK [2][-]{subsection.12.6.7}{Converting dense map to homologues with DMatch2Hom}{section.12.6}% 384
+\BOOKMARK [2][-]{subsection.12.6.8}{Fitting models with CalcMapAnalytik}{section.12.6}% 385
+\BOOKMARK [2][-]{subsection.12.6.9}{Using maps to resample images with ReechImMap}{section.12.6}% 386
+\BOOKMARK [1][-]{section.12.7}{Evolutive analytical deformation}{chapter.12}% 387
+\BOOKMARK [2][-]{subsection.12.7.1}{Motivation and modelisation}{section.12.7}% 388
+\BOOKMARK [2][-]{subsection.12.7.2}{XML and C++ classes}{section.12.7}% 389
+\BOOKMARK [2][-]{subsection.12.7.3}{Computing a map evolutive with CalcMapXYT}{section.12.7}% 390
+\BOOKMARK [2][-]{subsection.12.7.4}{Instanciating a map evolutive with CalcMapOfT}{section.12.7}% 391
+\BOOKMARK [0][-]{chapter.13}{Image filtering option}{part.1}% 392
+\BOOKMARK [1][-]{section.13.1}{Generalities }{chapter.13}% 393
+\BOOKMARK [2][-]{subsection.13.1.1}{Introduction }{section.13.1}% 394
+\BOOKMARK [2][-]{subsection.13.1.2}{Formalism }{section.13.1}% 395
+\BOOKMARK [1][-]{section.13.2}{Atomic expression}{chapter.13}% 396
+\BOOKMARK [2][-]{subsection.13.2.1}{constant}{section.13.2}% 397
+\BOOKMARK [2][-]{subsection.13.2.2}{Existing images}{section.13.2}% 398
+\BOOKMARK [2][-]{subsection.13.2.3}{Coordinates}{section.13.2}% 399
+\BOOKMARK [1][-]{section.13.3}{Mathematicall operator}{chapter.13}% 400
+\BOOKMARK [2][-]{subsection.13.3.1}{unary}{section.13.3}% 401
+\BOOKMARK [2][-]{subsection.13.3.2}{binary}{section.13.3}% 402
+\BOOKMARK [2][-]{subsection.13.3.3}{ternary}{section.13.3}% 403
+\BOOKMARK [2][-]{subsection.13.3.4}{associative}{section.13.3}% 404
+\BOOKMARK [1][-]{section.13.4}{Morphological filter}{chapter.13}% 405
+\BOOKMARK [2][-]{subsection.13.4.1}{Extinction function}{section.13.4}% 406
+\BOOKMARK [2][-]{subsection.13.4.2}{Dilatation and erosion}{section.13.4}% 407
+\BOOKMARK [2][-]{subsection.13.4.3}{Closure and opening}{section.13.4}% 408
+\BOOKMARK [1][-]{section.13.5}{Linear Filter}{chapter.13}% 409
+\BOOKMARK [2][-]{subsection.13.5.1}{deriche and polar}{section.13.5}% 410
+\BOOKMARK [2][-]{subsection.13.5.2}{average}{section.13.5}% 411
+\BOOKMARK [1][-]{section.13.6}{Using symbol}{chapter.13}% 412
+\BOOKMARK [1][-]{section.13.7}{Coordinate operator}{chapter.13}% 413
+\BOOKMARK [2][-]{subsection.13.7.1}{Permutation}{section.13.7}% 414
+\BOOKMARK [2][-]{subsection.13.7.2}{Projection}{section.13.7}% 415
+\BOOKMARK [2][-]{subsection.13.7.3}{Concatenation}{section.13.7}% 416
+\BOOKMARK [-1][-]{part.2}{II Reference documentation}{}% 417
+\BOOKMARK [0][-]{chapter.14}{Data exchange with other tools}{part.2}% 418
+\BOOKMARK [1][-]{section.14.1}{Generalities}{chapter.14}% 419
+\BOOKMARK [1][-]{section.14.2}{Orientation's convention}{chapter.14}% 420
+\BOOKMARK [2][-]{subsection.14.2.1}{Internal orientation}{section.14.2}% 421
+\BOOKMARK [2][-]{subsection.14.2.2}{External orientation}{section.14.2}% 422
+\BOOKMARK [1][-]{section.14.3}{Conversion tools}{chapter.14}% 423
+\BOOKMARK [2][-]{subsection.14.3.1}{Ground Control Point Convertion: GCPConvert }{section.14.3}% 424
+\BOOKMARK [3][-]{subsubsection.14.3.1.1}{File format conversion with GCPConvert}{subsection.14.3.1}% 425
+\BOOKMARK [2][-]{subsection.14.3.2}{Orientations convertion for PMVS: Apero2PMVS }{section.14.3}% 426
+\BOOKMARK [3][-]{subsubsection.14.3.2.1}{Distortion removing with DRUNK }{subsection.14.3.2}% 427
+\BOOKMARK [2][-]{subsection.14.3.3}{Apero2NVM}{section.14.3}% 428
+\BOOKMARK [2][-]{subsection.14.3.4}{Embedded GPS Conversion: OriConvert}{section.14.3}% 429
+\BOOKMARK [3][-]{subsubsection.14.3.4.1}{File format conversion with OriConvert}{subsection.14.3.4}% 430
+\BOOKMARK [3][-]{subsubsection.14.3.4.2}{Taking into account a GPS delay with OriConvert}{subsection.14.3.4}% 431
+\BOOKMARK [3][-]{subsubsection.14.3.4.3}{Selection of a image sub-block with OriConvert}{subsection.14.3.4}% 432
+\BOOKMARK [2][-]{subsection.14.3.5}{Extracting Gps from exif}{section.14.3}% 433
+\BOOKMARK [3][-]{subsubsection.14.3.5.1}{Extracting Gps from exif with XifGps2Xml}{subsection.14.3.5}% 434
+\BOOKMARK [3][-]{subsubsection.14.3.5.2}{Extracting Gps from exif with XifGps2Txt}{subsection.14.3.5}% 435
+\BOOKMARK [2][-]{subsection.14.3.6}{Exporting external oriention to Omega-Phi-Kapa}{section.14.3}% 436
+\BOOKMARK [2][-]{subsection.14.3.7}{MM2Bundler, Bundler2MM, SfmI2MM}{section.14.3}% 437
+\BOOKMARK [1][-]{section.14.4}{Miscellaneous internal conversion}{chapter.14}% 438
+\BOOKMARK [2][-]{subsection.14.4.1}{Im2XYZ and XYZ2Im}{section.14.4}% 439
+\BOOKMARK [3][-]{subsubsection.14.4.1.1}{Im2XYZ, single point version}{subsection.14.4.1}% 440
+\BOOKMARK [3][-]{subsubsection.14.4.1.2}{Im2XYZ , homologous point version}{subsection.14.4.1}% 441
+\BOOKMARK [0][-]{chapter.15}{Geo Localisation formats}{part.2}% 442
+\BOOKMARK [1][-]{section.15.1}{Overview of conic orientation specification}{chapter.15}% 443
+\BOOKMARK [2][-]{subsection.15.1.1}{Generalities}{section.15.1}% 444
+\BOOKMARK [2][-]{subsection.15.1.2}{Internal orientation}{section.15.1}% 445
+\BOOKMARK [2][-]{subsection.15.1.3}{Kind of projection}{section.15.1}% 446
+\BOOKMARK [2][-]{subsection.15.1.4}{External orientation}{section.15.1}% 447
+\BOOKMARK [2][-]{subsection.15.1.5}{Intrinsic Calibration}{section.15.1}% 448
+\BOOKMARK [2][-]{subsection.15.1.6}{The Verif Section}{section.15.1}% 449
+\BOOKMARK [1][-]{section.15.2}{Distorsion specification}{chapter.15}% 450
+\BOOKMARK [2][-]{subsection.15.2.1}{Generalities}{section.15.2}% 451
+\BOOKMARK [3][-]{subsubsection.15.2.1.1}{Composition of distorsions}{subsection.15.2.1}% 452
+\BOOKMARK [3][-]{subsubsection.15.2.1.2}{Structure of basic distorsion}{subsection.15.2.1}% 453
+\BOOKMARK [2][-]{subsection.15.2.2}{Radial Model}{section.15.2}% 454
+\BOOKMARK [2][-]{subsection.15.2.3}{Inverse radial distorsion}{section.15.2}% 455
+\BOOKMARK [2][-]{subsection.15.2.4}{Photogrammetric Standard Model}{section.15.2}% 456
+\BOOKMARK [2][-]{subsection.15.2.5}{Grids model}{section.15.2}% 457
+\BOOKMARK [1][-]{section.15.3}{Unified distorsion models}{chapter.15}% 458
+\BOOKMARK [2][-]{subsection.15.3.1}{Generalities}{section.15.3}% 459
+\BOOKMARK [2][-]{subsection.15.3.2}{Unified Polynomial models}{section.15.3}% 460
+\BOOKMARK [2][-]{subsection.15.3.3}{Brown's and Ebner's model}{section.15.3}% 461
+\BOOKMARK [2][-]{subsection.15.3.4}{Fish eye models}{section.15.3}% 462
+\BOOKMARK [2][-]{subsection.15.3.5}{The tag <RayonUtile>}{section.15.3}% 463
+\BOOKMARK [1][-]{section.15.4}{The tool TestCam}{chapter.15}% 464
+\BOOKMARK [1][-]{section.15.5}{The tool TestDistortion}{chapter.15}% 465
+\BOOKMARK [1][-]{section.15.6}{Coordinate system}{chapter.15}% 466
+\BOOKMARK [2][-]{subsection.15.6.1}{Generalities}{section.15.6}% 467
+\BOOKMARK [2][-]{subsection.15.6.2}{XML codage}{section.15.6}% 468
+\BOOKMARK [3][-]{subsubsection.15.6.2.1}{Generalities}{subsection.15.6.2}% 469
+\BOOKMARK [3][-]{subsubsection.15.6.2.2}{Geocentric}{subsection.15.6.2}% 470
+\BOOKMARK [3][-]{subsubsection.15.6.2.3}{eTC\137WGS84}{subsection.15.6.2}% 471
+\BOOKMARK [3][-]{subsubsection.15.6.2.4}{Exterior file coordinate system}{subsection.15.6.2}% 472
+\BOOKMARK [3][-]{subsubsection.15.6.2.5}{Locally tangent repair}{subsection.15.6.2}% 473
+\BOOKMARK [3][-]{subsubsection.15.6.2.6}{Cartographic system using Proj4}{subsection.15.6.2}% 474
+\BOOKMARK [3][-]{subsubsection.15.6.2.7}{Polynomial coordinate system}{subsection.15.6.2}% 475
+\BOOKMARK [1][-]{section.15.7}{Tools for processing trajectory and coordinate systems}{chapter.15}% 476
+\BOOKMARK [2][-]{subsection.15.7.1}{SysCoordPolyn}{section.15.7}% 477
+\BOOKMARK [2][-]{subsection.15.7.2}{The TrAJ2 command}{section.15.7}% 478
+\BOOKMARK [2][-]{subsection.15.7.3}{Trajectory preprocessing}{section.15.7}% 479
+\BOOKMARK [3][-]{subsubsection.15.7.3.1}{The tool SplitBande}{subsection.15.7.3}% 480
+\BOOKMARK [3][-]{subsubsection.15.7.3.2}{The tool BoreSightInit}{subsection.15.7.3}% 481
+\BOOKMARK [0][-]{chapter.16}{Advanced Tie Points}{part.2}% 482
+\BOOKMARK [1][-]{section.16.1}{Changing default detector in XML\137User/}{chapter.16}% 483
+\BOOKMARK [1][-]{section.16.2}{Filtering tie points in HomolFilterMasq}{chapter.16}% 484
+\BOOKMARK [1][-]{section.16.3}{Merging Tie point from multiple view with HomolMergePDVUnik}{chapter.16}% 485
+\BOOKMARK [1][-]{section.16.4}{Tie points on low contrast images usign SFS in MicMac-LocalChantierDescripteur.xml}{chapter.16}% 486
+\BOOKMARK [2][-]{subsection.16.4.1}{Command PrepSift}{section.16.4}% 487
+\BOOKMARK [2][-]{subsection.16.4.2}{Alternative syntax @SFS}{section.16.4}% 488
+\BOOKMARK [1][-]{section.16.5}{Tie point reduction in RedTieP}{chapter.16}% 489
+\BOOKMARK [2][-]{subsection.16.5.1}{Algorithm description}{section.16.5}% 490
+\BOOKMARK [2][-]{subsection.16.5.2}{Parallelization}{section.16.5}% 491
+\BOOKMARK [1][-]{section.16.6}{Global and order-agnostic tie point reduction with Schnaps}{chapter.16}% 492
+\BOOKMARK [2][-]{subsection.16.6.1}{Algorithm}{section.16.6}% 493
+\BOOKMARK [2][-]{subsection.16.6.2}{Output}{section.16.6}% 494
+\BOOKMARK [1][-]{section.16.7}{Tie point reduction , with OriRedTieP and Ratafia}{chapter.16}% 495
+\BOOKMARK [2][-]{subsection.16.7.1}{Generalities}{section.16.7}% 496
+\BOOKMARK [2][-]{subsection.16.7.2}{Tie point reduction , quasi-vertical case with OriRedTieP}{section.16.7}% 497
+\BOOKMARK [3][-]{subsubsection.16.7.2.1}{Algorithm}{subsection.16.7.2}% 498
+\BOOKMARK [3][-]{subsubsection.16.7.2.2}{"Von Gruber" point}{subsection.16.7.2}% 499
+\BOOKMARK [3][-]{subsubsection.16.7.2.3}{The command}{subsection.16.7.2}% 500
+\BOOKMARK [3][-]{subsubsection.16.7.2.4}{Memory issue and parallelization}{subsection.16.7.2}% 501
+\BOOKMARK [2][-]{subsection.16.7.3}{Tie point reduction , general case with Ratafia}{section.16.7}% 502
+\BOOKMARK [3][-]{subsubsection.16.7.3.1}{The algoritm}{subsection.16.7.3}% 503
+\BOOKMARK [3][-]{subsubsection.16.7.3.2}{The command line}{subsection.16.7.3}% 504
+\BOOKMARK [1][-]{section.16.8}{New Tie Points format}{chapter.16}% 505
+\BOOKMARK [2][-]{subsection.16.8.1}{Motivation}{section.16.8}% 506
+\BOOKMARK [2][-]{subsection.16.8.2}{Format specification}{section.16.8}% 507
+\BOOKMARK [3][-]{subsubsection.16.8.2.1}{Text format}{subsection.16.8.2}% 508
+\BOOKMARK [3][-]{subsubsection.16.8.2.2}{Binary format}{subsection.16.8.2}% 509
+\BOOKMARK [2][-]{subsection.16.8.3}{Global manipulation}{section.16.8}% 510
+\BOOKMARK [3][-]{subsubsection.16.8.3.1}{Conversion}{subsection.16.8.3}% 511
+\BOOKMARK [3][-]{subsubsection.16.8.3.2}{Merging}{subsection.16.8.3}% 512
+\BOOKMARK [2][-]{subsection.16.8.4}{Use in MicMac commands}{section.16.8}% 513
+\BOOKMARK [1][-]{section.16.9}{New procedure to enhance images orientation precision by TaskCorrel and TiepTri}{chapter.16}% 514
+\BOOKMARK [2][-]{subsection.16.9.1}{Algorithm}{section.16.9}% 515
+\BOOKMARK [3][-]{subsubsection.16.9.1.1}{A general view}{subsection.16.9.1}% 516
+\BOOKMARK [2][-]{subsection.16.9.2}{New tie-point extraction procedure}{section.16.9}% 517
+\BOOKMARK [3][-]{subsubsection.16.9.2.1}{Input data requirements}{subsection.16.9.2}% 518
+\BOOKMARK [3][-]{subsubsection.16.9.2.2}{First step: Selection images by TestLib TaskCorrel}{subsection.16.9.2}% 519
+\BOOKMARK [3][-]{subsubsection.16.9.2.3}{Second step: Extraction tie-point with TiepTri}{subsection.16.9.2}% 520
+\BOOKMARK [3][-]{subsubsection.16.9.2.4}{Third step: Compensation images orientations and calibration with Campari}{subsection.16.9.2}% 521
+\BOOKMARK [2][-]{subsection.16.9.3}{An example - The Viabon dataset}{section.16.9}% 522
+\BOOKMARK [0][-]{chapter.17}{Advanced orientation}{part.2}% 523
+\BOOKMARK [1][-]{section.17.1}{Creating a calibration unknown by image}{chapter.17}% 524
+\BOOKMARK [2][-]{subsection.17.1.1}{When is it necessary?}{section.17.1}% 525
+\BOOKMARK [2][-]{subsection.17.1.2}{Examples}{section.17.1}% 526
+\BOOKMARK [2][-]{subsection.17.1.3}{How to create unknowns}{section.17.1}% 527
+\BOOKMARK [2][-]{subsection.17.1.4}{Saving results with variable calibrations}{section.17.1}% 528
+\BOOKMARK [2][-]{subsection.17.1.5}{Loading initial values with variable calibrations}{section.17.1}% 529
+\BOOKMARK [2][-]{subsection.17.1.6}{Examples with group of poses}{section.17.1}% 530
+\BOOKMARK [2][-]{subsection.17.1.7}{Enforcing a smooth evolution}{section.17.1}% 531
+\BOOKMARK [1][-]{section.17.2}{Database of existing calibration}{chapter.17}% 532
+\BOOKMARK [2][-]{subsection.17.2.1}{General points}{section.17.2}% 533
+\BOOKMARK [1][-]{section.17.3}{Auxiliary exports}{chapter.17}% 534
+\BOOKMARK [2][-]{subsection.17.3.1}{Generating point clouds with <ExportNuage>}{section.17.3}% 535
+\BOOKMARK [1][-]{section.17.4}{Using scanned analog images}{chapter.17}% 536
+\BOOKMARK [2][-]{subsection.17.4.1}{Dealing with internal orientation}{section.17.4}% 537
+\BOOKMARK [2][-]{subsection.17.4.2}{Semi-automatic fiducial mark input with Kugelhupf}{section.17.4}% 538
+\BOOKMARK [2][-]{subsection.17.4.3}{FFT variant with FFTKugelhupf}{section.17.4}% 539
+\BOOKMARK [2][-]{subsection.17.4.4}{Resampling images with ReSampFid}{section.17.4}% 540
+\BOOKMARK [1][-]{section.17.5}{Adjustment with lines}{chapter.17}% 541
+\BOOKMARK [2][-]{subsection.17.5.1}{Introduction}{section.17.5}% 542
+\BOOKMARK [2][-]{subsection.17.5.2}{Data set}{section.17.5}% 543
+\BOOKMARK [2][-]{subsection.17.5.3}{Organization of information}{section.17.5}% 544
+\BOOKMARK [2][-]{subsection.17.5.4}{Example Apero-2-DroiteStatique.xml}{section.17.5}% 545
+\BOOKMARK [2][-]{subsection.17.5.5}{Example Apero-3-DroiteEvolv.xml}{section.17.5}% 546
+\BOOKMARK [2][-]{subsection.17.5.6}{Example Apero-4-CompensMixte.xml and Apero-5-CompensAll.xml}{section.17.5}% 547
+\BOOKMARK [1][-]{section.17.6}{Recent evolution in Tapas and other orientation tools}{chapter.17}% 548
+\BOOKMARK [2][-]{subsection.17.6.1}{Viscosity \046 Levenberg Marquardt stuff}{section.17.6}% 549
+\BOOKMARK [2][-]{subsection.17.6.2}{Additional distortion}{section.17.6}% 550
+\BOOKMARK [2][-]{subsection.17.6.3}{Non Linear Bascule \(swing\)}{section.17.6}% 551
+\BOOKMARK [3][-]{subsubsection.17.6.3.1}{Motivation}{subsection.17.6.3}% 552
+\BOOKMARK [3][-]{subsubsection.17.6.3.2}{Mathematical model}{subsection.17.6.3}% 553
+\BOOKMARK [3][-]{subsubsection.17.6.3.3}{Using it in MicMac}{subsection.17.6.3}% 554
+\BOOKMARK [3][-]{subsubsection.17.6.3.4}{Example of use, and message interpretation}{subsection.17.6.3}% 555
+\BOOKMARK [2][-]{subsection.17.6.4}{A detailed example}{section.17.6}% 556
+\BOOKMARK [2][-]{subsection.17.6.5}{Miscellaneous options to Tapas}{section.17.6}% 557
+\BOOKMARK [3][-]{subsubsection.17.6.5.1}{FreeCalibInit}{subsection.17.6.5}% 558
+\BOOKMARK [3][-]{subsubsection.17.6.5.2}{FrozenCalibs}{subsection.17.6.5}% 559
+\BOOKMARK [3][-]{subsubsection.17.6.5.3}{SinglePos}{subsection.17.6.5}% 560
+\BOOKMARK [1][-]{section.17.7}{GCP : accuracy and optimal weighting}{chapter.17}% 561
+\BOOKMARK [1][-]{section.17.8}{Initial Orientation with Martini}{chapter.17}% 562
+\BOOKMARK [1][-]{section.17.9}{Miscellaneous tools about calibration}{chapter.17}% 563
+\BOOKMARK [2][-]{subsection.17.9.1}{ConvertCalib to Calibration conversion}{section.17.9}% 564
+\BOOKMARK [2][-]{subsection.17.9.2}{ConvertOriCalib to Calibration conversion}{section.17.9}% 565
+\BOOKMARK [2][-]{subsection.17.9.3}{Genepi to generate articficial perfect 2D-3D points}{section.17.9}% 566
+\BOOKMARK [2][-]{subsection.17.9.4}{Init11P, space resection for uncalibrated camera}{section.17.9}% 567
+\BOOKMARK [2][-]{subsection.17.9.5}{Aspro, space resection for calibrated camera}{section.17.9}% 568
+\BOOKMARK [1][-]{section.17.10}{Rigid Block Compensation}{chapter.17}% 569
+\BOOKMARK [2][-]{subsection.17.10.1}{Introduction}{section.17.10}% 570
+\BOOKMARK [3][-]{subsubsection.17.10.1.1}{Mathematics}{subsection.17.10.1}% 571
+\BOOKMARK [3][-]{subsubsection.17.10.1.2}{Data set}{subsection.17.10.1}% 572
+\BOOKMARK [3][-]{subsubsection.17.10.1.3}{Preprocessing and camera naming}{subsection.17.10.1}% 573
+\BOOKMARK [3][-]{subsubsection.17.10.1.4}{Standard MicMac Processing}{subsection.17.10.1}% 574
+\BOOKMARK [2][-]{subsection.17.10.2}{Indicating block structure}{section.17.10}% 575
+\BOOKMARK [2][-]{subsection.17.10.3}{Block estimation}{section.17.10}% 576
+\BOOKMARK [2][-]{subsection.17.10.4}{Block compensation}{section.17.10}% 577
+\BOOKMARK [3][-]{subsubsection.17.10.4.1}{Global with no attachment to known value }{subsection.17.10.4}% 578
+\BOOKMARK [3][-]{subsubsection.17.10.4.2}{Global with attachment to known value }{subsection.17.10.4}% 579
+\BOOKMARK [3][-]{subsubsection.17.10.4.3}{Time relative }{subsection.17.10.4}% 580
+\BOOKMARK [3][-]{subsubsection.17.10.4.4}{Combination}{subsection.17.10.4}% 581
+\BOOKMARK [0][-]{chapter.18}{Advanced matching, theoretical aspect}{part.2}% 582
+\BOOKMARK [1][-]{section.18.1}{Generalities}{chapter.18}% 583
+\BOOKMARK [2][-]{subsection.18.1.1}{Geometric notations}{section.18.1}% 584
+\BOOKMARK [2][-]{subsection.18.1.2}{Notation for quantification}{section.18.1}% 585
+\BOOKMARK [1][-]{section.18.2}{Energetic formulation and regularization}{chapter.18}% 586
+\BOOKMARK [2][-]{subsection.18.2.1}{Generalities}{section.18.2}% 587
+\BOOKMARK [0][-]{chapter.19}{Advanced matching, practical aspect}{part.2}% 588
+\BOOKMARK [1][-]{section.19.1}{Cost function}{chapter.19}% 589
+\BOOKMARK [1][-]{section.19.2}{Exporting the score}{chapter.19}% 590
+\BOOKMARK [2][-]{subsection.19.2.1}{Default behaviour}{section.19.2}% 591
+\BOOKMARK [2][-]{subsection.19.2.2}{Exporting the correlation cube}{section.19.2}% 592
+\BOOKMARK [0][-]{chapter.20}{Using satellite images}{part.2}% 593
+\BOOKMARK [1][-]{section.20.1}{With approximate sensor orientation \205 RPC bundle adjustment \(recommended\)}{chapter.20}% 594
+\BOOKMARK [2][-]{subsection.20.1.1}{ The RPC convertion to MicMac-format files}{section.20.1}% 595
+\BOOKMARK [2][-]{subsection.20.1.2}{Useful tools}{section.20.1}% 596
+\BOOKMARK [1][-]{section.20.2}{With approximate or refined sensor orientation \205 the GRID/RTO processing}{chapter.20}% 597
+\BOOKMARK [2][-]{subsection.20.2.1}{Pleiades-Spot or DigitalGlobe very high resolution optical satellite images}{section.20.2}% 598
+\BOOKMARK [3][-]{subsubsection.20.2.1.1}{Image couple}{subsection.20.2.1}% 599
+\BOOKMARK [3][-]{subsubsection.20.2.1.2}{Set of Images}{subsection.20.2.1}% 600
+\BOOKMARK [1][-]{section.20.3}{Epipolar geometry of a satellite image pair}{chapter.20}% 601
+\BOOKMARK [1][-]{section.20.4}{SAKE - Simplified tool for satellite images correlation}{chapter.20}% 602
+\BOOKMARK [-1][-]{part.3}{III Algorithmic Documentation}{}% 603
+\BOOKMARK [0][-]{chapter.21}{G\351n\351ralit\351s}{part.3}% 604
+\BOOKMARK [1][-]{section.21.1}{Notations G\351om\351triques}{chapter.21}% 605
+\BOOKMARK [1][-]{section.21.2}{Discr\351tisation et quantification}{chapter.21}% 606
+\BOOKMARK [0][-]{chapter.22}{Approche multi-r\351solution}{part.3}% 607
+\BOOKMARK [1][-]{section.22.1}{Motivations}{chapter.22}% 608
+\BOOKMARK [1][-]{section.22.2}{Mod\350le pr\351dictif}{chapter.22}% 609
+\BOOKMARK [1][-]{section.22.3}{Noyaux utilis\351s pour la sous-r\351solution}{chapter.22}% 610
+\BOOKMARK [0][-]{chapter.23}{Mesure de ressemblance et corr\351lation}{part.3}% 611
+\BOOKMARK [1][-]{section.23.1}{G\351n\351ralit\351}{chapter.23}% 612
+\BOOKMARK [1][-]{section.23.2}{Utilisation pour la ressemblance de deux vignettes}{chapter.23}% 613
+\BOOKMARK [1][-]{section.23.3}{Fen\352tre de "taille 1"}{chapter.23}% 614
+\BOOKMARK [1][-]{section.23.4}{"Fen\352tre exponentielle"}{chapter.23}% 615
+\BOOKMARK [2][-]{subsection.23.4.1}{Principe des fen\352tres \340 pond\351ration variable}{section.23.4}% 616
+\BOOKMARK [2][-]{subsection.23.4.2}{Equivalence des tailles de fen\352tre}{section.23.4}% 617
+\BOOKMARK [1][-]{section.23.5}{Multi-corr\351lation}{chapter.23}% 618
+\BOOKMARK [1][-]{section.23.6}{Interpolation}{chapter.23}% 619
+\BOOKMARK [0][-]{chapter.24}{Algorithmes de filtrages rapides}{part.3}% 620
+\BOOKMARK [0][-]{chapter.25}{Approches \351nerg\351tiques et r\351gularisation}{part.3}% 621
+\BOOKMARK [1][-]{section.25.1}{G\351n\351ralit\351s}{chapter.25}% 622
+\BOOKMARK [1][-]{section.25.2}{Programmation dynamique}{chapter.25}% 623
+\BOOKMARK [1][-]{section.25.3}{Programmation dynamique "multi directionnelle"}{chapter.25}% 624
+\BOOKMARK [1][-]{section.25.4}{Algorithmes de flots}{chapter.25}% 625
+\BOOKMARK [1][-]{section.25.5}{Algorithmes de d\351quantification}{chapter.25}% 626
+\BOOKMARK [1][-]{section.25.6}{Algorithmes variationnels}{chapter.25}% 627
+\BOOKMARK [0][-]{chapter.26}{Algorithm on orientation}{part.3}% 628
+\BOOKMARK [1][-]{section.26.1}{Tomasi-Kanabe}{chapter.26}% 629
+\BOOKMARK [1][-]{section.26.2}{Triplet selection algorithm}{chapter.26}% 630
+\BOOKMARK [0][-]{chapter.27}{Quality control in orientation}{part.3}% 631
+\BOOKMARK [1][-]{section.27.1}{Sensibility Analysis : Theoreticall consideration}{chapter.27}% 632
+\BOOKMARK [2][-]{subsection.27.1.1}{some tricks}{section.27.1}% 633
+\BOOKMARK [3][-]{subsubsection.27.1.1.1}{tricks}{subsection.27.1.1}% 634
+\BOOKMARK [3][-]{subsubsection.27.1.1.2}{tricks}{subsection.27.1.1}% 635
+\BOOKMARK [3][-]{subsubsection.27.1.1.3}{tricks}{subsection.27.1.1}% 636
+\BOOKMARK [2][-]{subsection.27.1.2}{Least square notation}{section.27.1}% 637
+\BOOKMARK [2][-]{subsection.27.1.3}{Variance}{section.27.1}% 638
+\BOOKMARK [2][-]{subsection.27.1.4}{Covariance}{section.27.1}% 639
+\BOOKMARK [2][-]{subsection.27.1.5}{Unknown elimination}{section.27.1}% 640
+\BOOKMARK [2][-]{subsection.27.1.6}{Practicle aspects on unknown elimination in MicMac}{section.27.1}% 641
+\BOOKMARK [2][-]{subsection.27.1.7}{Sensibility}{section.27.1}% 642
+\BOOKMARK [1][-]{section.27.2}{Structureless merging by covariance propagation}{chapter.27}% 643
+\BOOKMARK [2][-]{subsection.27.2.1}{Motivation and notation}{section.27.2}% 644
+\BOOKMARK [2][-]{subsection.27.2.2}{Hypothesis and aims}{section.27.2}% 645
+\BOOKMARK [2][-]{subsection.27.2.3}{Structureless covariance , case known similitude}{section.27.2}% 646
+\BOOKMARK [3][-]{subsubsection.27.2.3.1}{compute accurate pij }{subsection.27.2.3}% 647
+\BOOKMARK [3][-]{subsubsection.27.2.3.2}{compute covariance in each Ei}{subsection.27.2.3}% 648
+\BOOKMARK [3][-]{subsubsection.27.2.3.3}{estimate similitude Si}{subsection.27.2.3}% 649
+\BOOKMARK [3][-]{subsubsection.27.2.3.4}{Use \040Si to accumulate}{subsection.27.2.3}% 650
+\BOOKMARK [2][-]{subsection.27.2.4}{Case known similitude}{section.27.2}% 651
+\BOOKMARK [3][-]{subsubsection.27.2.4.1}{Method schur complement}{subsection.27.2.4}% 652
+\BOOKMARK [3][-]{subsubsection.27.2.4.2}{Method variable function}{subsection.27.2.4}% 653
+\BOOKMARK [2][-]{subsection.27.2.5}{Discussion : pro and cons}{section.27.2}% 654
+\BOOKMARK [3][-]{subsubsection.27.2.5.1}{Pro}{subsection.27.2.5}% 655
+\BOOKMARK [3][-]{subsubsection.27.2.5.2}{Cons}{subsection.27.2.5}% 656
+\BOOKMARK [1][-]{section.27.3}{Sensibility Analysis : Use in MicMac}{chapter.27}% 657
+\BOOKMARK [1][-]{section.27.4}{Spatial repartition of residual}{chapter.27}% 658
+\BOOKMARK [1][-]{section.27.5}{Detecting fault in GCP and Robust "Bascule" with BAR}{chapter.27}% 659
+\BOOKMARK [2][-]{subsection.27.5.1}{When is it usefull}{section.27.5}% 660
+\BOOKMARK [2][-]{subsection.27.5.2}{Mathematicall modeling}{section.27.5}% 661
+\BOOKMARK [2][-]{subsection.27.5.3}{Syntax}{section.27.5}% 662
+\BOOKMARK [2][-]{subsection.27.5.4}{Analyse of results in file ResulBar.txt}{section.27.5}% 663
+\BOOKMARK [-1][-]{part.4}{IV Documentation utilisateur}{}% 664
+\BOOKMARK [0][-]{chapter.28}{M\351canismes G\351n\351raux}{part.4}% 665
+\BOOKMARK [1][-]{section.28.1}{G\351n\351ralit\351s et notations}{chapter.28}% 666
+\BOOKMARK [2][-]{subsection.28.1.1}{Bo\356tes englobantes}{section.28.1}% 667
+\BOOKMARK [1][-]{section.28.2}{G\351om\351tries}{chapter.28}% 668
+\BOOKMARK [2][-]{subsection.28.2.1}{G\351om\351tries intrins\350que et de restitution}{section.28.2}% 669
+\BOOKMARK [2][-]{subsection.28.2.2}{G\351om\351trie intrins\350que \(image\)}{section.28.2}% 670
+\BOOKMARK [3][-]{subsubsection.28.2.2.1}{Description g\351n\351rale}{subsection.28.2.2}% 671
+\BOOKMARK [3][-]{subsubsection.28.2.2.2}{G\351om\351trie <eGeomImageOri>}{subsection.28.2.2}% 672
+\BOOKMARK [3][-]{subsubsection.28.2.2.3}{G\351om\351trie <eGeomImageModule>}{subsection.28.2.2}% 673
+\BOOKMARK [3][-]{subsubsection.28.2.2.4}{G\351om\351tries <eGeomImage\137Epip>, <eGeomImageDHD\137Px> \040\203}{subsection.28.2.2}% 674
+\BOOKMARK [3][-]{subsubsection.28.2.2.5}{Lecture des param\350tres de g\351om\351trie}{subsection.28.2.2}% 675
+\BOOKMARK [2][-]{subsection.28.2.3}{G\351om\351tries de restitution \(terrain\)}{section.28.2}% 676
+\BOOKMARK [3][-]{subsubsection.28.2.3.1}{Description g\351n\351rale}{subsection.28.2.3}% 677
+\BOOKMARK [3][-]{subsubsection.28.2.3.2}{G\351om\351tries terrain}{subsection.28.2.3}% 678
+\BOOKMARK [3][-]{subsubsection.28.2.3.3}{G\351om\351tries <eGeomMNTFaisceauIm1ZTerrain\137Px1D>}{subsection.28.2.3}% 679
+\BOOKMARK [3][-]{subsubsection.28.2.3.4}{G\351om\351tries <eGeomMNTFaisceauIm1ZTerrain\137Px2D>}{subsection.28.2.3}% 680
+\BOOKMARK [3][-]{subsubsection.28.2.3.5}{G\351om\351tries <eGeomMNTFaisceauIm1PrCh\137Px?D> \040}{subsection.28.2.3}% 681
+\BOOKMARK [2][-]{subsection.28.2.4}{Caract\351ristiques li\351es aux g\351om\351tries}{section.28.2}% 682
+\BOOKMARK [3][-]{subsubsection.28.2.4.1}{Combinaisons de g\351om\351tries, dimension de parallaxe}{subsection.28.2.4}% 683
+\BOOKMARK [3][-]{subsubsection.28.2.4.2}{Unit\351s de parallaxes}{subsection.28.2.4}% 684
+\BOOKMARK [1][-]{section.28.3}{Patrons de s\351lection et de transformations de cha\356nes}{chapter.28}% 685
+\BOOKMARK [2][-]{subsection.28.3.1}{Utilisation avec un nom}{section.28.3}% 686
+\BOOKMARK [2][-]{subsection.28.3.2}{Utilisation avec deux noms}{section.28.3}% 687
+\BOOKMARK [1][-]{section.28.4}{Librairies Dynamiques}{chapter.28}% 688
+\BOOKMARK [2][-]{subsection.28.4.1}{Fonctionnement G\351n\351ral}{section.28.4}% 689
+\BOOKMARK [2][-]{subsection.28.4.2}{Utilisation pour la g\351om\351trie}{section.28.4}% 690
+\BOOKMARK [2][-]{subsection.28.4.3}{Utilisation pour les pyramides}{section.28.4}% 691
+\BOOKMARK [1][-]{section.28.5}{Types r\351utilis\351s}{chapter.28}% 692
+\BOOKMARK [2][-]{subsection.28.5.1}{Le type FileOriMnt}{section.28.5}% 693
+\BOOKMARK [2][-]{subsection.28.5.2}{Le type SpecFitrageImage}{section.28.5}% 694
+\BOOKMARK [1][-]{section.28.6}{Gestion des erreurs}{chapter.28}% 695
+\BOOKMARK [2][-]{subsection.28.6.1}{Bugs}{section.28.6}% 696
+\BOOKMARK [2][-]{subsection.28.6.2}{Erreurs mal signal\351es}{section.28.6}% 697
+\BOOKMARK [2][-]{subsection.28.6.3}{Erreurs catalogu\351es}{section.28.6}% 698
+\BOOKMARK [0][-]{chapter.29}{Sections hors mise en correspondance}{part.4}% 699
+\BOOKMARK [1][-]{section.29.1}{Section Terrain}{chapter.29}% 700
+\BOOKMARK [2][-]{subsection.29.1.1}{ <IntervParalaxe> et <IntervAltimetrie> }{section.29.1}% 701
+\BOOKMARK [3][-]{subsubsection.29.1.1.1}{Valeurs moyennes de parallaxe}{subsection.29.1.1}% 702
+\BOOKMARK [3][-]{subsubsection.29.1.1.2}{Incertitude de calcul}{subsection.29.1.1}% 703
+\BOOKMARK [3][-]{subsubsection.29.1.1.3}{Incertitude pour le calcul d'emprise}{subsection.29.1.1}% 704
+\BOOKMARK [3][-]{subsubsection.29.1.1.4}{MNT initial}{subsection.29.1.1}% 705
+\BOOKMARK [2][-]{subsection.29.1.2}{Planim\351trie}{section.29.1}% 706
+\BOOKMARK [3][-]{subsubsection.29.1.2.1}{Calcul de l'emprise sp\351cifi\351e}{subsection.29.1.2}% 707
+\BOOKMARK [3][-]{subsubsection.29.1.2.2}{Calcul de l'emprise par d\351faut}{subsection.29.1.2}% 708
+\BOOKMARK [3][-]{subsubsection.29.1.2.3}{R\351solution terrain}{subsection.29.1.2}% 709
+\BOOKMARK [3][-]{subsubsection.29.1.2.4}{Masque terrain}{subsection.29.1.2}% 710
+\BOOKMARK [3][-]{subsubsection.29.1.2.5}{Recouvrement minimal}{subsection.29.1.2}% 711
+\BOOKMARK [2][-]{subsection.29.1.3}{Param\350tres li\351s \340 la "rugosit\351"}{section.29.1}% 712
+\BOOKMARK [1][-]{section.29.2}{Section Prise de Vue}{chapter.29}% 713
+\BOOKMARK [2][-]{subsection.29.2.1}{Images}{section.29.2}% 714
+\BOOKMARK [3][-]{subsubsection.29.2.1.1}{Ensemble des images}{subsection.29.2.1}% 715
+\BOOKMARK [3][-]{subsubsection.29.2.1.2}{Masque images}{subsection.29.2.1}% 716
+\BOOKMARK [3][-]{subsubsection.29.2.1.3}{Gestionnaire de pyramide d'image}{subsection.29.2.1}% 717
+\BOOKMARK [2][-]{subsection.29.2.2}{G\351om\351trie \(intrins\350que\)}{section.29.2}% 718
+\BOOKMARK [3][-]{subsubsection.29.2.2.1}{Type de G\351om\351trie}{subsection.29.2.2}% 719
+\BOOKMARK [3][-]{subsubsection.29.2.2.2}{Association images/g\351om\351tries, cas standard}{subsection.29.2.2}% 720
+\BOOKMARK [3][-]{subsubsection.29.2.2.3}{Nom calcul\351 sur Im1-Im2}{subsection.29.2.2}% 721
+\BOOKMARK [3][-]{subsubsection.29.2.2.4}{Points homologues}{subsection.29.2.2}% 722
+\BOOKMARK [1][-]{section.29.3}{G\351n\351ration de R\351sultat}{chapter.29}% 723
+\BOOKMARK [2][-]{subsection.29.3.1}{Image 8 Bits}{section.29.3}% 724
+\BOOKMARK [2][-]{subsection.29.3.2}{Image de corr\351lation}{section.29.3}% 725
+\BOOKMARK [2][-]{subsection.29.3.3}{Basculement dans une autre g\351om\351trie}{section.29.3}% 726
+\BOOKMARK [2][-]{subsection.29.3.4}{Paralaxe relative ??}{section.29.3}% 727
+\BOOKMARK [1][-]{section.29.4}{Mod\350les analytiques}{chapter.29}% 728
+\BOOKMARK [1][-]{section.29.5}{Section Espace de travail}{chapter.29}% 729
+\BOOKMARK [2][-]{subsection.29.5.1}{Directory Image}{section.29.5}% 730
+\BOOKMARK [1][-]{section.29.6}{Section dite "Vrac"}{chapter.29}% 731
+\BOOKMARK [0][-]{chapter.30}{Mise en correspondance}{part.4}% 732
+\BOOKMARK [1][-]{section.30.1}{G\351n\351ralit\351}{chapter.30}% 733
+\BOOKMARK [2][-]{subsection.30.1.1}{Organisation}{section.30.1}% 734
+\BOOKMARK [2][-]{subsection.30.1.2}{Mode diff\351rentiel, valeurs par d\351faut}{section.30.1}% 735
+\BOOKMARK [2][-]{subsection.30.1.3}{Equivalence de noms}{section.30.1}% 736
+\BOOKMARK [1][-]{section.30.2}{Param\350tres globaux}{chapter.30}% 737
+\BOOKMARK [2][-]{subsection.30.2.1}{Clip de la zone de MEC}{section.30.2}% 738
+\BOOKMARK [2][-]{subsection.30.2.2}{Calcul du masque de MEC}{section.30.2}% 739
+\BOOKMARK [3][-]{subsubsection.30.2.2.1}{Nombre minimal d'images}{subsection.30.2.2}% 740
+\BOOKMARK [2][-]{subsection.30.2.3}{Divers}{section.30.2}% 741
+\BOOKMARK [3][-]{subsubsection.30.2.3.1}{Valeur par d\351faut de l'attache aux donn\351es}{subsection.30.2.3}% 742
+\BOOKMARK [3][-]{subsubsection.30.2.3.2}{Corr\351lation d\351g\351n\351r\351es}{subsection.30.2.3}% 743
+\BOOKMARK [1][-]{section.30.3}{G\351om\351trie et nappes englobantes}{chapter.30}% 744
+\BOOKMARK [2][-]{subsection.30.3.1}{Gestion des r\351solutions}{section.30.3}% 745
+\BOOKMARK [3][-]{subsubsection.30.3.1.1}{R\351solution terrain}{subsection.30.3.1}% 746
+\BOOKMARK [3][-]{subsubsection.30.3.1.2}{R\351solution image}{subsection.30.3.1}% 747
+\BOOKMARK [2][-]{subsection.30.3.2}{Pas de quantification}{section.30.3}% 748
+\BOOKMARK [2][-]{subsection.30.3.3}{Calcul des nappes englobantes}{section.30.3}% 749
+\BOOKMARK [2][-]{subsection.30.3.4}{Redressement des images}{section.30.3}% 750
+\BOOKMARK [2][-]{subsection.30.3.5}{Divers}{section.30.3}% 751
+\BOOKMARK [3][-]{subsubsection.30.3.5.1}{Diff\351rentiabilit\351 de la g\351om\351trie}{subsection.30.3.5}% 752
+\BOOKMARK [1][-]{section.30.4}{Autres param\350tres d'entr\351es}{chapter.30}% 753
+\BOOKMARK [2][-]{subsection.30.4.1}{S\351lection des images}{section.30.4}% 754
+\BOOKMARK [2][-]{subsection.30.4.2}{Interpolation}{section.30.4}% 755
+\BOOKMARK [1][-]{section.30.5}{Approche \351nerg\351tique}{chapter.30}% 756
+\BOOKMARK [2][-]{subsection.30.5.1}{Attache aux donn\351es}{section.30.5}% 757
+\BOOKMARK [3][-]{subsubsection.30.5.1.1}{fen\352tres de corr\351lation}{subsection.30.5.1}% 758
+\BOOKMARK [3][-]{subsubsection.30.5.1.2}{Multi-corr\351lation}{subsection.30.5.1}% 759
+\BOOKMARK [3][-]{subsubsection.30.5.1.3}{Dynamique de corr\351lation}{subsection.30.5.1}% 760
+\BOOKMARK [2][-]{subsection.30.5.2}{A priori}{section.30.5}% 761
+\BOOKMARK [3][-]{subsubsection.30.5.2.1}{R\351gularisation}{subsection.30.5.2}% 762
+\BOOKMARK [3][-]{subsubsection.30.5.2.2}{Post-filtrage}{subsection.30.5.2}% 763
+\BOOKMARK [2][-]{subsection.30.5.3}{Minimisation}{section.30.5}% 764
+\BOOKMARK [3][-]{subsubsection.30.5.3.1}{Choix d'un algorithmes}{subsection.30.5.3}% 765
+\BOOKMARK [3][-]{subsubsection.30.5.3.2}{Param\350tre sp\351cifiques \340 Cox-Roy}{subsection.30.5.3}% 766
+\BOOKMARK [3][-]{subsubsection.30.5.3.3}{Param\350tre sp\351cifiques \340 la programmation dynamique}{subsection.30.5.3}% 767
+\BOOKMARK [2][-]{subsection.30.5.4}{Sous r\351solution des algorithmes}{section.30.5}% 768
+\BOOKMARK [2][-]{subsection.30.5.5}{Option non implant\351es}{section.30.5}% 769
+\BOOKMARK [1][-]{section.30.6}{Gestion m\351moire}{chapter.30}% 770
+\BOOKMARK [0][-]{chapter.31}{Cas d'utilisation}{part.4}% 771
+\BOOKMARK [1][-]{section.31.1}{MNT Spots}{chapter.31}% 772
+\BOOKMARK [1][-]{section.31.2}{MNE Urbains}{chapter.31}% 773
+\BOOKMARK [1][-]{section.31.3}{Superposition d'images color\351es}{chapter.31}% 774
+\BOOKMARK [1][-]{section.31.4}{Points homologues pour l'a\351ro-triangulation}{chapter.31}% 775
+\BOOKMARK [0][-]{chapter.32}{Programmes Utililtaires}{part.4}% 776
+\BOOKMARK [1][-]{section.32.1}{G\351n\351ralit\351s}{chapter.32}% 777
+\BOOKMARK [2][-]{subsection.32.1.1}{G\351n\351ration du binaire}{section.32.1}% 778
+\BOOKMARK [2][-]{subsection.32.1.2}{Liste des arguments}{section.32.1}% 779
+\BOOKMARK [2][-]{subsection.32.1.3}{Aide en ligne}{section.32.1}% 780
+\BOOKMARK [1][-]{section.32.2}{L'utilitaire de changement d'echelle ScaleIm}{chapter.32}% 781
+\BOOKMARK [2][-]{subsection.32.2.1}{Fonctionnalit\351s}{section.32.2}% 782
+\BOOKMARK [2][-]{subsection.32.2.2}{Param\350tres}{section.32.2}% 783
+\BOOKMARK [2][-]{subsection.32.2.3}{Evolutions possibles}{section.32.2}% 784
+\BOOKMARK [1][-]{section.32.3}{L'utilitaire d'ombrage GrShade}{chapter.32}% 785
+\BOOKMARK [2][-]{subsection.32.3.1}{Fonctionnalit\351s}{section.32.3}% 786
+\BOOKMARK [2][-]{subsection.32.3.2}{Param\350tres}{section.32.3}% 787
+\BOOKMARK [2][-]{subsection.32.3.3}{Evolutions possibles}{section.32.3}% 788
+\BOOKMARK [1][-]{section.32.4}{L'utilitaire lumi\350re rasante LumRas}{chapter.32}% 789
+\BOOKMARK [2][-]{subsection.32.4.1}{G\351n\351ralit\351s}{section.32.4}% 790
+\BOOKMARK [2][-]{subsection.32.4.2}{Liste des arguments}{section.32.4}% 791
+\BOOKMARK [2][-]{subsection.32.4.3}{Exemple}{section.32.4}% 792
+\BOOKMARK [1][-]{section.32.5}{L'utilitaire de d\351quantification Dequant}{chapter.32}% 793
+\BOOKMARK [1][-]{section.32.6}{L'utilitaire d'information sur un fichier tiff tiff\137info}{chapter.32}% 794
+\BOOKMARK [1][-]{section.32.7}{L'utilitaire de test des expression r\351guli\350re test\137regex}{chapter.32}% 795
+\BOOKMARK [1][-]{section.32.8}{SupMntIm to superpose image and DTM}{chapter.32}% 796
+\BOOKMARK [-1][-]{part.5}{V Documentation programmeur}{}% 797
+\BOOKMARK [0][-]{chapter.33}{Ateliers}{part.5}% 798
+\BOOKMARK [1][-]{section.33.1}{C++ course under MicMac's library : Elise}{chapter.33}% 799
+\BOOKMARK [2][-]{subsection.33.1.1}{Introduction and generalities}{section.33.1}% 800
+\BOOKMARK [2][-]{subsection.33.1.2}{How to create a new .cpp file and compile it using the library Elise?}{section.33.1}% 801
+\BOOKMARK [3][-]{subsubsection.33.1.2.1}{Hello World !}{subsection.33.1.2}% 802
+\BOOKMARK [2][-]{subsection.33.1.3}{Mandatory or Optional Argument?}{section.33.1}% 803
+\BOOKMARK [2][-]{subsection.33.1.4}{How to load an xml file and read its informations?}{section.33.1}% 804
+\BOOKMARK [2][-]{subsection.33.1.5}{How to get list of files in a folder?}{section.33.1}% 805
+\BOOKMARK [2][-]{subsection.33.1.6}{Epipolar geometry}{section.33.1}% 806
+\BOOKMARK [2][-]{subsection.33.1.7}{Multi Image Correlation}{section.33.1}% 807
+\BOOKMARK [2][-]{subsection.33.1.8}{Additional constraints in heterogeneous adjustment}{section.33.1}% 808
+\BOOKMARK [3][-]{subsubsection.33.1.8.1}{Input data format}{subsection.33.1.8}% 809
+\BOOKMARK [3][-]{subsubsection.33.1.8.2}{Conversion to 3D lines in space}{subsection.33.1.8}% 810
+\BOOKMARK [1][-]{section.33.2}{C++ course under MicMac's library : Elise}{chapter.33}% 811
+\BOOKMARK [2][-]{subsection.33.2.1}{Introduction and generalities}{section.33.2}% 812
+\BOOKMARK [2][-]{subsection.33.2.2}{Overview of the new classes and interfacing with mm3d }{section.33.2}% 813
+\BOOKMARK [2][-]{subsection.33.2.3}{Preprocessing}{section.33.2}% 814
+\BOOKMARK [3][-]{subsubsection.33.2.3.1}{Epipolar images}{subsection.33.2.3}% 815
+\BOOKMARK [3][-]{subsubsection.33.2.3.2}{3D mask}{subsection.33.2.3}% 816
+\BOOKMARK [3][-]{subsubsection.33.2.3.3}{Multiscale approach}{subsection.33.2.3}% 817
+\BOOKMARK [2][-]{subsection.33.2.4}{The matching}{section.33.2}% 818
+\BOOKMARK [3][-]{subsubsection.33.2.4.1}{The similarity measure}{subsection.33.2.4}% 819
+\BOOKMARK [3][-]{subsubsection.33.2.4.2}{Matching without regularization}{subsection.33.2.4}% 820
+\BOOKMARK [3][-]{subsubsection.33.2.4.3}{Matching with regularization}{subsection.33.2.4}% 821
+\BOOKMARK [1][-]{section.33.3}{Visual interfaces "vCommands"}{chapter.33}% 822
+\BOOKMARK [2][-]{subsection.33.3.1}{Introduction}{section.33.3}% 823
+\BOOKMARK [2][-]{subsection.33.3.2}{Compilation and code}{section.33.3}% 824
+\BOOKMARK [2][-]{subsection.33.3.3}{How it works?}{section.33.3}% 825
+\BOOKMARK [2][-]{subsection.33.3.4}{visual\137MainWindow class}{section.33.3}% 826
+\BOOKMARK [2][-]{subsection.33.3.5}{Specific functions: vTapioca, vMalt, vC3DC, vSake}{section.33.3}% 827
+\BOOKMARK [2][-]{subsection.33.3.6}{ BoxClip and BoxTerrain }{section.33.3}% 828
+\BOOKMARK [1][-]{section.33.4}{SaisieQT}{chapter.33}% 829
+\BOOKMARK [2][-]{subsection.33.4.1}{Introduction}{section.33.4}% 830
+\BOOKMARK [2][-]{subsection.33.4.2}{Compilation and code}{section.33.4}% 831
+\BOOKMARK [2][-]{subsection.33.4.3}{How it works?}{section.33.4}% 832
+\BOOKMARK [2][-]{subsection.33.4.4}{SaisieMasqQT}{section.33.4}% 833
+\BOOKMARK [3][-]{subsubsection.33.4.4.1}{2D mode}{subsection.33.4.4}% 834
+\BOOKMARK [3][-]{subsubsection.33.4.4.2}{3D mode}{subsection.33.4.4}% 835
+\BOOKMARK [2][-]{subsection.33.4.5}{SaisieAppuisInitQT and SaisieAppuisPredicQT}{section.33.4}% 836
+\BOOKMARK [2][-]{subsection.33.4.6}{SaisieBascQT}{section.33.4}% 837
+\BOOKMARK [2][-]{subsection.33.4.7}{SaisieCylQT}{section.33.4}% 838
+\BOOKMARK [2][-]{subsection.33.4.8}{SaisieBoxQT}{section.33.4}% 839
+\BOOKMARK [1][-]{section.33.5}{Conventions for 3D selection tool}{chapter.33}% 840
+\BOOKMARK [0][-]{chapter.34}{G\351n\351ration automatique de code}{part.5}% 841
+\BOOKMARK [-1][-]{part.6}{VI Annexes}{}% 842
+\BOOKMARK [0][-]{appendix.A}{Formats}{part.6}% 843
+\BOOKMARK [1][-]{section.A.1}{Calibration formats}{appendix.A}% 844
+\BOOKMARK [1][-]{section.A.2}{Grilles de calibration}{appendix.A}% 845
+\BOOKMARK [2][-]{subsection.A.2.1}{Format de codage des d\351formations du plan }{section.A.2}% 846
+\BOOKMARK [3][-]{subsubsection.A.2.1.1}{Format}{subsection.A.2.1}% 847
+\BOOKMARK [3][-]{subsubsection.A.2.1.2}{Utilisation}{subsection.A.2.1}% 848
+\BOOKMARK [2][-]{subsection.A.2.2}{Application \340 la calibration interne}{section.A.2}% 849
+\BOOKMARK [3][-]{subsubsection.A.2.2.1}{Rappels et notation}{subsection.A.2.2}% 850
+\BOOKMARK [3][-]{subsubsection.A.2.2.2}{Codage des distorsion par des grilles}{subsection.A.2.2}% 851
+\BOOKMARK [3][-]{subsubsection.A.2.2.3}{Justification des mod\350les parm\351triques}{subsection.A.2.2}% 852
+\BOOKMARK [2][-]{subsection.A.2.3}{Application \340 une rotation pr\350s}{section.A.2}% 853
+\BOOKMARK [3][-]{subsubsection.A.2.3.1}{Formalisation}{subsection.A.2.3}% 854
+\BOOKMARK [3][-]{subsubsection.A.2.3.2}{Cons\351quence pour la comparaison de calibration}{subsection.A.2.3}% 855
+\BOOKMARK [2][-]{subsection.A.2.4}{Point principal}{section.A.2}% 856
+\BOOKMARK [3][-]{subsubsection.A.2.4.1}{Le point principal bouge}{subsection.A.2.4}% 857
+\BOOKMARK [3][-]{subsubsection.A.2.4.2}{On a perdu le point principal}{subsection.A.2.4}% 858
+\BOOKMARK [3][-]{subsubsection.A.2.4.3}{On a retrouv\351 le point principal ?}{subsection.A.2.4}% 859
+\BOOKMARK [2][-]{subsection.A.2.5}{Param\350tres hors grilles}{section.A.2}% 860
+\BOOKMARK [3][-]{subsubsection.A.2.5.1}{Param\350tres photogram\351trique "traditionnel"}{subsection.A.2.5}% 861
+\BOOKMARK [3][-]{subsubsection.A.2.5.2}{Autres param\350tres}{subsection.A.2.5}% 862
+\BOOKMARK [1][-]{section.A.3}{Points Homologues}{appendix.A}% 863
+\BOOKMARK [1][-]{section.A.4}{Fichiers MNT}{appendix.A}% 864
+\BOOKMARK [0][-]{appendix.B}{Vrac}{part.6}% 865
+\BOOKMARK [1][-]{section.B.1}{Notation}{appendix.B}% 866
+\BOOKMARK [1][-]{section.B.2}{G\351om\351trie \351pipolaire}{appendix.B}% 867
+\BOOKMARK [1][-]{section.B.3}{Matrice essentielle}{appendix.B}% 868
+\BOOKMARK [1][-]{section.B.4}{Calcul de l'orientation relative par matrice essentielle}{appendix.B}% 869
+\BOOKMARK [1][-]{section.B.5}{Cas planaire}{appendix.B}% 870
+\BOOKMARK [1][-]{section.B.6}{Grandes focales, projection axo et points triples}{appendix.B}% 871
+\BOOKMARK [1][-]{section.B.7}{G\351om\351trie \351pipolaire}{appendix.B}% 872
+\BOOKMARK [1][-]{section.B.8}{Matrice essentielle}{appendix.B}% 873
+\BOOKMARK [1][-]{section.B.9}{Grandes focales, projection axo et points triples}{appendix.B}% 874
+\BOOKMARK [0][-]{appendix.C}{Vrac -Bis }{part.6}% 875
+\BOOKMARK [1][-]{section.C.1}{Introduction-Supression des inconnues auxiliaires}{appendix.C}% 876
+\BOOKMARK [1][-]{section.C.2}{Formulation alg\351brique du traitement des inconnues auxiliaires}{appendix.C}% 877
+\BOOKMARK [1][-]{section.C.3}{Précision et corrélation sur les paramères}{appendix.C}% 878
+\BOOKMARK [0][-]{appendix.D}{Vrac -Bis }{part.6}% 879
+\BOOKMARK [1][-]{section.D.1}{Utilisation des foncteurs compil\351s}{appendix.D}% 880
+\BOOKMARK [2][-]{subsection.D.1.1}{Fili\350re non indexee}{section.D.1}% 881
+\BOOKMARK [2][-]{subsection.D.1.2}{Fili\350re indexee}{section.D.1}% 882
+\BOOKMARK [1][-]{section.D.2}{Communication avec les syst\350mes sur-contraints}{appendix.D}% 883
+\BOOKMARK [2][-]{subsection.D.2.1}{Convention d'\351critures}{section.D.2}% 884
+\BOOKMARK [2][-]{subsection.D.2.2}{UseEqMatIndexee}{section.D.2}% 885
+\BOOKMARK [1][-]{section.D.3}{Mesh computation}{appendix.D}% 886
+\BOOKMARK [2][-]{subsection.D.3.1}{Command Nuage2Ply :}{section.D.3}% 887
+\BOOKMARK [2][-]{subsection.D.3.2}{Command MergePly :}{section.D.3}% 888
+\BOOKMARK [2][-]{subsection.D.3.3}{Example}{section.D.3}% 889
+\BOOKMARK [0][-]{appendix.E}{Various formula}{part.6}% 890
+\BOOKMARK [1][-]{section.E.1}{Space resection}{appendix.E}% 891
+\BOOKMARK [1][-]{section.E.2}{Stretching \(etirement\)}{appendix.E}% 892
+\BOOKMARK [1][-]{section.E.3}{Miscallenous formula}{appendix.E}% 893
+\BOOKMARK [0][-]{appendix.F}{R\351f\351rence bibliographique}{part.6}% 894
