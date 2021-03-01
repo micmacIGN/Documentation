@@ -46,4 +46,5 @@ $(NAME).dvi : $(FTEX)
 clean :
 	find . -iname "*.aux" -exec rm {} +
 	rm -f $(NAME).blg $(NAME).toc $(NAME).bbl $(NAME).out $(NAME).log
-	mv $(NAME).pdf ../
+	gs -dPrinted=false -sDEVICE=pdfwrite -dCompatibilityLevel=1.5 -dPDFSETTINGS=/ebook -dDownsampleColorImages=true -dColorImageResolution=300 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=foo.pdf $(NAME).pdf
+	mv foo.pdf ../$(NAME).pdf
