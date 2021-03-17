@@ -1,0 +1,48 @@
+# TIE POINTS 
+In MicMac there exist 2 different file formats (old and new) to handle tie-points. The new one is much faster and probaby should be preferred.
+
+## ===== The "old" tie-points format
+It is handled by the "class ElPackHomologue" (see general/photogram.h) and it follows this directory structure:
+Homol/Image1.tif/Image2.tif.dat 
+or
+Homol/Image1.tif/Image2.tif.txt if you choose ExpTxt=1
+
+To read a set of tie-points you'd use this static function:
+static ElPackHomologue   FromFile(const std::string &);
+
+To access a couple/couples use the iterator
+ElPackHomologue::const_iterator
+
+To add a couple use this
+void Cple_Add(const ElCplePtsHomologues &);
+
+and to save a newly created set of tie-points use this
+void StdPutInFile(const std::string &) const; 
+
+
+## ===== The "new" tie-points format
+It saves the so-called tracks. It is handled by the "class cSetTiePMul" (see uti_phgrm/TiepTri/MultTieP.h) and all points are saved to a single file typically in Homol/PMul.txt or PMul.dat.
+
+The constructor will read the tie points for you
+cSetTiePMul(int aNbAttrPts,const std::vector<std::string> * aVIm =0);
+
+the second argument is a vector of all your images, it uses for tie-pts identification
+
+To add a point it is striaght-forward,
+void AddPts(const std::vector<int> & aNumIms,const std::vector<Pt2dr> &,const std::vector<float> & aVAttr);
+
+where the sector of points are tie points corresponding to one 3d point, and the aNumIms are the image identifiers for each observation contained in the vector of points (so this has to be consistent with the constructor); the last is the "track's" attributes (e.g. weight)
+
+and to save the set
+void Save(const std::string & aName);
+
+to iterate over an existing set inside an object of this class you'll need to use this 
+const std::vector<cSetPMul1ConfigTPM *> & VPMul();
+
+it returns a vector of different points' configurations, i.e. a confuguration corresponds to a fixed number of observations in a specified set of images; you'll understand it when you take a look inside the txt file;
+
+
+# RANSAC
+In MicMac there is no generic class to run RANSAC, and I think there is a reason for it :); anyway, in your case the implementation should be rather straight forward. For exemples of ransac procedures embedded inside the code see e.g. cAppli_BasculeRobuste
+
+
