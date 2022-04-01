@@ -238,15 +238,15 @@ mm3d TiPunch -help
 *****************************
 *  Help for Elise Arg main  *
 *****************************
-Mandatory unnamed args :
+Mandatory unnamed args : 
   * string :: {Ply file}
-Named args :
+Named args : 
   * [Name=Pattern] string :: {Full Name (Dir+Pat)}
   * [Name=Out] string :: {Mesh name (def=plyName+ _mesh.ply)}
   * [Name=Bin] bool :: {Write binary ply (def=true)}
-  * [Name=Depth] INT :: {Maximum reconstruction depth for {\tt PoissonRecon} (def=8)}
+  * [Name=Depth] INT :: {Maximum reconstruction depth for PoissonRecon (def=8)}
   * [Name=Rm] bool :: {Remove intermediary Poisson mesh (def=false)}
-  * [Name=Filter] bool :: {Filter mesh with distance (def=false)}
+  * [Name=Filter] bool :: {Filter mesh (def=true)}
   * [Name=Mode] string :: {C3DC mode (def=Statue)}
   * [Name=Scale] INT :: {Z-buffer downscale factor (def=2)}
   * [Name=FFB] bool :: {Filter from border (def=true)}
@@ -302,24 +302,25 @@ mm3d Tequila -help
 *****************************
 *  Help for Elise Arg main  *
 *****************************
-Mandatory unnamed args :
+Mandatory unnamed args : 
   * string :: {Full Name (Dir+Pat)}
   * string :: {Orientation path}
   * string :: {Ply file}
-Named args :
- * [Name=Out] string :: {Textured mesh name (def=plyName+ _textured.ply)}
- * [Name=Bin] bool :: {Write binary ply (def=true)}
- * [Name=Optim] bool :: {Graph-cut optimization (def=false)}
- * [Name=Lambda] REAL :: {Lambda (def=0.1)}
- * [Name=Iter] INT :: {Optimization iteration number (def=2)}
- * [Name=Filter] bool :: {Remove border faces (def=false)}
- * [Name=Texture] string :: {Texture name (def=plyName + _UVtexture.jpg)}
- * [Name=Sz] INT :: {Texture max size (def=4096)}
- * [Name=Scale] INT :: {Z-buffer downscale factor (def=2)}
- * [Name=QUAL] INT :: {jpeg compression quality (def=70)}
- * [Name=Angle] REAL :: {Threshold angle, in degree, between triangle normal and image viewing direction (def=90)}
- * [Name=Mode] string :: {Mode (def = Pack)}
- * [Name=Crit] string :: {Texture choosing criterion (def = Angle)}
+Named args : 
+  * [Name=Out] string :: {Textured mesh name (def=plyName+ _textured.ply)}
+  * [Name=Bin] bool :: {Write binary ply (def=true)}
+  * [Name=Optim] bool :: {Graph-cut optimization (def=false)}
+  * [Name=Lambda] REAL :: {Lambda (def=0.01)}
+  * [Name=Iter] INT :: {Optimization iteration number (def=2)}
+  * [Name=Filter] bool :: {Remove border faces (def=false)}
+  * [Name=Texture] string :: {Texture name (def=plyName + _UVtexture.jpg)}
+  * [Name=Sz] INT :: {Texture max size (def=8192)}
+  * [Name=Scale] INT :: {Z-buffer downscale factor (def=2)}
+  * [Name=QUAL] INT :: {jpeg compression quality (def=70)}
+  * [Name=Angle] REAL :: {Threshold angle, in degree, between triangle normal and image viewing direction (def=90)}
+  * [Name=Mode] string :: {Mode (def = Pack)}
+  * [Name=Crit] string :: {Texture choosing criterion (def = Angle)}
+
 \end{verbatim}
 
 Relevant parameters are:
