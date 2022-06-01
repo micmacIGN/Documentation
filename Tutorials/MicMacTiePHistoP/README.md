@@ -524,7 +524,7 @@ You'll see tie points like this:
 </center>
 
 ## 2.2. Deep-dive in the pipeline's submodules
-The *TiePHistoP* command automatically calls several subcommands including:
+The *TiePHistoP* command automatically calls several subcommands including (the coloured rectangles represent the subcommands)::
 
 <center>
   <img src="Images/CommandMap.png" height=450pix/>
