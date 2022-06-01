@@ -127,7 +127,7 @@ Details of images in epoch 2014:
 
 |Constellation|GSD|Cloud cover|Snow cover
 |---|---|---|---
-|Pleiades|0.5 m|0%|0%
+|Pleiades|0.7 m|0%|0%
 
 Dataset can be downloaded here:
     https://drive.google.com/u/0/uc?id=1lbbBiHFHyVDGXlLMtl3iHMWW-Mdj5Vjy&export=download
