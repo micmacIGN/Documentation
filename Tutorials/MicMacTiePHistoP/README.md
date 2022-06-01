@@ -284,8 +284,11 @@ The meaning of optional parameters:
 - `MasqImGlob`: Glob Masq per Im : if uses, give full name of masq (for ex toto.tif)
 
 The resulted DSM will be stored in a folder defined by the optional parameter "DirMEC", which contains:
+
 DSM rasters in multi-scale named ```Z_Num*_DeZoom*_STD-MALT.tif```, and corresponding georeference information named ```Z_Num*_DeZoom*_STD-MALT.tfw```;
+
 Multi-scale mask rasters named ```AutoMask_STD-MALT_Num_*.tif```;
+
 Multi-scale correlation rasters named ```Correl_STD-MALT_Num_*.tif```.
 
 ### 1.3.1. Epoch 2014
