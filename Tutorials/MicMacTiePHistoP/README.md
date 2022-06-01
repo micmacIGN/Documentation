@@ -528,7 +528,7 @@ You'll see tie points like this:
 </center>
 
 ## 2.2. Deep-dive in the pipeline's submodules
-The *TiePHistoP* command automatically calls several subcommands including (the coloured rectangles represent the subcommands)::
+The *TiePHistoP* command automatically calls several subcommands including (the coloured rectangles represent the subcommands):
 
 <center>
   <img src="Images/CommandMap.png" height=450pix/>
@@ -541,7 +541,7 @@ In order to help the users understand the pipeline better, we will introduce the
 
 To co-register images in different epochs in a common coordinate frame, we perform sparse point matching between their respective DSM rasters. 
 
-> Note: If the 2 epochs are already co-registered (e.g. both epochs are georeferenced), this step should be skipped.
+> Note: This step is not necessary if the 2 epochs are already co-registered (e.g. both epochs are georeferenced).
 
 #### 2.2.1.1. Preprocess DSM
 
