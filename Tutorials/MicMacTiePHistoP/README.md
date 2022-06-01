@@ -82,7 +82,15 @@ For more information please refer to:
 
 > ***License***: We adopt SuperGlue in our pipeline. Note that you can only use SuperGlue [for academic or non-profit organization noncommercial research](https://github.com/magicleap/SuperGluePretrainedNetwork/blob/master/LICENSE). Full paper PDF: [SuperGlue: Learning Feature Matching with Graph Neural Networks](https://arxiv.org/abs/1911.11763).
 
-# 0. About the dataset
+# 0. Projet set-up
+
+## 0.1 Install MicMac and SuperGlue
+
+[Guidance of installing MicMac](https://github.com/micmacIGN/micmac)
+
+[Guidance of installing SuperGlue within MicMac](https://github.com/micmacIGN/micmac/tree/master/src/uti_phgrm/TiePHistorical)
+
+## 0.2 About the dataset
 The dataset is a 20 km2 rectangular area located in Pezenas, France. It is mainly covered with vegetation and several sparsely populated urban zones. We have at our disposal 2 epochs: epoch 1971 and 2014.
 
 | <p align="center"> epoch 1971 (6 aerial images) </p> | <p align="center"> epoch 2014 (2 satellite images) </p> |
@@ -109,6 +117,10 @@ The dataset consists of:
   * 2 images taken in epoch 2014 (tif)
   * 1 folder of orientations of epoch 2014
   * 1 configuration file of the camera (xml)
+
+> Note: 
+> (1) All the historical aerial images (i.e. epoch 1971) are scanned from negatives, followed by resampling to the geometry of the fiducial marks. 
+> (2) In order to improve processing efficiency, all the sattelite images (i.e. epoch 2014) are subregions cropped from the original Pleiades images with MicMac command "SateLib CropRPC".
 
 # 1. Intra-epoch processing
 
