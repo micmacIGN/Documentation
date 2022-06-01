@@ -322,31 +322,44 @@ Generate DSM in epoch 2014:
 
     mm3d Malt Ortho Crop.*tif 2014 NbVI=2 DirMEC=MEC-Malt_2014 EZA=1 ZoomF=8 DoOrtho=0
 
-You'll get DSM like this:
+You can compute a shading from this DSM for better visualization using the command "GrShade":
+
+```
+mm3d GrShade MEC-Malt_2014/Z_Num6_DeZoom8_STD-MALT.tif ModeOmbre=IgnE Mask=MEC-Malt_2014/AutoMask_STD-MALT_Num_5.tif
+```
+
+The shaded DSM looks like this:
 <center>
-  <img src="Images/DSM2014.png" height=320pix/>
+  <img src="Images/DSM2014Shade.png" height=320pix/>
   <br> 
 </center>
 
-You can also visualize the DSM in MicMac using the command 'Vino':
+You can also visualize it in MicMac using the command 'Vino':
 ```
-Vino MEC-Malt_2014/Z_Num6_DeZoom8_STD-MALT.tif
+Vino MEC-Malt_2014/Z_Num6_DeZoom8_STD-MALTShade.tif
 ```
+
 ### 1.3.2. Epoch 1971
 
 Generate DSM in epoch 1971:
 
     mm3d Malt Ortho OIS-Reech_IGNF_PVA_1-0__1971.*tif 1971 NbVI=2 MasqImGlob=Fiducial.tif DirMEC=MEC-Malt_1971 EZA=1 ZoomF=8 DoOrtho=0
 
-You'll get DSM like this:
+You can compute a shading from this DSM for better visualization using the command "GrShade":
+
+```
+mm3d GrShade MEC-Malt_1971/Z_Num6_DeZoom8_STD-MALT.tif ModeOmbre=IgnE Mask=MEC-Malt_1971/AutoMask_STD-MALT_Num_5.tif FZ=100
+```
+
+The shaded DSM looks like this:
 <center>
-  <img src="Images/DSM1971.png" height=320pix/>
+  <img src="Images/DSM1971Shade.png" height=320pix/>
   <br> 
 </center>
 
-You can also visualize the DSM in MicMac using the command 'Vino':
+You can also visualize it in MicMac using the command 'Vino':
 ```
-Vino MEC-Malt_1971/Z_Num6_DeZoom8_STD-MALT.tif
+Vino MEC-Malt_1971/Z_Num6_DeZoom8_STD-MALTShade.tif
 ```
 
 # 2. Inter-epoch processing
