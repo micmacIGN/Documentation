@@ -540,11 +540,16 @@ You'll see tie points like this:
 ## 2.2. Deep-dive in the pipeline's submodules
 The *TiePHistoP* command automatically calls several subcommands including:
 
+<center>
+  <img src="Images/CommandMap.png" height=320pix/>
+  <br> 
+</center>
+
 **(1) For rough co-registration**
 
 - `TestLib DSM_Equalization`
 - `TestLib Wallis`
-- `TestLib GetPatchPair`
+- `TestLib GetPatchPair BruteForce`
 - `TestLib SuperGlue`
 - `TestLib MergeTiePt`
 - `TestLib RANSAC R2D`
@@ -554,7 +559,7 @@ The *TiePHistoP* command automatically calls several subcommands including:
 **(2) For precise matching**
 
 - `TestLib GetOverlappedImages`
-- `TestLib GetPatchPair`
+- `TestLib GetPatchPair Guided`
 - `TestLib SuperGlue`
 - `TestLib MergeTiePt`
 - `TestLib GuidedSIFTMatch`
@@ -996,6 +1001,7 @@ The workflow of precise matching is displayed as below:
   <img src="Images/4.png" width=900pix/>
   <br> 
 </center>
+
 #### 2.2.2.1 Get overlapped image pairs
 
 The command "TestLib GetOverlappedImages" will recognize overlapping inter-epoch image pairs based on co-registered result.
