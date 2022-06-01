@@ -118,8 +118,10 @@ The dataset consists of:
   * 1 folder of orientations of epoch 2014
   * 1 configuration file of the camera (xml)
 
-> Note: 
+> Note:
+>  
 > (1) All the historical aerial images (i.e. epoch 1971) are scanned from negatives, followed by resampling to the geometry of the fiducial marks. 
+> 
 > (2) In order to improve processing efficiency, all the sattelite images (i.e. epoch 2014) are subregions cropped from the original Pleiades images with MicMac command "SateLib CropRPC".
 
 # 1. Intra-epoch processing
