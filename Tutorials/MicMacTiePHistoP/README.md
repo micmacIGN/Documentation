@@ -326,6 +326,8 @@ You can compute a shading from this DSM for better visualization using the comma
 mm3d GrShade MEC-Malt_1971/Z_Num6_DeZoom8_STD-MALT.tif ModeOmbre=IgnE Mask=MEC-Malt_1971/AutoMask_STD-MALT_Num_5.tif FZ=150
 ```
 
+>Note: Here we use ```FZ=150``` to scale up the contrast of elevation, as the DSM is generated in relative coordinate system.
+
 The shaded DSM looks like this:
 <center>
   <img src="Images/DSM1971Shade.png" height=320pix/>
