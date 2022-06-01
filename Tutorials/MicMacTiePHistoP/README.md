@@ -345,7 +345,7 @@ We provide both (1) automated pipeline which will automatically launch the whole
 
 ## 2.1. Automated pipeline
 
-Use the *TiePHistoP* program to launch the automated inter-epoch processing pipeline.
+Use the *TiePHistoP* command to launch the automated inter-epoch processing pipeline.
 
 The input, output and parameter interpretation of the command "TiePHistoP" are listed below:
 
