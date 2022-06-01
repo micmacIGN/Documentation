@@ -348,7 +348,7 @@ Generate DSM in epoch 1971:
 You can compute a shading from this DSM for better visualization using the command "GrShade":
 
 ```
-mm3d GrShade MEC-Malt_1971/Z_Num6_DeZoom8_STD-MALT.tif ModeOmbre=IgnE Mask=MEC-Malt_1971/AutoMask_STD-MALT_Num_5.tif FZ=100
+mm3d GrShade MEC-Malt_1971/Z_Num6_DeZoom8_STD-MALT.tif ModeOmbre=IgnE Mask=MEC-Malt_1971/AutoMask_STD-MALT_Num_5.tif FZ=150
 ```
 
 The shaded DSM looks like this:
