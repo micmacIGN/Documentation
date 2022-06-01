@@ -112,16 +112,11 @@ The dataset consists of:
 
 # 1. Intra-epoch processing
 
-First, we will process each epoch individually to obtain:
-* intra-epoch tie-points
-* relative orientations
-* DSMs
-
 ## 1.1. Feature matching
 
 ### 1.1.1. Epoch 2014
 
-The images in epoch 2014 are satellite images and their orientations are known. Consequently, the feature matching within this epoch can be skipped. This epoch is considered as ground truth in the processing.
+The images in epoch 2014 are satellite images and their orientations are known. Consequently, the feature matching within this epoch can be skipped. 
 
 ### 1.1.2. Epoch 1971
 
@@ -139,7 +134,7 @@ Output:
 
 The meaning of obligatory parameters:
 - `MulScale`: Compute tie-points for images in low resolution and then for high resolution
-- `OIS-Reech_IGNF_PVA_1-0__1971.*tif`: the pattern of input images
+- `OIS-Reech_IGNF_PVA_1-0__1971.*tif`: The pattern of input images
 - `500`: Size of Low Resolution Images
 - `1700`: Size of High Resolution Images
 
@@ -156,7 +151,7 @@ You'll get tie points like this:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 
     mm3d SEL ./ OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1068.tif KH=NB SH=_1971 SzW=[600,600]
 
@@ -229,7 +224,7 @@ You'll get tie points like this:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 
     mm3d SEL ./ OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1068.tif KH=NB SH=_1971-Ratafia SzW=[600,600]
 
@@ -306,7 +301,7 @@ The shaded DSM looks like this:
   <br> 
 </center>
 
-You can also visualize it in MicMac using the command 'Vino':
+You can also visualize it in MicMac using the command "Vino":
 ```
 Vino MEC-Malt_2014/Z_Num6_DeZoom8_STD-MALTShade.tif
 ```
@@ -329,7 +324,7 @@ The shaded DSM looks like this:
   <br> 
 </center>
 
-You can also visualize it in MicMac using the command 'Vino':
+You can also visualize it in MicMac using the command "Vino":
 ```
 Vino MEC-Malt_1971/Z_Num6_DeZoom8_STD-MALTShade.tif
 ```
@@ -449,7 +444,7 @@ You'll get tie points like this:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 
     mm3d SEL ./ OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif Crop-IMG_PHR1A_P_201406121049386.tif KH=NT SzW=[600,600] SH=-SuperGlue-3DRANSAC-CrossCorrelation
 
@@ -507,7 +502,7 @@ You'll get tie points like this:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 
     mm3d SEL ./ OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif Crop-IMG_PHR1A_P_201406121049386.tif KH=NT SzW=[600,600] SH=-GuidedSIFT-3DRANSAC-CrossCorrelation
 
@@ -711,7 +706,7 @@ An example of the patch pairs is visulized in the following:
   <br> 
 </center>
 
-You can also visualize the patch pairs in MicMac using the command 'SEL':
+You can also visualize the patch pairs in MicMac using the command "SEL":
 ```
 mm3d SEL Tmp_Patches-CoReg/ MEC-Malt_1971_0_0.tif MEC-Malt_2014_0_0.tif KH=S
 ```
@@ -757,7 +752,7 @@ An example of the matched patch pairs is visulized below:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 ```
 mm3d SEL Tmp_Patches-CoReg/ MEC-Malt_1971_0_0.tif MEC-Malt_2014_0_0.tif KH=NT SzW=[600,600] SH=-SuperGlue
 ```
@@ -795,7 +790,7 @@ The resulting tie-points are visualised below:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 ```
 mm3d SEL Tmp_Patches-CoReg/ MEC-Malt_1971.tif MEC-Malt_2014.tif KH=NT SzW=[600,600] SH=-SubPatch
 ```
@@ -836,7 +831,7 @@ The resulting tie-points are visualised below:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 ```
 mm3d SEL Tmp_Patches-CoReg/ MEC-Malt_1971.tif MEC-Malt_2014.tif KH=NT SzW=[600,600] SH=-SubPatch-2DRANSAC
 ```
@@ -854,7 +849,7 @@ The resulting tie-points are visualised below:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 ```
 mm3d SEL Tmp_Patches-CoReg/ MEC-Malt_1971.tif MEC-Malt_2014.tif KH=NT SzW=[600,600] SH=-SubPatch_R90-2DRANSAC
 ```
@@ -874,7 +869,7 @@ The resulting tie-points are visualised below:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 ```
 mm3d SEL Tmp_Patches-CoReg/ MEC-Malt_1971.tif MEC-Malt_2014.tif KH=NT SzW=[600,600] SH=-SubPatch_R180-2DRANSAC
 ```
@@ -894,7 +889,7 @@ The resulting tie-points are visualised below:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 ```
 mm3d SEL Tmp_Patches-CoReg/ MEC-Malt_1971.tif MEC-Malt_2014.tif KH=NT SzW=[600,600] SH=-SubPatch_R270-2DRANSAC
 ```
@@ -1045,7 +1040,7 @@ An example of patch pair is visualised below:
   <br> 
 </center>
 
-You can also visualize the patch pair in MicMac using the command 'SEL':
+You can also visualize the patch pair in MicMac using the command "SEL":
 ```
 mm3d SEL Tmp_Patches-Precise/ OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067_1_0.tif Crop-IMG_PHR1A_P_201406121049386_OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067_1_0.tif KH=S
 ```
@@ -1097,7 +1092,7 @@ As a result, it will extract tie-points for each patch pair, an example of tie-p
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 ```
 mm3d SEL Tmp_Patches-Precise/ OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067_1_0.tif Crop-IMG_PHR1A_P_201406121049386_OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067_1_0.tif KH=NT SzW=[600,600] SH=-SuperGlue
 ```
@@ -1136,7 +1131,7 @@ The resulting tie-points are visualised below:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 ```
 mm3d SEL ./ OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif Crop-IMG_PHR1A_P_201406121049386.tif KH=NT SzW=[600,600] SH=-SuperGlue
 ```
@@ -1192,7 +1187,7 @@ The resulting tie-points are visualised below:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 ```
 mm3d SEL ./ OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif Crop-IMG_PHR1A_P_201406121049386.tif KH=NT SzW=[600,600] SH=-GuidedSIFT
 ```
@@ -1239,7 +1234,7 @@ The resulting tie-points are visualised below:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 ```
 mm3d SEL ./ OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif Crop-IMG_PHR1A_P_201406121049386.tif KH=NT SzW=[600,600] SH=-SuperGlue-3DRANSAC
 ```
@@ -1284,7 +1279,7 @@ The resulting tie-points are visualised below:
   <br> 
 </center>
 
-You can also visualize the tie-points in MicMac using the command 'SEL':
+You can also visualize the tie-points in MicMac using the command "SEL":
 ```
 mm3d SEL ./ OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif Crop-IMG_PHR1A_P_201406121049386.tif KH=NT SzW=[600,600] SH=-SuperGlue-3DRANSAC-CrossCorrelation
 ```
