@@ -45,46 +45,19 @@ In this tutorial we will introduce you to tie-points extraction in diachronic im
 
 Given a set of images in 2 epochs, our pipeline performs an intra-epoch processing, followed by an inter-epoch processing. The latter consists of 2 main steps: **rough co-registration** and **precise matching**.
 
-After setting-up MicMac and downloading the dataset, the pipeline is as follows:
+Our workflow is illustrated as follows:
 
-1. Intra-epoch processing
+<p align="center">  <img src="Images/1.png" width="550"> </p>
+<p align="center"> (a) Full workflow </p>
 
-      1.1. ***Feature matching***: Applying feature matching based on SIFT on images within the same epoch.
+<p align="center">  <img src="Images/2.png" width="800"> </p>
+<p align="center"> (b) Workflow of rough co-registration </p>
 
-      1.2. ***Relative orientation***: Computing relative orientations for each epoch.
+<p align="center">  <img src="Images/RotateHypo.png" width="800"> </p>
+<p align="center"> (c) Details of 4 rotation hypotheses </p>
 
-      1.3. ***DSM generation***: Computing DSM of each epoch based on relative orientations.
-
-      If the orientation of each epoch is provided, the step 1.2 can be skipped.
-
-
-  2. Inter-epoch processing
-
-      2.1. ***Automated pipeline***
-
-       We provide automated pipeline which will launch the whole inter-epoch processing pipeline by calling several subcommands.
-  
-      2.2. ***Deep-dive in the pipeline's submodules***
-  
-      We also provide deep-dive to explain all the submodules used in the automated pipeline. It consists of:
-
-      * 2.2.1. ***Rough co-registration***
-
-      This step is for roughly co-registering the DSMs and image orientations from different epochs.
-
-      * 2.2.2. ***Precise matching***
-
-      This step is for obtaining precise tie-points under the guidance of rough co-registration.
-
-  If the 2 epochs are already co-registered (e.g. both epochs are georeferenced), the step 2.2.1 can be skipped.
-
-The full workflow is displayed below:
-
-<center>
-  <img src="Images/1.png" height=320pix/>
-  <br> 
-</center>
-
+<p align="center">  <img src="Images/4.png" width="500"> </p>
+<p align="center"> (d) Workflow of precise matching </p>
 
 For more information please refer to: 
 
@@ -583,19 +556,9 @@ In order to help the users understand the pipeline better, we will introduce the
 
 ### 2.2.1. Rough co-registration
 
-To co-register images in different epochs in a common coordinate frame, we perform sparse point matching between their respective DSM rasters. The workflow is displayed as below:
+To co-register images in different epochs in a common coordinate frame, we perform sparse point matching between their respective DSM rasters. 
 
-<center>
-  <img src="Images/2.png" width=1000pix/>
-  <br> 
-</center>
-
-
-<center>
-  <img src="Images/RotateHypo.png" width=1000pix/>
-  <br> 
-</center>
-
+> Note: If the 2 epochs are already co-registered (e.g. both epochs are georeferenced), this step should be skipped.
 
 #### 2.2.1.1. Preprocess DSM
 
@@ -1007,13 +970,6 @@ This command will output:
  (2) a file "Basc-2014-2-1971.xml", which indicates the transformation parameters from epoch 2014 to epoch 1971.
 
 ### 2.2.2 Precise matching
-
-The workflow of precise matching is displayed as below:
-
-<center>
-  <img src="Images/4.png" width=900pix/>
-  <br> 
-</center>
 
 #### 2.2.2.1 Get overlapped image pairs
 
