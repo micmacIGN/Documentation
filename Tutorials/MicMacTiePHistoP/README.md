@@ -541,7 +541,7 @@ You'll see tie points like this:
 The *TiePHistoP* command automatically calls several subcommands including:
 
 <center>
-  <img src="Images/CommandMap.png" height=320pix/>
+  <img src="Images/CommandMap.png" height=450pix/>
   <br> 
 </center>
 
