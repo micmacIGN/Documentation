@@ -649,7 +649,7 @@ Vino MEC-Malt_1971/DSM1971-gray.tif_sfs.tif
 ```
 #### 2.2.1.2. Match DSM
 
-This part will co-register 2 DSMs from different epochs by applying *one-to-many tiling scheme* (for more details please refer to our publication: link to be added) based on SuperGlue, followed by RANSAC to remove outliers. 
+This part will co-register 2 DSMs from different epochs by applying *one-to-many tiling scheme* (for more details please refer to our [publication](https://www.sciencedirect.com/science/article/pii/S0924271621002707)) based on SuperGlue, followed by RANSAC to remove outliers. 
 
 The *one-to-many tiling scheme* will be performed 4 times by rotating the master DSM 90 degrees each time in order to test 4 rotation hypotheses (because the rough co-registration method is only invariant to rotation smaller than 45 degree), followed by keeping the one with the largest RANSAC inliers.
 
