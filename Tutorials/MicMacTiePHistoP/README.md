@@ -549,7 +549,7 @@ To co-register images in different epochs in a common coordinate frame, we perfo
 
 (1.1) Epoch 2014
 
-Transform the DSM in float point type to equalized gray scale image with the command "TestLib DSM_Equalization", so that feature matching method can be applied later.
+The DSM we have is stored in float point type, while SuperGlue is only suitable for gray scale images. Therefore we transform it to equalized gray scale image with the command "TestLib DSM_Equalization".
 
 The input, output and parameter interpretation of the command "TestLib DSM_Equalization" are listed below:
 
@@ -563,14 +563,20 @@ The meaning of obligatory parameters:
 - `MEC-Malt_2014`: DSM direcotry of epoch 2014
 
 The meaning of optional parameters:
-- `STDRange`: Only pixels with their value within STDRange times of std will be considered (in order to ignore altitude outliers), Def=5
+- `STDRange`: only consider pixels with their value within STDRange times of standard deviation (in order to ignore altitude outliers), Def=5
 - `DSMFile`: the xml file that recorded the structure information of the DSM, Def=MMLastNuage.xml
 - `OutImg`: output image name, Def='input'_gray.tif
 ```
 mm3d TestLib DSM_Equalization MEC-Malt_2014 DSMFile=MMLastNuage.xml OutImg=DSM2014-gray.tif
 ```
 
-The equalized DSM is visulized below:
+You'll get DSM like this:
+<center>
+  <img src="Images/DSM2014.png" height=320pix/>
+  <br> 
+</center>
+
+You can also visualize the DSM in MicMac:
 ```
 Vino MEC-Malt_2014/DSM2014-gray.tif
 ```
@@ -580,7 +586,13 @@ Perform DSM equalization in epoch 1971, so that feature matching method can be a
 ```
 mm3d TestLib DSM_Equalization MEC-Malt_1971 DSMFile=MMLastNuage.xml OutImg=DSM1971-gray.tif
 ```
-The equalized DSM is visulized below:
+You'll get DSM like this:
+<center>
+  <img src="Images/DSM1971.png" height=320pix/>
+  <br> 
+</center>
+
+You can also visualize the DSM in MicMac:
 ```
 Vino MEC-Malt_1971/DSM1971-gray.tif
 ```
