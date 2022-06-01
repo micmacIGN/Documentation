@@ -950,19 +950,19 @@ Output:
 The meaning of obligatory parameters:
 - `OIS-Reech_IGNF_PVA_1-0__1971.*tif`: the pattern of input images
 - `1971`: orientation in
-- `2014`: orientation out
+- `1971_CoReg_SuperGlue`: orientation out
 - `OutGCP3D_epoch2014.xml`: Ground Control Points File
 - `OutGCP3D_epoch1971.xml`: Image Measurements File
 
 ```
-mm3d GCPBascule "OIS-Reech_IGNF_PVA_1-0__1971.*tif" 1971 2014 OutGCP3D_epoch2014.xml OutGCP2D_epoch1971.xml
+mm3d GCPBascule "OIS-Reech_IGNF_PVA_1-0__1971.*tif" 1971 1971_CoReg_SuperGlue OutGCP3D_epoch2014.xml OutGCP2D_epoch1971.xml
 ```
 
 This command will output:
 
- (1) a file "Basc-1971-2-2014.xml", which indicates the transformation parameters from epoch 1971 to epoch 2014;
+ (1) a file "Basc-1971-2-1971_CoReg_SuperGlue.xml", which indicates the transformation parameters from epoch 1971 to epoch 2014;
  
- (2) a file "Basc-2014-2-1971.xml", which indicates the transformation parameters from epoch 2014 to epoch 1971.
+ (2) a file "Basc-1971_CoReg_SuperGlue-2-1971.xml", which indicates the transformation parameters from epoch 2014 to epoch 1971.
 
 ### 2.2.2 Precise matching
 
@@ -991,7 +991,7 @@ The meaning of optional parameters:
 - `Print`: Print corner coordinate, Def=false
 
 ```
-mm3d TestLib GetOverlappedImages 1971 2014 OIS-Reech_IGNF_PVA_1-0__1971.*tif Crop.*tif  Para3DH=Basc-1971-2-2014.xml
+mm3d TestLib GetOverlappedImages 1971 2014 OIS-Reech_IGNF_PVA_1-0__1971.*tif Crop.*tif  Para3DH=Basc-1971-2-1971_CoReg_SuperGlue.xml
 ```
 
 #### 2.2.2.2 Get patch pairs
@@ -1032,7 +1032,7 @@ The meaning of optional parameters:
 - `Prefix`: The prefix for the name of images (for debug only), Def=none
 
 ```
-mm3d TestLib GetPatchPair Guided OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif Crop-IMG_PHR1A_P_201406121049386.tif Ori-1971 Ori-2014  OutDir=./Tmp_Patches-Precise SubPXml=OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067_Crop-IMG_PHR1A_P_201406121049386_SubPatch.xml ImgPair=OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067_Crop-IMG_PHR1A_P_201406121049386_SuperGlueInput.txt  PatchSz=[1280,960] Para3DH=Basc-1971-2-2014.xml DSMDirL=MEC-Malt_1971
+mm3d TestLib GetPatchPair Guided OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif Crop-IMG_PHR1A_P_201406121049386.tif Ori-1971 Ori-2014  OutDir=./Tmp_Patches-Precise SubPXml=OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067_Crop-IMG_PHR1A_P_201406121049386_SubPatch.xml ImgPair=OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067_Crop-IMG_PHR1A_P_201406121049386_SuperGlueInput.txt  PatchSz=[1280,960] Para3DH=Basc-1971-2-1971_CoReg_SuperGlue.xml DSMDirL=MEC-Malt_1971
 ```
 
 An example of patch pair is visualised below:
@@ -1179,7 +1179,7 @@ The meaning of optional parameters:
 - `ScaleR`: Extract SIFT points on secondary images downsampled with a factor of "ScaleR", Def=1
 
 ```
-mm3d TestLib GuidedSIFTMatch OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif Crop-IMG_PHR1A_P_201406121049386.tif Ori-1971 Ori-2014  SkipSIFT=true DSMDirL=MEC-Malt_1971 DSMDirR=MEC-Malt_2014 Para3DH=Basc-1971-2-2014.xml ScaleR=2
+mm3d TestLib GuidedSIFTMatch OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1067.tif Crop-IMG_PHR1A_P_201406121049386.tif Ori-1971 Ori-2014  SkipSIFT=true DSMDirL=MEC-Malt_1971 DSMDirR=MEC-Malt_2014 Para3DH=Basc-1971-2-1971_CoReg_SuperGlue.xml ScaleR=2
 ```
 
 The resulting tie-points are visualised below:
