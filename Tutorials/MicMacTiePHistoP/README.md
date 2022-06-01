@@ -444,7 +444,7 @@ The meaning of optional parameters (here we use epoch1 to refer to epoch 1971, a
 
 This command will produce 2 kinds of results: 
 
-(1) roughly co-registered orientations, which will be stored in the folder "./Ori-2014";
+(1) orientations of epoch 1971 that are roughly co-registered to the frame of epoch 2014, stored in the folder "./Ori-1971_CoReg_SuperGlue";
 
 (2) precise inter-epoch tie-points, which will be stored in the folder "./Homol-SuperGlue-3DRANSAC-CrossCorrelation".
 
@@ -534,27 +534,6 @@ The *TiePHistoP* command automatically calls several subcommands including (the 
   <img src="Images/CommandMap.png" height=450pix/>
   <br> 
 </center>
-
-**(1) For rough co-registration**
-
-- `TestLib DSM_Equalization`
-- `TestLib Wallis`
-- `TestLib GetPatchPair BruteForce`
-- `TestLib SuperGlue`
-- `TestLib MergeTiePt`
-- `TestLib RANSAC R2D`
-- `TestLib CreateGCPs`
-- `TestLib GCPBascule`
-
-**(2) For precise matching**
-
-- `TestLib GetOverlappedImages`
-- `TestLib GetPatchPair Guided`
-- `TestLib SuperGlue`
-- `TestLib MergeTiePt`
-- `TestLib GuidedSIFTMatch`
-- `TestLib RANSAC R3D`
-- `TestLib CrossCorrelation`
 
 In order to help the users understand the pipeline better, we will introduce the subcommands in section 2.2.1 and 2.2.2.
 
