@@ -130,7 +130,7 @@ The dataset consists of:
 > 
 >   (c) "ReSampFid" (resample scanned images).
 > 
-> <p align="center">  <img src="Images/Resample.png" width="500"> </p>
+> <p align="center">  <img src="Images/Resample.png" width="550"> </p>
 > (2) In order to improve processing efficiency, all the sattelite images (i.e. epoch 2014) are subregions cropped from the original Pleiades images with MicMac command "SateLib CropRPC".
 > <p align="center">  <img src="Images/CropRPC.png" width="500"> </p>
 
