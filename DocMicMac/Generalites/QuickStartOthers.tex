@@ -972,7 +972,78 @@ mm3d TestLib PseudoIntersect ".*JPG" Ori-All/ MesuresFinales-S2D.xml
 \end{verbatim}
 
 Each point needs to be measured at least in 2 images to compute an intersection.
-The output .xml file can be directly used as a GCP file with {\tt GCPBascule} tool.
+The output .xml file can be directly used as a GCP file with {\tt GCPBascule} tool. \newline
+
+
+%--------------------------%
+\subsection{Interview}
+
+Sometimes, we have an initial approximate orientation for all images (either from GPS and/or inertial sensors, or because an initial orientation has been generated from a rigid block of cameras with \texttt{OriFromBlock} command, see section \ref{block_estimation}). For refining this orientation, it is necessary to compute tie points between all images, which could require a substantial amount of time. A natural solution would be to use the initial orientation to extract only pairs of images intersecting within the 3D space. The tool \texttt{Interview} can be used to generate such a file, before executing \texttt{Tapioca} in \texttt{File} mode. Although \texttt{Interview} may be parameterize to be more or less conservative on the selection of image pairs, it should be used only if the initial orientation is accurate enough. \newline
+
+ 
+\begin{verbatim}
+*****************************
+*  Help for Elise Arg main  *
+*****************************
+Mandatory unnamed args : 
+  * string :: {Images pattern}
+  * string :: {Orientation directory}
+Named args : 
+  * [Name=Depth] string :: {Maximal Depth (default -1 = Inf)}
+  * [Name=Dist] string :: {Max. distance (ground units) between camera optical centers}
+  * [Name=Angle] string :: {Max. angle difference(degrees) between camera sights}
+  * [Name=Pts] string :: {Number of discretized points on fields of view (default 10)}
+  * [Name=Buffer] string :: {Signed buffer around camera field of view (default 0.0 PX)}
+  * [Name=Ply] string :: {Set Ply=1 to generate ply files of fields of view}
+  * [Name=SzPly] string :: {Scale for fields of view export in ply (default 1.0)}
+  * [Name=XmlMax] string :: {Max. number of pairs in an xml file (default 100 000)}
+  * [Name=Out] string :: {Name of output file (default CpleFrom[OriName].xml)}
+\end{verbatim}
+
+
+\noindent \texttt{Interview} has 2 mandatory unnamed arguments: the pattern of images upon which pairs are extracted, and an initial orientation folder for these images. \newline
+
+\noindent For each image, the field of view of the camera (based on the distorsion model, if any, given in the approximate orientation directory) is discretized at a distance $D$ from the center of view, within 10 points on each side (44 points in total with the corners) as illustrated on the figure below. A triangle is built from all pairs of successive points and the center of view (44 triangles). Then, in order to decide whether two fields of view $I_1$ and $I_2$ intersect, an intersection test is performed for all triangle sides of $I_1$ with all triangles of $I_2$, and on the other way around. The two images are assumed not to intersect if all of these tests fail and if both the camera center of $I_1$ (resp. $I_2$) is not within the field of view of $I_2$ (resp. $I_1$). \newline 
+
+\noindent As a default $D$ is set to an arbitrarily large value, so that the intersections are virtually looked for in \textit{all} the 3D space without restriction on the distance from the pose centers. The output file is named \texttt{CpleFrom[OriName]\_0.xml}. If more than \texttt{1e5} pairs are found, they will be ouptut in a series of files : \newline
+\begin{itemize}
+\item \texttt{CpleFrom[OriName]\_0.xml}
+\item \texttt{CpleFrom[OriName]\_1.xml}
+\item \texttt{CpleFrom[OriName]\_2.xml}
+\item ... \newline
+\end{itemize}
+
+
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=60mm]{FIGS/Interview/apericone.png}
+		\caption{Discretized field of view from a Fish Eye camera.}
+	\end{center}	
+\end{figure}
+
+
+
+
+\noindent The following optional parameters can be used with \texttt{Interview}: \newline
+ 
+
+\begin{itemize}
+	\item \texttt{Depth}: maximal distance between image optical centers and potential intersections with other images. All intersections found beyond this distance are not accounted for in the output file of pairs. Default value is \texttt{-1} indicating no restriction in the search space. Since intersections are performed analytically, note that setting the parameter to lower or higher value does not have any impact on the computation time. \newline
+	\item \texttt{Dist}: maximal distance (in orientation units) between two image optical centers to look for a potential intersection. Default value is \texttt{-1}, indicating that all pairs of images are tested. \newline
+	\item \texttt{Angle}: maximal angle (in degrees) between two image direction vectors to look for a potential intersection. Default value is \texttt{-1}, indicating that all pairs of images are tested. \newline
+	\item \texttt{Pts}: number of discretized points (and then number of triangles) on each side of the field of view. Default value is 10. Higher values should be used for more accuracy, and lower values may be used when camera distorsions are small.  \newline
+	\item \texttt{Buffer}: a signed floating point value (in pixel unit) indicating the size of a margin around the image fields of view. Positive values mean that the search of intersections is performed with larger fields of view than the one given in the approximate orientation, hence providing more conservative selection of pairs (resulting in potentially longer but more accurate tie points computation). On the opposite, negative values of buffer indicate that the borders of the images are not considered when looking for intersections with other images. Default value is 0 pixel, indicating that the nominal size of field of view is used. \newline
+	\item \texttt{Ply}:  an option to generate ply file of the discretized field of views. Set \texttt{Ply=1} to generate one file per image. Used mainly for debugging. \newline
+	\item \texttt{SzPly}: if \texttt{Ply} option is activated, this argument may be used to set the scale of the ply representation.  \newline
+	\item \texttt{XmlMax}: sometimes, it is required that the file of homolog pairs of images is not too large. This option may be used to control its size.  \newline
+	\item \texttt{Out}:  name of output file (without xml extension). \newline 
+\end{itemize}
+
+\noindent The relative number of pairs found (over the maximal possible number of pairs which is $N(N-1)/2$) is given as console output. For example, the following line indicate that 5228 pairs have been found, out of a theretical number of 53301 combinations. \newline
+
+\texttt{NUMBER OF PAIRS FOUND       5228                [9.8 \%]} \newline
+
+
 
 %--------------------------%
 \subsection{MasqMaker}
@@ -992,6 +1063,7 @@ Named args :
 \end{verbatim}
 
 It is useful to avoid correlation in burned areas.
+
 
 
 %--------------------------%
@@ -1301,7 +1373,7 @@ Homography parameters written in [homog.xml] file
 
 \begin{itemize}
 	\item \textbf{Input statistics:} the number of images in 2D measurement file, the number of 3D points and the numbers of points per image. The selected reference image (IMGP4123.JPG), \textit{i.e.} by default one that maximizes the number of visible points, is also displayed. \newline
-	\item \textbf{Point planirization statistics:} the plane regression residual for each 3D point (in ground units). Here we have 13 cm, which means that input points are relatively coplanar. \newline
+	\item \textbf{Point planirization statistics:} the plane regression residual for each 3D point (in ground units). Here we have 13 cm, which means that input points are relatively coplanar. \newline
 	\item \textbf{Bounding box:} the 3D coordinates (in input orientation units) of the definition domain of the homography. \newline
 	\item \textbf{Homography statistics:} least squares residual (in pixels) for each 3D point. Here we have a root mean square error of 2.34 pixels, with a maximal value of about 3 pixels. \newline
 	\item \textbf{Homography parameters:} given in the form of a $3 \times 3$ matrix, with 8 DOF. \newline
