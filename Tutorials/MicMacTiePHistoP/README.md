@@ -8,7 +8,9 @@ Adjusted from
 Table of Contents
 =================
 
-* [0. About the dataset](#0-about-the-dataset)
+* [0. Projet set-up](#0-projet-set-up)
+   * [0.1 Install MicMac and SuperGlue](#01-install-micmac-and-superglue)
+   * [0.2 About the dataset](#02-about-the-dataset)
 * [1. Intra-epoch processing](#1-intra-epoch-processing)
    * [1.1. Feature matching](#11-feature-matching)
       * [1.1.1. Epoch 2014](#111-epoch-2014)
