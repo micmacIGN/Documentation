@@ -120,9 +120,17 @@ The dataset consists of:
 
 > Note:
 >  
-> (1) All the historical aerial images (i.e. epoch 1971) are scanned from negatives, followed by resampling to the geometry of the fiducial marks. 
+> (1) All the historical aerial images (i.e. epoch 1971) are scanned from negatives, followed by resampling to the geometry of the fiducial marks. The resampling stage is complished with MicMac commands: 
 > 
+>   (a) "SaisieAppuisInit" (draw a mask excluding fiducial marks on one scanned image); 
+> 
+>   (b) "Kugelhupf" (automatically find fiducial marks on the rest scanned images);
+> 
+>   (c) "ReSampFid" (resample scanned images).
+> 
+> <p align="center">  <img src="Images/Resample.png" width="500"> </p>
 > (2) In order to improve processing efficiency, all the sattelite images (i.e. epoch 2014) are subregions cropped from the original Pleiades images with MicMac command "SateLib CropRPC".
+> <p align="center">  <img src="Images/CropRPC.png" width="500"> </p>
 
 # 1. Intra-epoch processing
 
