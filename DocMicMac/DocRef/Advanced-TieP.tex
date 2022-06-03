@@ -332,7 +332,8 @@ pip install .
 
 \section{Global and order-agnostic tie point reduction with {\tt Schnaps}}
 The command {\tt Schnaps} is used to clean and reduce tie points before any orientation, and without needing any order in the pictures.
-Its limitation is the user memory: it can't be used if computer RAM is lower than Homol directory size.
+Its limitation is the user memory: it can't be used if computer RAM is smaller than necessary to handle all homol points.
+In this case Schnaps should be used iteratively with {\tt AppendHomolOut} option (see below).
 
 \begin{verbatim}
 mm3d Schnaps
@@ -350,20 +351,24 @@ S pots
 Mandatory unnamed args : 
   * string :: {Pattern of images}
 Named args : 
-  * [Name=HomolIn] string :: {Input Homol directory suffix (without "Homol")}
-  * [Name=NbWin] INT :: {Minimal homol points in each picture (default: 1000)}
-  * [Name=ExeWrite] bool :: {Execute write output homol dir, def=true}
+  * [Name=HomolIn] string :: {Input Homol directory suffix}
+  * [Name=NbWin] INT :: {Minimal homol points in each image (default: 1000)}
+  * [Name=ExeWrite] bool :: {Do write output homol dir, def=true}
   * [Name=HomolOut] string :: {Output Homol directory suffix (default: _mini)}
+  * [Name=AppendHomolOut] bool :: {Append to existing HomolOut for multi-step computaton (default: false)}
   * [Name=ExpTxt] bool :: {Ascii format for in and out, def=false}
   * [Name=VeryStrict] bool :: {Be very strict with homols (remove any suspect), def=false}
   * [Name=ShowStats] bool :: {Show Homol points stats before and after filtering, def=false}
-  * [Name=DoNotFilter] bool :: {Write homol after recomposition, without filterning, def=false}
-  * [Name=PoubelleName] string :: {Where to write suspicious pictures names, def="Schnaps_poubelle.txt"}
+  * [Name=DoNotFilter] bool :: {Write homol after recomposition, without filtering, def=false}
+  * [Name=FixSz] Pt2di :: {Use a fixed size for image, do not read size in files}
+  * [Name=PoubelleName] string :: {Output filename with the list of suspicious images, def="Schnaps_poubelle.txt"}
   * [Name=minPercentCoverage] REAL :: {Minimum % of coverage to avoid adding to poubelle, def=30}
   * [Name=MoveBadImgs] bool :: {Move bad images to a trash folder called Poubelle, Def=false}
-  * [Name=OutTrash] string :: {Output name of trash folder if moving bad images, Def=Poubelle}
+  * [Name=OutTrash] string :: {Output name of trash folder if MoveBadImgs, Def=Poubelle}
   * [Name=MiniMulti] INT :: {Minimal Multiplicity of selected points, Def=1}
   * [Name=NetworkExport] bool :: {Export Network (in js), Def=false}
+  * [Name=DivPH] INT :: {in exported network, denominator to decrease the number of tie point which is used for
+                         displaying strength of a relation between 2 images, def 10.}
 \end{verbatim}
 
 You can choose the Homol directory suffix for input and output. By default it uses ``Homol'' and creates a ``Homol\_mini'' directory for output.
@@ -378,9 +383,15 @@ Use {\tt minPercentCoverage} to choose the minimum coverage of image, and the li
 The list of image having a coverage below {\tt minPercentCoverage} is written in a file named as you choosed with {\tt PoubelleName}.
 With {\tt MoveBadImgs} those pictures can be moved to an other folder having a name chosen with {\tt OutTrash}.
 
+The histogram of images coverage is shown at the end of the computation, to help determine {\tt minPercentCoverage}.
+
 You can choose to keep only the points with a high multiplicity with {\tt MiniMulti}.
 The graph of image links is exportable with {\tt MNetworkExport}. Use {\tt micmac\_Documentation/Data/schnaps\_disp\_graph/disp\_graph.html} to display it on
 a web browser.
+
+The images size are used to determine the best window repartition. When using fake image files (e.g., with size 1x1), you can impose an image size with {\tt FixSz} option.
+
+{\tt AppendHomolOut} option can be used when working in several steps to save memory. The new homol points created by Schnaps will be appended to existing homol files in HomolOut directory, the points already existing are not duplicated. 
 
 \subsection{Algorithm}
 {\tt Schnaps} computes a collection of Homol points, each recording its coordinates in every picture it appears.
