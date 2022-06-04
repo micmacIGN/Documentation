@@ -111,7 +111,7 @@ Details of images in epoch 2014:
 |---|---|---|---
 |Pleiades|0.7 m|0%|0%
 
-Dataset's downloaded link:
+Dataset's download link:
     https://drive.google.com/u/0/uc?id=1lbbBiHFHyVDGXlLMtl3iHMWW-Mdj5Vjy&export=download
 
 The dataset consists of: 
@@ -140,7 +140,7 @@ The dataset consists of:
 
 ### 1.1.1. Epoch 2014
 
-The images in epoch 2014 are satellite images. Their orientations are precisely known (see [this tutorial](https://github.com/micmacIGN/Documentation/tree/master/Tutorials/TutoJupyter) on how to refine orientation of satellite images in MicMac). Consequently, the feature matching within this epoch can be skipped. 
+The images in epoch 2014 are satellite images and their orientations are precisely known (see [this tutorial](https://github.com/micmacIGN/Documentation/tree/master/Tutorials/TutoJupyter) on how to refine orientation of satellite images in MicMac). Consequently, the feature matching within this epoch can be skipped. 
 
 ### 1.1.2. Epoch 1971
 
@@ -163,7 +163,7 @@ The meaning of obligatory parameters:
 - `1700`: Size of High Resolution Images
 
 The meaning of optional parameters:
-- `PostFix`: Homologue extenion for NB/NT mode
+- `PostFix`: Format extention of the tie-points files, NB for binary and NT for text format.
 
 ```
 mm3d Tapioca MulScale OIS-Reech_IGNF_PVA_1-0__1971.*tif 500 1700 PostFix=_1971
@@ -190,7 +190,7 @@ Input:
 - `image`
 
 Output:
-- `mask image drawn by user`
+- `a binary mask image drawn by user`
 
 The meaning of obligatory parameters:
 - `OIS-Reech_IGNF_PVA_1-0__1971-06-21__C2844-0141_1971_FR2117_1068.tif`: input image
