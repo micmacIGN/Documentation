@@ -111,7 +111,7 @@ Details of images in epoch 2014:
 |---|---|---|---
 |Pleiades|0.7 m|0%|0%
 
-Dataset can be downloaded here:
+Dataset's downloaded link:
     https://drive.google.com/u/0/uc?id=1lbbBiHFHyVDGXlLMtl3iHMWW-Mdj5Vjy&export=download
 
 The dataset consists of: 
@@ -122,7 +122,7 @@ The dataset consists of:
 
 > Note:
 >  
-> (1) All the historical aerial images (i.e. epoch 1971) are scanned from negatives, followed by resampling to the geometry of the fiducial marks. The resampling stage is complished with MicMac commands: 
+> (1) All the historical aerial images (i.e. epoch 1971) are scanned from negatives, followed by resampling to the geometry of the fiducial marks. The resampling stage is accomplished with MicMac commands: 
 > 
 >   (a) "SaisieAppuisInit" (draw a mask excluding fiducial marks on one scanned image); 
 > 
@@ -140,7 +140,7 @@ The dataset consists of:
 
 ### 1.1.1. Epoch 2014
 
-The images in epoch 2014 are satellite images and their orientations are known. Consequently, the feature matching within this epoch can be skipped. 
+The images in epoch 2014 are satellite images. Their orientations are precisely known (see [this tutorial](https://github.com/micmacIGN/Documentation/tree/master/Tutorials/TutoJupyter) on how to refine orientation of satellite images in MicMac). Consequently, the feature matching within this epoch can be skipped. 
 
 ### 1.1.2. Epoch 1971
 
