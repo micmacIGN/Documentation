@@ -88,9 +88,9 @@ For more information please refer to:
 
 ## 0.1 Install MicMac and SuperGlue
 
-[Guidance of installing MicMac](https://github.com/micmacIGN/micmac)
+[How to install MicMac](https://github.com/micmacIGN/micmac)
 
-[Guidance of installing SuperGlue within MicMac](https://github.com/micmacIGN/micmac/tree/master/src/uti_phgrm/TiePHistorical)
+[How toinstall SuperGlue within MicMac](https://github.com/micmacIGN/micmac/tree/master/src/uti_phgrm/TiePHistorical)
 
 ## 0.2 About the dataset
 The dataset is a 20 km2 rectangular area located in Pezenas, France. It is mainly covered with vegetation and several sparsely populated urban zones. We have at our disposal 2 epochs: epoch 1971 and 2014.
