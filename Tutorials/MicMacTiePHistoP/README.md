@@ -188,6 +188,8 @@ You can also visualize the tie-points in MicMac using the command "SEL":
 
 #### Remove tie-points on the fiducial marks
 
+This is only obligatory for historical aerial images, as there might be wrong tie-points on the fiducial marks which should be removed.
+
 ##### Create a mask 
 Since historical images contain fiducial marks and they would yield nonsensical tie-points, we create a mask to remove any points in the vicinity of the fiducial marks. To create the mask we use the "SaisieMasq" program:
 
