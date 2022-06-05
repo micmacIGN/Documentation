@@ -133,6 +133,8 @@ The dataset consists of:
 > <p align="center">  <img src="Images/Resample.png" width="550"> </p>
 > (2) As the original sattellite images in epoch 2014 are too big to be processed efficiently, the test dataset in is only a cropped subregion using MicMac command "SateLib CropRPC".
 > <p align="center">  <img src="Images/CropRPC.png" width="500"> </p>
+> 
+> (3) The orientations of epoch 2014 is RPC files provided by satellite image vendors. These files consist of RPC coefficients which is used to relate coordinate in a sensor plane (2D) to object coordinate (3D).
 
 # 1. Intra-epoch processing
 
@@ -992,6 +994,8 @@ This command will output:
  (1) a file "Basc-1971-2-1971_CoReg_SuperGlue.xml", which indicates the transformation parameters from epoch 1971 to epoch 2014;
  
  (2) a file "Basc-1971_CoReg_SuperGlue-2-1971.xml", which indicates the transformation parameters from epoch 2014 to epoch 1971.
+ 
+ (3) Texts shown in the terminal that displayed the accuracies estimated on each virtual GCPs by the resulted 3D Helmert transformation model.
 
 ### 2.2.2 Precise matching
 
