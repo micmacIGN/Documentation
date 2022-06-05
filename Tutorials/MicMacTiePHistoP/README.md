@@ -467,7 +467,7 @@ The meaning of optional parameters (here we use epoch1 to refer to epoch 1971, a
 
 ### 2.1.1. Option 1: SuperGlue
 
-> Note: As we lack of redundant obeservations due to limited number of images, we set 3DRANTh=10 and CCTh=0.5 to keep more tie-points.
+> Note: As we lack of redundant observations due to limited number of images, we set 3DRANTh=10 and CCTh=0.5 to keep more tie-points.
 
     mm3d TiePHistoP Ori-1971 Ori-2014 OIS-Reech_IGNF_PVA_1-0__1971.*tif Crop.*tif MEC-Malt_1971 MEC-Malt_2014 CoRegPatchLSz=[1280,960] CoRegPatchRSz=[1280,960] PrecisePatchSz=[1280,960] Feature=SuperGlue Viz=1 3DRANTh=10 CCTh=0.5 SkipCoReg=0 SkipPrecise=0 Exe=1
 
@@ -1469,7 +1469,9 @@ The resulting DoD can be visualised below:
 
 You can also visualize it in QGIS.
 
-As can be seen in the visualized DoDs, the systematic errors are effectively mitigated in the DoD of SuperGlue refined result, thanks to our dense and precise inter-epoch tie-points.
+As can be seen in the visualized DoDs, the systematic errors (dome effect) are effectively mitigated in the DoD of SuperGlue refined result, thanks to our dense and precise inter-epoch tie-points.
+
+> Note: More effective mitigation of dome effect can be expected in datasets with more redundant observations (i.e. larger number of images)
 
 ## 3.3. DoD of GuidedSIFT refined result
 
@@ -1539,5 +1541,5 @@ You can also visualize it in QGIS.
 
 As can be seen in the visualized DoDs, the systematic errors are effectively mitigated in the DoD of SuperGlue and SIFT refined result, thanks to our dense and precise inter-epoch tie-points.
 
-We chose a small region to keep the dataset compact to improve the processing efficiency of this tutorial. The performance of our method might improve when applied to bigger regions.
+> Note: More effective mitigation of dome effect can be expected in datasets with more redundant observations (i.e. larger number of images)
 
