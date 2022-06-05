@@ -134,7 +134,7 @@ The dataset consists of:
 > (2) As the original sattellite images in epoch 2014 are too big to be processed efficiently, the test dataset in is only a cropped subregion using MicMac command "SateLib CropRPC".
 > <p align="center">  <img src="Images/CropRPC.png" width="500"> </p>
 > 
-> (3) The orientations of epoch 2014 is RPC files provided by satellite image vendors. These files consist of RPC coefficients which is used to relate coordinate in a sensor plane (2D) to object coordinate (3D).
+> (3) The orientations of epoch 2014 are RPC files provided by satellite image vendors. These files consist of RPC coefficients which are used to relate coordinate in a sensor plane (2D) to object coordinate (3D).
 
 # 1. Intra-epoch processing
 
