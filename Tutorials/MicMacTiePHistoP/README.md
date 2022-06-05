@@ -136,6 +136,16 @@ The dataset consists of:
 > 
 > (3) The orientations of epoch 2014 are RPC files provided by satellite image vendors. These files consist of RPC coefficients which are used to relate coordinate in a sensor plane (2D) to object coordinate (3D).
 
+
+## Update MicMac code
+
+```
+cd /home/lulin/micmac
+git pull origin master
+cd build/
+make install -j8
+mm3d TestLib TiePtPrep -help
+```
 # 1. Intra-epoch processing
 
 | <p align="center"> Feature matching </p> | <p align="center"> Relative orientation </p> | <p align="center"> DSM generation </p> |
