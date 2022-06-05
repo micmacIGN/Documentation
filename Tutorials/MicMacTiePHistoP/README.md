@@ -1379,55 +1379,28 @@ We need to refine the roughly co-registered orientations in a bundle adjustment 
 
 ### Set weight of inter-epoch tie-points
 
-First of all, we use the command "TestLib TiePtAddWeight" to set the weight of the  inter-epoch tie-points to be 2, so that they will play a more important role in BA. (Please notice that the weight of the intra-epoch tie-points is by default 1.)
+We use the command "TestLib TiePtPrep" to prepare the multi-epoch tie-points, it includes: (1) add weight to inter-epoch tie-points to improve their importance in latter stage of bundle adjustment, (2) transform the inter-epoch tie-points from txt to binary format, and (3) merge inter- and intra-epoch tie-points.
 
-The input, output and parameter interpretation of the command "TestLib TiePtAddWeight" are listed below:
+The input, output and parameter interpretation of the command "TestLib TiePtPrep" are listed below:
 
 Input:
-- `tie-points`
+- `inter-eoch tie-points and weight, intra-epoch tie-points`
 
 Output:
-- `tie-points with weight set`
+- `merged tie-points`
 
 The meaning of obligatory parameters:
-- `2`: Weight to be set
-
+- `"[O|C].*tif"`: multi-epoch images(Dir+Pattern, or txt file of image list)
 
 The meaning of optional parameters:
-- `InSH`: Input Homologue extenion for NB/NT mode, Def=none
-- `OutSH`: Output Homologue extenion for NB/NT mode, Def=InSH-WN (N means the weight)
-- `ScaleL`: The factor used to scale the points in master images (for developpers only), Def=1
+- `InterSH`: Input inter-epoch homologue extenion for NB/NT mode, Def=none
+- `W`: Weight to be added
+- `IntraSH`: Input intra-epoch homologue extenion for NB/NT mode, Def=none
+- `OutSH`: Output Homologue extenion for NB/NT mode, Def=\_Merged
+- `Exe`: Execute, Def=false
 
 ```
-mm3d TestLib TiePtAddWeight 2 InSH=-SuperGlue-3DRANSAC-CrossCorrelation
-```
-### Txt to binary conversion
-
-The SuperGlue inter-epoch tie-points we got are in txt format, we should transform them into binary format with the help of "HomolFilterMasq", so that they can be recognized in the following process.
-
-```
-mm3d HomolFilterMasq "[O|C].*tif" PostIn=-SuperGlue-3DRANSAC-CrossCorrelation-W2 PostOut=-SuperGlue-3DRANSAC-CrossCorrelation-W2-dat ANM=1 ExpTxt=1 ExpTxtOut=0
-```
-### Merge intra- and inter-epoch tie-points
-
-Then we need to merge the intra- and inter-epoch tie-points from different folders together using the command "MergeHomol".
-
-The input, output and parameter interpretation of the command "MergeHomol" are listed below:
-
-Input:
-- `tie-points in different folders`
-
-Output:
-- `tie-points merged in a single folder`
-
-The meaning of obligatory parameters:
-- `"Homol_1971-Ratafia|Homol-SuperGlue-3DRANSAC-CrossCorrelation-W2-dat"`: input tie-point folders
-- ` Homol_Merged-SuperGlue`: out tie-point folder
-
-> Note: As the images in epoch 2014 are satellite images, their orientations are already georeferenced and therefore will be treated as ground truth in our processing, so we don't need the intra-epoch tie-points of epoch 2014.
-
-```
-mm3d MergeHomol "Homol_1971-Ratafia|Homol-SuperGlue-3DRANSAC-CrossCorrelation-W2-dat" Homol_Merged-SuperGlue
+mm3d TestLib TiePtPrep "[O|C].*tif" InterSH=-GuidedSIFT-3DRANSAC-CrossCorrelation W=10 IntraSH=_1971-Ratafia OutSH=_Merged-GuidedSIFT Exe=0
 ```
 
 ### Merge roughly co-registered orientations
