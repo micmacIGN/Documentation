@@ -393,7 +393,7 @@ Use the *TiePHistoP* command to launch the automated inter-epoch processing pipe
 The input, output and parameter interpretation of the command "TiePHistoP" are listed below:
 
 Input:
-- `2 sets of image lists, images, orientations and DSMs in 2 epochs`
+- `images, orientations and DSMs in 2 epochs`
 
 Output:
 - `roughly co-registered orientations; precise inter-epoch tie-points`
