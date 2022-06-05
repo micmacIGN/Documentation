@@ -1400,7 +1400,7 @@ The meaning of optional parameters:
 - `Exe`: Execute, Def=false
 
 ```
-mm3d TestLib TiePtPrep "[O|C].*tif" InterSH=-SuperGlue-3DRANSAC-CrossCorrelation W=10 IntraSH=_1971-Ratafia OutSH=_Merged-SuperGlue Exe=1
+mm3d TestLib TiePtPrep "[O|C].*tif" InterSH=-SuperGlue-3DRANSAC-CrossCorrelation W=2 IntraSH=_1971-Ratafia OutSH=_Merged-SuperGlue Exe=1
 ```
 
 ### Merge roughly co-registered orientations
@@ -1482,7 +1482,7 @@ We need to refine the roughly co-registered orientations in a bundle adjustment 
 Same as before, we use the command "TestLib TiePtPrep" to prepare the multi-epoch tie-points.
 
 ```
-mm3d TestLib TiePtPrep "[O|C].*tif" InterSH=-GuidedSIFT-3DRANSAC-CrossCorrelation W=10 IntraSH=_1971-Ratafia OutSH=_Merged-GuidedSIFT Exe=1
+mm3d TestLib TiePtPrep "[O|C].*tif" InterSH=-GuidedSIFT-3DRANSAC-CrossCorrelation W=2 IntraSH=_1971-Ratafia OutSH=_Merged-GuidedSIFT Exe=1
 ```
 
 ### Run bundle adjustment
