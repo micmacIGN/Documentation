@@ -1334,17 +1334,17 @@ We use 3 sets of image orientations to compute the DSMs in epoch 1971 and 2014 i
 
 ## 3.1. DoD of roughly co-registered result
 
-### Get DSM of epoch 2014
+### 3.1.1. Get DSM of epoch 2014
 
 As the co-registered orientations are based on the reference of epoch 2014, we can use directly the DSM of epoch 2014 resulted from section 1.3.1.
 
-### Get DSM of epoch 1971
+### 3.1.2 Get DSM of epoch 1971
 
 As for the DSM of epoch 1971, the roughly co-registered orientations are stored in folder "Ori-1971_CoReg_SuperGlue", therefore we use it to calculate the DSM of epoch 1971 as follwing:
 
     mm3d Malt Ortho OIS-Reech_IGNF_PVA_1-0__1971.*tif Ori-1971_CoReg_SuperGlue NbVI=2 DirMEC=MEC-Malt_1971_CoReg EZA=1 MasqImGlob=Fiducial.tif ZoomF=8 DoOrtho=0
 
-### Calculate DoD
+### 3.1.3 Calculate DoD
 
 We use the command "CmpIm" to generate the DoD.
 
@@ -1383,7 +1383,7 @@ As can be seen, a dome artifact is present in DoD-CoReg. This kind of systematic
 
 We need to refine the roughly co-registered orientations in a bundle adjustment (BA) routine using the SuperGlue inter-epoch tie-points resulted from section 2.1, as well as the reduced intra-epoch tie-points resulted from section 1.1.
 
-### Set weight of inter-epoch tie-points
+### 3.2.1. Set weight of inter-epoch tie-points
 
 We use the command "TestLib TiePtPrep" to prepare the multi-epoch tie-points, it includes: (1) add weight to inter-epoch tie-points to improve their importance in latter stage of bundle adjustment, (2) transform the inter-epoch tie-points from txt to binary format, and (3) merge inter- and intra-epoch tie-points.
 
@@ -1408,7 +1408,7 @@ The meaning of optional parameters:
 ```
 mm3d TestLib TiePtPrep "[O|C].*tif" InterSH=-SuperGlue-3DRANSAC-CrossCorrelation W=2 IntraSH=_1971-Ratafia OutSH=_Merged-SuperGlue Exe=1
 ```
-It automatically call the following the commands:
+It automatically calls the following the commands:
 
 ```
 mm3d TestLib TiePtAddWeight 2 InSH=-SuperGlue-3DRANSAC-CrossCorrelation
@@ -1417,61 +1417,7 @@ mm3d MergeHomol "Homol_1971-Ratafia|Homol-SuperGlue-3DRANSAC-CrossCorrelation-W2
 ```
 
 
-### Set weight of inter-epoch tie-points
-
-First of all, we use the command "TestLib TiePtAddWeight" to set the weight of the  inter-epoch tie-points to be 2, so that they will play a more important role in BA. (Please notice that the weight of the intra-epoch tie-points is by default 1.)
-
-The input, output and parameter interpretation of the command "TestLib TiePtAddWeight" are listed below:
-
-Input:
-- `tie-points`
-
-Output:
-- `tie-points with weight set`
-
-The meaning of obligatory parameters:
-- `2`: Weight to be set
-
-
-The meaning of optional parameters:
-- `InSH`: Input Homologue extenion for NB/NT mode, Def=none
-- `OutSH`: Output Homologue extenion for NB/NT mode, Def=InSH-WN (N means the weight)
-- `ScaleL`: The factor used to scale the points in master images (for developpers only), Def=1
-
-```
-mm3d TestLib TiePtAddWeight 2 InSH=-SuperGlue-3DRANSAC-CrossCorrelation
-```
-### Txt to binary conversion
-
-The SuperGlue inter-epoch tie-points we got are in txt format, we should transform them into binary format with the help of "HomolFilterMasq", so that they can be recognized in the following process.
-
-```
-mm3d HomolFilterMasq "[O|C].*tif" PostIn=-SuperGlue-3DRANSAC-CrossCorrelation-W2 PostOut=-SuperGlue-3DRANSAC-CrossCorrelation-W2-dat ANM=1 ExpTxt=1 ExpTxtOut=0
-```
-### Merge intra- and inter-epoch tie-points
-
-Then we need to merge the intra- and inter-epoch tie-points from different folders together using the command "MergeHomol".
-
-The input, output and parameter interpretation of the command "MergeHomol" are listed below:
-
-Input:
-- `tie-points in different folders`
-
-Output:
-- `tie-points merged in a single folder`
-
-The meaning of obligatory parameters:
-- `"Homol_1971-Ratafia|Homol-SuperGlue-3DRANSAC-CrossCorrelation-W2-dat"`: input tie-point folders
-- ` Homol_Merged-SuperGlue`: out tie-point folder
-
-> Note: As the images in epoch 2014 are satellite images, their orientations are already georeferenced and therefore will be treated as ground truth in our processing, so we don't need the intra-epoch tie-points of epoch 2014.
-
-```
-mm3d MergeHomol "Homol_1971-Ratafia|Homol-SuperGlue-3DRANSAC-CrossCorrelation-W2-dat" Homol_Merged-SuperGlue
-```
-
-
-### Merge roughly co-registered orientations
+### 3.2.2. Merge roughly co-registered orientations
 The roughly co-registered orientations of epoch 1971 are stored in folder "Ori-1971_CoReg_SuperGlue", we use the following command to copy them into the folder "Ori-2014" in order to combine the orientations of 2 epochs:
 
 ```
@@ -1480,7 +1426,7 @@ cp -r Ori-1971_CoReg_SuperGlue/. Ori-2014/
 
 The merged folder "Ori-2014" serves as intial orientations for the next step of "bundle adjustment".
 
-### Run bundle adjustment
+### 3.2.3. Run bundle adjustment
 
 Now it is time to run BA with the command "Campari".
 
@@ -1510,24 +1456,24 @@ The meaning of optional parameters:
 ```
 mm3d Campari "[O|C].*tif" 2014 Campari_Refined-SuperGlue SH=_Merged-SuperGlue AllFree=1 AllFreePat=".*19.*" FrozenPoses="C.*tif" NbIterEnd=20
 ```
-### Get DSM of epoch 2014
+### 3.2.4. Get DSM of epoch 2014
 
 As the orientations of epoch 2014 are kept the same, we can use directly the DSM of epoch 2014 resulted from section 1.3.1.
 
-### Get DSM of epoch 1971
+### 3.2.5. Get DSM of epoch 1971
 
 Based on the SuperGlue refined orientations "Campari_Refined-SuperGlue", we compute the DSMs in epoch 1971 using the command "Malt":
 
 ```
 mm3d Malt Ortho OIS-Reech_IGNF_PVA_1-0__1971.*tif Campari_Refined-SuperGlue NbVI=2 DirMEC=MEC-Malt_1971_Refined-SuperGlue EZA=1 MasqImGlob=Fiducial.tif ZoomF=8 DoOrtho=0
 ```
-### Calculate DoD
+### 3.2.6. Calculate DoD
 
 Finally we use the command "CmpIm" to generate the DoD.
 ```
 mm3d CmpIm MEC-Malt_2014/Z_Num6_DeZoom8_STD-MALT.tif MEC-Malt_1971_Refined-SuperGlue/Z_Num6_DeZoom8_STD-MALT.tif UseFOM=1 FileDiff=DoD-Refined-SuperGlue.tif 16Bit=1
 ```
-### Visualize DoD
+### 3.2.7. Visualize DoD
 
 The resulting DoD can be visualised below:
 <center>
@@ -1545,7 +1491,7 @@ As can be seen in the visualized DoDs, the systematic errors (dome effect) are e
 
 We need to refine the roughly co-registered orientations in a bundle adjustment (BA) routine using the SIFT inter-epoch tie-points resulted from section 2.1, as well as the reduced intra-epoch tie-points resulted from section 1.1.
 
-### Set weight of inter-epoch tie-points
+### 3.3.1. Set weight of inter-epoch tie-points
 
 Same as before, we use the command "TestLib TiePtPrep" to prepare the multi-epoch tie-points.
 
@@ -1553,7 +1499,7 @@ Same as before, we use the command "TestLib TiePtPrep" to prepare the multi-epoc
 mm3d TestLib TiePtPrep "[O|C].*tif" InterSH=-GuidedSIFT-3DRANSAC-CrossCorrelation W=2 IntraSH=_1971-Ratafia OutSH=_Merged-GuidedSIFT Exe=1
 ```
 
-### Run bundle adjustment
+### 3.3.2. Run bundle adjustment
 
 Now it is time to run BA with the command "Campari".
 
@@ -1582,23 +1528,23 @@ The meaning of optional parameters:
 ```
 mm3d Campari "[O|C].*tif" 2014 Campari_Refined-GuidedSIFT SH=_Merged-GuidedSIFT AllFree=1 AllFreePat=".*19.*" FrozenPoses="C.*tif" NbIterEnd=20
 ```
-### Get DSM of epoch 2014
+### 3.3.3. Get DSM of epoch 2014
 
 As the orientations of epoch 2014 are kept the same, we can use directly the DSM of epoch 2014 resulted from section 1.3.1.
 
-### Get DSM of epoch 1971
+### 3.3.4. Get DSM of epoch 1971
 
 Based on the GuidedSIFT refined orientations "Campari_Refined-GuidedSIFT", we compute the DSMs in epoch 1971 using the command "Malt":
 ```
 mm3d Malt Ortho OIS-Reech_IGNF_PVA_1-0__1971.*tif Campari_Refined-GuidedSIFT NbVI=2 DirMEC=MEC-Malt_1971_Refined-GuidedSIFT EZA=1 MasqImGlob=Fiducial.tif ZoomF=8 DoOrtho=0
 ```
-### Calculate DoD
+### 3.3.5. Calculate DoD
 
 Finally we use the command "CmpIm" to generate the DoD.
 ```
 mm3d CmpIm MEC-Malt_2014/Z_Num6_DeZoom8_STD-MALT.tif MEC-Malt_1971_Refined-GuidedSIFT/Z_Num6_DeZoom8_STD-MALT.tif UseFOM=1 FileDiff=DoD-Refined-GuidedSIFT.tif 16Bit=1
 ```
-### Visualize DoD
+### 3.3.6. Visualize DoD
 The resulting DoD can be visualised below:
 <center>
   <img src="Images/3DoD.png" height=320pix/>
