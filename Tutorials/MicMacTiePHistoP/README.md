@@ -1400,7 +1400,7 @@ The meaning of optional parameters:
 - `Exe`: Execute, Def=false
 
 ```
-mm3d TestLib TiePtPrep "[O|C].*tif" InterSH=-GuidedSIFT-3DRANSAC-CrossCorrelation W=10 IntraSH=_1971-Ratafia OutSH=_Merged-GuidedSIFT Exe=0
+mm3d TestLib TiePtPrep "[O|C].*tif" InterSH=-SuperGlue-3DRANSAC-CrossCorrelation W=10 IntraSH=_1971-Ratafia OutSH=_Merged-SuperGlue Exe=0
 ```
 
 ### Merge roughly co-registered orientations
@@ -1477,52 +1477,12 @@ We need to refine the roughly co-registered orientations in a bundle adjustment 
 
 ### Set weight of inter-epoch tie-points
 
-First of all, we use the command "TestLib TiePtAddWeight" to set the weight of the  inter-epoch tie-points to be 2, so that they will play a more important role in BA. (Please notice that the weight of the intra-epoch tie-points is by default 1.)
-
-The input, output and parameter interpretation of the command "TestLib TiePtAddWeight" are listed below:
-
-Input:
-- `tie-points`
-
-Output:
-- `tie-points with weight set`
-
-The meaning of obligatory parameters:
-- `2`: Weight to be set
-
-
-The meaning of optional parameters:
-- `InSH`: Input Homologue extenion for NB/NT mode, Def=none
-- `OutSH`: Output Homologue extenion for NB/NT mode, Def=InSH-WN (N means the weight)
-- `ScaleL`: The factor used to scale the points in master images (for developpers only), Def=1
+Same as before, we use the command "TestLib TiePtPrep" to prepare the multi-epoch tie-points.
 
 ```
-mm3d TestLib TiePtAddWeight 2 InSH=-GuidedSIFT-3DRANSAC-CrossCorrelation
+mm3d TestLib TiePtPrep "[O|C].*tif" InterSH=-GuidedSIFT-3DRANSAC-CrossCorrelation W=10 IntraSH=_1971-Ratafia OutSH=_Merged-GuidedSIFT Exe=0
 ```
-### Txt to binary conversion
 
-The SIFT inter-epoch tie-points we got are in txt format, we should transform them into binary format with the help of "HomolFilterMasq", so that they can be recognized in the following process.
-```
-mm3d HomolFilterMasq "[O|C].*tif" PostIn=-GuidedSIFT-3DRANSAC-CrossCorrelation-W2 PostOut=-GuidedSIFT-3DRANSAC-CrossCorrelation-W2-dat ANM=1 ExpTxt=1 ExpTxtOut=0
-```
-### Merge intra- and inter-epoch tie-points
-
-Then we need to merge the intra- and inter-epoch tie-points from different folders together using the command "MergeHomol".
-
-The input, output and parameter interpretation of the command "MergeHomol" are listed below:
-
-Input:
-- `tie-points in different folders`
-
-Output:
-- `tie-points merged in a single folder`
-
-The meaning of obligatory parameters:
-- `"Homol_1971-Ratafia|Homol-GuidedSIFT-3DRANSAC-CrossCorrelation-W2-dat"`: input tie-point folders
-- ` Homol_Merged-GuidedSIFT`: out tie-point folder
-```
-mm3d MergeHomol "Homol_1971-Ratafia|Homol-GuidedSIFT-3DRANSAC-CrossCorrelation-W2-dat" Homol_Merged-GuidedSIFT
-```
 ### Run bundle adjustment
 
 Now it is time to run BA with the command "Campari".
