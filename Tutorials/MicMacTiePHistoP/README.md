@@ -929,7 +929,7 @@ In conclusion, the rotation hypothesis 4 is obviously with the largest RANSAC in
 
 #### 2.2.1.3. Create virtual GCPs from DSMs
 
-Based on the largest number of RANSAC inlier from previous step, the command "TestLib CreateGCPs" will create GCPs between the 2 epochs.
+Based on the largest number of RANSAC inlier from previous step, the command "TestLib CreateGCPs" will create virtual GCPs in 2 epochs. The virtual GCPs are created by obtaining (1) 3D coordinate in DSMs and (2) 2D coordinate by back-projecting the points to RGB images.
 
 The input, output and parameter interpretation of the command "TestLib CreateGCPs" are listed below:
 
