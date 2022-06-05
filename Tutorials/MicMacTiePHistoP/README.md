@@ -136,6 +136,11 @@ The dataset consists of:
 
 # 1. Intra-epoch processing
 
+| <p align="center"> Feature matching </p> | <p align="center"> Relative orientation </p> | <p align="center"> DSM generation </p> |
+|-|-|-|
+|<p align="center"> Tapioca </p>|<p align="center"> Tapas </p>|<p align="center"> Malt </p>|
+|<p align="center"> <img src="Images/tapioca.png" width="800"> </p>|<p align="center"> <img src="Images/Tapas.png" width="300"> </p>|<p align="center"> <img src="Images/Malt.png" width="300"> </p>|
+
 ## 1.1. Feature matching
 
 ### 1.1.1. Epoch 2014
