@@ -34,7 +34,7 @@ Some photogrammetric datasets are available [Here](https://micmac.ensg.eu/index.
 
 ## Other resources :
 
-- [MicMac Forum](http://forum-micmac.forumprod.com/) 
+- [MicMac subreddit]([http://forum-micmac.forumprod.com/](https://www.reddit.com/r/MicMac/) 
 - [MicMac Wiki](https://micmac.ensg.eu/index.php/Accueil)
 
 
