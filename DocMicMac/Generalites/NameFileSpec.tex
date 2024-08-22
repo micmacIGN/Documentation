@@ -247,6 +247,85 @@ NB  BY RFLM 8
 \section{Filters and In-File Definition}
 
 
+%=============================================================
+%=============================================================
+%=============================================================
+
+\section{The tools for raw image devlopment} 
+
+Micmac use {\tt dcraw} for converting raw images to tiff. As {\tt dcraw} is very
+efficient but low level ,its usage is encapsulated in $2$ commands :
+
+\begin{itemize}
+	\item {\tt ElDcraw} who is excatly similar to {\tt dcraw}, but assure that the version requirde by
+      micmac exist even if a new version of {\tt dcraw} is installed, also some minor corrections have
+     been made to the code
+
+       \item {\tt MpDcraw} offers some possibility to extract higher level image from the bayer image;
+
+\end{itemize}
+
+These tool have a non standard interface (as compared to other MicMac tools), initially they are essentially
+internal tools , but they can be usefull \dots
+For {\tt ElDcraw} , the following commands can be used to extract the raw bayer matrix, or a color demosaicing  :
+
+\begin{verbatim}
+# extract bayer matrix as 16 byte image , 
+# -t 0 :  dont flip imae,  -d : raw bayer matrix,   -T : tiff format as  export, -4 : 16 byte
+    mm3d ElDcraw -t 0  -d -T -4   C2_00188.ARW
+#  generate a color demosaicing using standard parameters
+mm3d    ElDcraw  -T C2_00188.ARW
+\end{verbatim}
+
+As {\tt dcraw} has many option you can extract them by typing {\tt ElDcraw} :
+
+
+\begin{verbatim}
+Raw photo decoder "dcraw" v9.28
+by Dave Coffin, dcoffin a cybercom o net
+
+Usage:  ElDcraw [OPTION]... [FILE]...
+
+-v        Print verbose messages
+-c        Write image data to standard output
+-e        Extract embedded thumbnail image
+-i        Identify files without decoding them
+-i -v     Identify files and show metadata
+-z        Change file dates to camera timestamp
+-w        Use camera white balance, if possible
+ ...
+\end{verbatim}
+
+
+The tool {\tt MpDcraw} was used to extract information from the raw bayer matrix  to prepare
+some physically-based demosaicing,  for example to allow a calibration of chromatic abheration
+before doing the devlopment. Here are some example fo usage of {\tt MpDcraw} :
+
+
+\begin{verbatim}
+#  Extract the 4 channel in 4 image of sz/2 ,  V and W represent the 2 green channels, result are 16 Bitsyy
+MpDcraw  ./ C2_00188.ARW Split="RVBW"
+
+#  idem but 8 bits
+MpDcraw  ./ C2_00188.ARW Split="RVBW" 16B=0
+
+# extract a "basic" gray image on 8 bits
+MpDcraw  ./ C2_00188.ARW GB=1 16B=0
+
+# extract a "basic" colors image on 8 bits
+MpDcraw  ./ C2_00188.ARW CB=1 16B=0
+
+#extract the image of green in "diagonal geometry" 
+ MpDcraw  ./ C2_00188.ARW Diag=1 16B=0
+
+
+\end{verbatim}
+
+
+
+
+
+% MpDcraw
 
 
 
